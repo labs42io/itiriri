@@ -1,0 +1,12 @@
+{
+  "explorer.confirmDragAndDrop": false,
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "all",
+  "editor.formatOnSave": true,
+  "explorer.confirmDelete": false,
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/coverage": true
+  }
+}
