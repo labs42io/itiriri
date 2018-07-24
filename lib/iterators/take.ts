@@ -2,6 +2,8 @@ import { execute } from '../reducers/execute';
 import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 import { until } from './until';
+import { filter } from './filter';
+import { print } from 'util';
 
 export function take<TElement>(
   source: Iterable<TElement>,
@@ -15,7 +17,7 @@ function generator<TElement>(
   count: number,
 ): Iterable<TElement> {
   if (count >= 0) {
-    return until(source, (elem, idx) => idx >= count);
+    return filter(source, (elem, idx) => idx < count);
   }
 
   return takeLast(source, -count);
@@ -26,7 +28,7 @@ function takeLast<TElement>(source: Iterable<TElement>, count: number) {
 
   execute(source, (elem, idx) => {
     if (result.length === count) {
-      result.unshift();
+      result.shift();
     }
 
     result.push(elem);
