@@ -20,6 +20,18 @@ describe('iterators/take', () => {
 
       expect(toArray(iterator)).to.deep.equal([1, 2, 3, 4]);
     });
+    it('Should return the elements', () => {
+      const source = fromArray([1, 2, 3, 4, 5]);
+      const iterator = take(source, 2);
+
+      expect(toArray(iterator)).to.deep.equal([1, 2]);
+    });
+    it('Should return the elements', () => {
+      const source = fromArray([1, 2, 3]);
+      const iterator = take(source, 1);
+
+      expect(toArray(iterator)).to.deep.equal([1]);
+    });
   });
 
   describe('When take all elements', () => {
@@ -46,6 +58,18 @@ describe('iterators/take', () => {
       const iterator = take(source, -3);
 
       expect(toArray(iterator)).to.deep.equal([2, 3, 4]);
+    });
+    it('Should return from the tail', () => {
+      const source = fromArray([1, 2, 3, 4, 5, 6]);
+      const iterator = take(source, -5);
+
+      expect(toArray(iterator)).to.deep.equal([2, 3, 4, 5, 6]);
+    });
+    it('Should return from the tail', () => {
+      const source = fromArray([1, 2, 3, 4, 5]);
+      const iterator = take(source, -1);
+
+      expect(toArray(iterator)).to.deep.equal([5]);
     });
   });
 
