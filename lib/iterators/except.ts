@@ -30,4 +30,3 @@ function generator<TElement, TKey>(
     return false;
   });
 }
-

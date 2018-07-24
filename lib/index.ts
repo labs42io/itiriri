@@ -33,7 +33,6 @@ import { toMap } from './reducers/toMap';
 import { toMapAll } from './reducers/toMapAll';
 import { toSet } from './reducers/toSet';
 
-
 export { Query, QueryGroup };
 
 export function query<T>(items: Iterable<T>): Query<T>;

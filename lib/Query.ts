@@ -1,6 +1,6 @@
 
 /**
- * A queryable collection representation. 
+ * A queryable collection representation.
  */
 export interface Query<T> extends Iterable<T> {
 
@@ -23,7 +23,7 @@ export interface Query<T> extends Iterable<T> {
   indexOf(element: T): number;
 
   /**
-   * Returns the first index at which a given element matching the predicate can be found. 
+   * Returns the first index at which a given element matching the predicate can be found.
    * If not present, returns -1.
    * @param  {(element:T)=>boolean} predicate element predicate
    * @returns number
@@ -38,7 +38,7 @@ export interface Query<T> extends Iterable<T> {
   lastIndexOf(element: T): number;
 
   /**
-   * Returns the last index at which a given element matching the predicate can be found. 
+   * Returns the last index at which a given element matching the predicate can be found.
    * If not present, returns -1.
    * @param  {T} element element to search
    * @returns number
@@ -277,7 +277,7 @@ export interface Query<T> extends Iterable<T> {
   take(count: number): Query<T>;
 
   /**
-   * Skips the specified number of elements from the beggining of sequence 
+   * Skips the specified number of elements from the beggining of sequence
    * and returns the remaining ones.
    * @param  {number} count
    * @returns Query
@@ -627,7 +627,7 @@ export interface Query<T> extends Iterable<T> {
 }
 
 /**
- * A queryable collection group representation. 
+ * A queryable collection group representation.
  */
 export interface QueryGroup<K, T> extends Query<T> {
   /**

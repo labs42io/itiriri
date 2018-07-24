@@ -63,4 +63,3 @@ function* generator<T>(source: Iterable<T>, target: number, start: number, end?:
     current = iterator.next();
   }
 }
-
