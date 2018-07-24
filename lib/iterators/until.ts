@@ -1,7 +1,7 @@
 import { fromGenerator } from './fromGenerator';
 import { getIterator } from './getIterator';
 
-export function* until<TElement>(
+export function until<TElement>(
   source: Iterable<TElement>,
   predicate: (element: TElement, index: number) => boolean,
 ): Iterable<TElement> {
