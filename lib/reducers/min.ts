@@ -8,7 +8,7 @@ export function min(source: Iterable<number>) {
   });
 
   if (!hasItems) {
-    throw new Error('Sequence contains no elements.');
+    return undefined;
   }
 
   return m;
