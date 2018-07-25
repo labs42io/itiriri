@@ -21,9 +21,9 @@ describe('iterators/reverse', () => {
 
   describe('When reversing multiple elements', () => {
     it('Should return elements in reverse order', () => {
-      const source = [1, 2, 3];
+      const source = [1, 3, 2];
       const iterator = reverse(source);
-      expect(toArray(iterator)).to.be.deep.equal([3, 2, 1]);
+      expect(toArray(iterator)).to.be.deep.equal([2, 3, 1]);
     });
     it('Should return elements in reverse order', () => {
       const source = [1, 2];
@@ -31,9 +31,9 @@ describe('iterators/reverse', () => {
       expect(toArray(iterator)).to.be.deep.equal([2, 1]);
     });
     it('Should return elements in reverse order', () => {
-      const source = [1, 2, 4, 8, 16];
+      const source = [1, 32, 2, 4, 8, 16];
       const iterator = reverse(source);
-      expect(toArray(iterator)).to.be.deep.equal([16, 8, 4, 2, 1]);
+      expect(toArray(iterator)).to.be.deep.equal([16, 8, 4, 2, 32, 1]);
     });
   });
 });
