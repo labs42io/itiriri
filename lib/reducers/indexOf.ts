@@ -9,5 +9,5 @@ export function indexOf<TElement>(
 
   execute(until(source, predicate), (elem, idx) => index = idx);
 
-  return index;
+  return predicate(source[index], index) ? index : -1;
 }

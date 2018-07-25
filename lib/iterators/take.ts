@@ -14,8 +14,12 @@ function generator<TElement>(
   source: Iterable<TElement>,
   count: number,
 ): Iterable<TElement> {
-  if (count >= 0) {
-    return until(source, (elem, idx) => idx >= count);
+  if (count === 0) {
+    return fromArray([]);
+  }
+
+  if (count > 0) {
+    return until(source, (elem, idx) => idx + 1 === count);
   }
 
   return takeLast(source, -count);
