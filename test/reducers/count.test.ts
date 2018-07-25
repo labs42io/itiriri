@@ -7,7 +7,7 @@ describe('reducers/count', () => {
     it('Should return 0', () => {
       const arr = [];
 
-      expect(count(arr)).to.deep.equal(0);
+      expect(count(arr)).to.equal(0);
     });
   });
 
@@ -15,17 +15,17 @@ describe('reducers/count', () => {
     it('Should return it\'s length', () => {
       const arr = [0, 1, 2, 1];
 
-      expect(count(arr)).to.deep.equal(4);
+      expect(count(arr)).to.equal(4);
     });
     it('Should return it\'s length', () => {
       const arr = [0];
 
-      expect(count(arr)).to.deep.equal(1);
+      expect(count(arr)).to.equal(1);
     });
     it('Should return it\'s length', () => {
       const arr = [0, 1, 1, 1, 0, 0];
 
-      expect(count(arr)).to.deep.equal(6);
+      expect(count(arr)).to.equal(6);
     });
   });
 });

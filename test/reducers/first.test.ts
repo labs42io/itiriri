@@ -6,17 +6,17 @@ describe('reducers/first', () => {
     it('Should return the first element', () => {
       const arr = [1, 2, 3];
 
-      expect(first(arr)).to.be.deep.equal(1);
+      expect(first(arr)).to.be.equal(1);
     });
     it('Should return the first element', () => {
       const arr = [-1, 2, 3];
 
-      expect(first(arr)).to.be.deep.equal(-1);
+      expect(first(arr)).to.be.equal(-1);
     });
     it('Should return the first element', () => {
       const arr = [100, 1, 2, 3];
 
-      expect(first(arr)).to.be.deep.equal(100);
+      expect(first(arr)).to.be.equal(100);
     });
   });
 

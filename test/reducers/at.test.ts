@@ -5,17 +5,17 @@ describe('reducers/at', () => {
   describe('When accessing an element that exists', () => {
     it('Should return the element', () => {
       const source = [1, 2, 3, 4, 5];
-      expect(at(source, 0)).to.be.deep.equal(1);
+      expect(at(source, 0)).to.be.equal(1);
     });
 
     it('Should return the element', () => {
       const source = [1, 2, 3, 4, 5];
-      expect(at(source, 1)).to.be.deep.equal(2);
+      expect(at(source, 1)).to.be.equal(2);
     });
 
     it('Should return the element', () => {
       const source = [1, 2, 3, 4, 5];
-      expect(at(source, 2)).to.be.deep.equal(3);
+      expect(at(source, 2)).to.be.equal(3);
     });
   });
 
