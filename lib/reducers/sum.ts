@@ -6,7 +6,7 @@ export function sum(source: Iterable<number>) {
   const hasItems = execute(source, elem => s += elem);
 
   if (!hasItems) {
-    throw new Error('Sequence contains no elements.');
+    return undefined;
   }
 
   return s;
