@@ -41,4 +41,27 @@ describe('iterators/skip', () => {
       expect(toArray(iterator)).to.be.deep.equal([16, 32]);
     });
   });
+
+  describe('When skipping negative count', () => {
+    it('Should return first 3 elements', () => {
+      const source = [1, 2, 3, 2, 1];
+      const iterator = skip(source, -2);
+
+      expect(toArray(iterator)).to.be.deep.equal([1, 2, 3]);
+    });
+
+    it('Should return first 2 elements', () => {
+      const source = ['a', 'b', 'c', 'ddd', 'asdf'];
+      const iterator = skip(source, -3);
+
+      expect(toArray(iterator)).to.be.deep.equal(['a', 'b']);
+    });
+
+    it('Should return empty source', () => {
+      const source = ['a', 'b', 'c'];
+      const iterator = skip(source, -3);
+
+      expect(toArray(iterator)).to.be.deep.equal([]);
+    });
+  });
 });
