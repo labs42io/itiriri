@@ -17,6 +17,12 @@ describe('reducers/indexOf', () => {
       expect(indexOf(source, (elem, idx) => elem === 20)).to.be.equal(3);
     });
 
+    it('Should return the index 0', () => {
+      const source = [1, 2, 1, 3, 4];
+
+      expect(indexOf(source, (elem, idx) => elem === 1)).to.be.equal(0);
+    });
+
     it('Should return -1 if elements does not exist', () => {
       const source = ['a', 'b', 'z', 'aa', 'abc'];
       expect(indexOf(source, (elem, idx) => elem === 'c')).to.be.equal(-1);
