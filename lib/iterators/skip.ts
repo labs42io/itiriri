@@ -31,7 +31,7 @@ function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
 
   while (!current.done) {
     buffer.push(current.value);
-    if (index - count > 0) {
+    if (index - count >= 0) {
       yield buffer.shift();
     }
 
