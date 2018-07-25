@@ -4,37 +4,33 @@ import { toArray } from '../../lib/reducers/toArray';
 
 describe('iterators/shuffle', () => {
   describe('When shuffle an array', () => {
-    it('Should have the same elements', () => {
+    it('Should contain the same 5 integers', () => {
       const source = [3, 4, 3, 1, 5];
       const iterator = shuffle(source);
 
-      expect(source.length).to.be.equal(toArray(iterator).length);
-
-      toArray(iterator).forEach((element) => {
-        expect(source).to.include(element);
-      });
+      expect(toArray(iterator).sort()).to.be.deep.equal(source.sort());
     });
 
-    it('Should have the same elements', () => {
-      const source = [3, 4, 3];
+    it('Should contain the same 3 floats', () => {
+      const source = [3.1, 4.1, 3.1];
       const iterator = shuffle(source);
 
-      expect(source.length).to.be.equal(toArray(iterator).length);
-
-      toArray(iterator).forEach((element) => {
-        expect(source).to.include(element);
-      });
+      expect(toArray(iterator).sort()).to.be.deep.equal(source.sort());
     });
 
-    it('Should have the same elements', () => {
-      const source = [1, 1, 1, 13, 4, 0, 6, 6, 5, 4, 3, 4, 3];
+    it('Should contain the same 4 strings', () => {
+      const source = ['asdf', 'sdffd', 'blackmagick'];
       const iterator = shuffle(source);
 
-      expect(source.length).to.be.equal(toArray(iterator).length);
+      expect(toArray(iterator).sort()).to.be.deep.equal(source.sort());
+    });
 
-      toArray(iterator).forEach((element) => {
-        expect(source).to.include(element);
-      });
+    it('Should contain the same 4 objecs', () => {
+      const source = [{ x: 1 }, { x: 10 }, { x: 11 }, { x: 2 }];
+      const iterator = shuffle(source);
+
+      expect(toArray(iterator).sort((elem1, elem2) => elem1.x > elem2.x ? 1 : -1))
+        .to.be.deep.equal(source.sort((elem1, elem2) => elem1.x > elem2.x ? 1 : -1));
     });
   });
 });
