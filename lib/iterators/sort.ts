@@ -5,7 +5,7 @@ import { map } from './map';
 
 export function sort<TElement, TKey>(
   source: Iterable<TElement>,
-  keySelector: (element: TElement) => TKey,
+  keySelector: (element: TElement, index: number) => TKey,
   descending = false,
 ): Iterable<TElement> {
   return fromGenerator(() => generator(source, keySelector, descending));
@@ -13,7 +13,7 @@ export function sort<TElement, TKey>(
 
 function generator<TElement, TKey>(
   source: Iterable<TElement>,
-  keySelector: (element: TElement) => TKey,
+  keySelector: (element: TElement, index: number) => TKey,
   descending = false,
 ): Iterable<TElement> {
 
@@ -22,7 +22,7 @@ function generator<TElement, TKey>(
     (value, index) => (<SortElement<TElement, TKey>>{
       value,
       index,
-      key: keySelector(value),
+      key: keySelector(value, index),
     }));
 
   const elements = !descending ?
@@ -35,8 +35,8 @@ function generator<TElement, TKey>(
 type SortElement<T, K> = { key: K, value: T, index: number };
 
 function comparer<T, K>(a: SortElement<T, K>, b: SortElement<T, K>) {
-  const valueA = a.value;
-  const valueB = b.value;
+  const valueA = a.key;
+  const valueB = b.key;
 
   if (valueA < valueB) return -1;
   if (valueA > valueB) return 1;
