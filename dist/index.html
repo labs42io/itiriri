@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="bundle.min.js"></script>
+</head>
+
+<body>
+  <script>
+    var q = ArrayQuery.query([1, 20, 13, 44]);
+    console.log(q.take(2).toArray());
+    console.log(q.skip(2).toArray());
+    console.log(q.sort().toArray());
+    console.log(q.skip(1).sortDesc().at(0));
+  </script>
+</body>
+
+</html>

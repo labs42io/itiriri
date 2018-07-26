@@ -8,6 +8,10 @@ import * as mocha from 'gulp-mocha';
 import * as ts from 'gulp-typescript';
 import * as sourcemaps from 'gulp-sourcemaps';
 const tslint = require('gulp-tslint');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const source = require('vinyl-source-stream');
+const uglify = require('gulp-uglify');
 
 @Gulpclass()
 export class Gulpfile {
@@ -147,5 +151,18 @@ export class Gulpfile {
   @SequenceTask()
   test() {
     return ['clean', 'compile', 'tslint', 'unit'];
+  }
+
+  @Task("default")
+  defaultTask() {
+    return browserify({
+      standalone: 'ArrayQuery'
+    }).add('./build/compiled/lib/index.js')
+      .bundle()
+      .on('error', function (error) { console.error(error.toString()); })
+      .pipe(source('bundle.min.js'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(gulp.dest('./dist'));
   }
 }
