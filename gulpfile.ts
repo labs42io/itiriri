@@ -153,8 +153,8 @@ export class Gulpfile {
     return ['clean', 'compile', 'unit'];
   }
 
-  @Task("default")
-  defaultTask() {
+  @Task('browserify', ['clean', 'compile'])
+  browserify() {
     return browserify({
       standalone: 'ArrayQuery'
     }).add('./build/compiled/lib/index.js')
