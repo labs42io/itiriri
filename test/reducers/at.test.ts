@@ -25,4 +25,11 @@ describe('reducers/at', () => {
       expect(at(source, 100)).to.be.undefined;
     });
   });
+
+  describe('When accessing negative index element', () => {
+    it('Should return undefned', () => {
+      const source = [1, 4, 1, 5];
+      expect(at(source, -2)).to.be.undefined;
+    });
+  });
 });
