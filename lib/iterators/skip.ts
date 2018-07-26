@@ -22,7 +22,6 @@ function generator<TElement>(
 }
 
 function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
-  const result: TElement[] = [];
   const buffer: TElement[] = [];
   let index = 0;
 
