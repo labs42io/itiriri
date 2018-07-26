@@ -143,7 +143,7 @@ describe('iterators/sort', () => {
 
   describe('When sorting objects by property (string) descending', () => {
     it('Should return them ordered (lexicographic) descending', () => {
-      const source = [{ name: 'Valera' }, { name: 'Jora' }, { name: 'Ghitza' }];
+      const source = [{ name: 'Jora' }, { name: 'Valera' }, { name: 'Ghitza' }];
       const iterator = sort(source, (elem, idx) => elem.name, true);
 
       expect(toArray(iterator)).to.be.deep.equal(
