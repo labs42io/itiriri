@@ -63,5 +63,19 @@ describe('iterators/skip', () => {
 
       expect(toArray(iterator)).to.be.deep.equal([]);
     });
+
+    it('Should return first element', () => {
+      const source = [-10, 10];
+      const iterator = skip(source, -1);
+
+      expect(toArray(iterator)).to.be.deep.equal([-10]);
+    });
+
+    it('Should return first 6 elements', () => {
+      const source = [0, -1, 2, -3, 4, 5, 6];
+      const iterator = skip(source, -1);
+
+      expect(toArray(iterator)).to.be.deep.equal([0, -1, 2, -3, 4, 5]);
+    });
   });
 });
