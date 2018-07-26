@@ -23,9 +23,10 @@ describe('reducers/min', () => {
       expect(min(source)).to.be.equal(-664);
     });
 
-    it('Should return 0.1', () => {
-      const source = [0.1, 9.9, 10.99, 10.1];
-      expect(min(source)).to.be.equal(0.1);
+    it('Should return -10.99', () => {
+      const source = [0.1, 9.9, -10.99, 10.1];
+
+      expect(min(source)).to.be.equal(-10.99);
     });
   });
 });
