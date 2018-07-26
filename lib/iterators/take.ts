@@ -1,7 +1,7 @@
 import { execute } from '../reducers/execute';
 import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
-import { until } from './until';
+import { getIterator } from './getIterator';
 
 export function take<TElement>(
   source: Iterable<TElement>,
@@ -15,10 +15,22 @@ function generator<TElement>(
   count: number,
 ): Iterable<TElement> {
   if (count >= 0) {
-    return until(source, (elem, idx) => idx >= count);
+    return fromGenerator(() => takeFirst(source, count));
   }
 
   return takeLast(source, -count);
+}
+
+function* takeFirst<TElement>(source: Iterable<TElement>, count: number) {
+  const iterator = getIterator(source);
+  let current = iterator.next();
+  let n = count;
+
+  while (n-- && !current.done) {
+    yield current.value;
+
+    current = iterator.next();
+  }
 }
 
 function takeLast<TElement>(source: Iterable<TElement>, count: number) {

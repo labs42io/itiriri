@@ -27,5 +27,11 @@ describe('reducers/indexOf', () => {
       const source = ['a', 'b', 'z', 'aa', 'abc'];
       expect(indexOf(source, (elem, idx) => elem === 'c')).to.be.equal(-1);
     });
+
+    it('Should return the index of last element', () => {
+      const source = [5, 7, 1, 3];
+
+      expect(indexOf(source, (elem, idx) => elem === 3)).to.be.equal(3);
+    });
   });
 });

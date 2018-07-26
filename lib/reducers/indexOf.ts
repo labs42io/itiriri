@@ -1,18 +1,21 @@
-import { execute } from './execute';
-import { until } from '../iterators/until';
+import { getIterator } from '../iterators/getIterator';
 
 export function indexOf<TElement>(
   source: Iterable<TElement>,
   predicate: (element: TElement, index: number) => boolean,
 ): number {
-  let index = -1;
+  const iterator = getIterator(source);
+  let index = 0;
+  let current = iterator.next();
 
-  // @TODO (break when element is found)
-  execute(source, (elem, idx) => {
-    if (predicate(elem, idx) && index === -1) {
-      index = idx;
+  while (!current.done) {
+    if (predicate(current.value, index)) {
+      return index;
     }
-  });
 
-  return index;
+    current = iterator.next();
+    index++;
+  }
+
+  return -1;
 }

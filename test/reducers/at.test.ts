@@ -20,16 +20,25 @@ describe('reducers/at', () => {
   });
 
   describe('When accessing an element that does not exist', () => {
-    it('Should return undefined', () => {
+    it('Should return undefined (positive index)', () => {
       const source = [1, 2];
       expect(at(source, 100)).to.be.undefined;
     });
+    it('Should return undefined (negative index)', () => {
+      const source = [1, 2, 6, 3];
+      expect(at(source, -10)).to.be.undefined;
+    });
   });
 
-  describe('When accessing negative index element', () => {
-    it('Should return undefned', () => {
+  describe.skip('When accessing negative index element', () => {
+    it('Should return 1', () => {
       const source = [1, 4, 1, 5];
-      expect(at(source, -2)).to.be.undefined;
+      expect(at(source, -2)).to.be.equal(1);
+    });
+
+    it('Should return 3', () => {
+      const source = [32, 49, 3, 20];
+      expect(at(source, -1)).to.be.equal(3);
     });
   });
 });
