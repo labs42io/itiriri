@@ -150,7 +150,7 @@ export class Gulpfile {
    */
   @SequenceTask()
   test() {
-    return ['clean', 'compile', 'tslint', 'unit'];
+    return ['clean', 'compile', 'unit'];
   }
 
   @Task("default")
