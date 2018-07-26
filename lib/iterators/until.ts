@@ -18,11 +18,11 @@ function* generator<TElement>(
   let index = 0;
 
   while (!current.done) {
-    yield current.value;
-
     if (predicate(current.value, index)) {
       break;
     }
+
+    yield current.value;
 
     index += 1;
     current = iterator.next();

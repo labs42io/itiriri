@@ -7,7 +7,11 @@ export function indexOf<TElement>(
 ): number {
   let index = -1;
 
-  execute(until(source, predicate), (elem, idx) => index = idx);
+  execute(source, (elem, idx) => {
+    if (predicate(elem, idx) && index === -1) {
+      index = idx;
+    }
+  });
 
-  return predicate(source[index], index) ? index : -1;
+  return index;
 }
