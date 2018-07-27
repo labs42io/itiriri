@@ -1,4 +1,3 @@
-import { filter } from './filter';
 import { fromGenerator } from '../utils/fromGenerator';
 
 export function distinct<TElement, TKey>(
@@ -8,21 +7,18 @@ export function distinct<TElement, TKey>(
   return fromGenerator(() => generator(source, keySelector));
 }
 
-function generator<TElement, TKey>(
+function* generator<TElement, TKey>(
   source: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-
   const set = new Set<TKey>();
 
-  return filter(source, (elem, idx) => {
-    const key = keySelector(elem);
+  for (const element of source) {
+    const key = keySelector(element);
 
     if (!set.has(key)) {
       set.add(key);
-      return true;
+      yield element;
     }
-
-    return false;
-  });
+  }
 }

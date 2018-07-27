@@ -1,4 +1,3 @@
-import { toArray } from '../reducers/toArray';
 import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
@@ -16,17 +15,20 @@ function generator<TElement, TKey>(
   descending = false,
 ): Iterable<TElement> {
 
-  const indexedElements = map(
-    source,
-    (value, index) => (<SortElement<TElement, TKey>>{
+  let index = 0;
+  const indexed: SortElement<TElement, TKey>[] = [];
+
+  for (const value of source) {
+    indexed.push({
       value,
       index,
-      key: keySelector(value, index),
-    }));
+      key: keySelector(value, index++),
+    });
+  }
 
   const elements = !descending ?
-    toArray(indexedElements).sort(comparer) :
-    toArray(indexedElements).sort((a, b) => comparer(b, a));
+    indexed.sort(comparer) :
+    indexed.sort((a, b) => comparer(b, a));
 
   return map(elements, e => e.value);
 }

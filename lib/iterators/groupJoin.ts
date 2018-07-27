@@ -1,7 +1,5 @@
 import { toMapAll } from '../reducers/toMapAll';
-import { flatten } from './flatten';
 import { fromGenerator } from '../utils/fromGenerator';
-import { map } from './map';
 
 export function groupJoin<TLeft, TRight, TKey, TResult>(
   source: Iterable<TLeft>,
@@ -14,7 +12,7 @@ export function groupJoin<TLeft, TRight, TKey, TResult>(
     generator(source, others, leftKeySelector, rightKeySelector, joinSelector));
 }
 
-function generator<TLeft, TRight, TKey, TResult>(
+function* generator<TLeft, TRight, TKey, TResult>(
   source: Iterable<TLeft>,
   others: Iterable<TRight>,
   leftKeySelector: (element: TLeft, index: number) => TKey,
@@ -22,15 +20,13 @@ function generator<TLeft, TRight, TKey, TResult>(
   joinSelector: (left: TLeft, right: TRight[]) => TResult,
 ): Iterable<TResult> {
 
-  const leftMap = toMapAll(source, leftKeySelector, x => x);
+  let index = 0;
   const rightMap = toMapAll(others, rightKeySelector, x => x);
 
-  const result = map(leftMap, ([leftKey, leftValues]) => {
-    const rightValues = rightMap.get(leftKey);
-    return map(
-      leftValues,
-      leftValue => joinSelector(leftValue, rightValues || []));
-  });
+  for (const element of source) {
+    const leftKey = leftKeySelector(element, index++);
+    const rightValues = rightMap.get(leftKey) || [];
 
-  return flatten<TResult>(result);
+    yield joinSelector(element, rightValues);
+  }
 }
