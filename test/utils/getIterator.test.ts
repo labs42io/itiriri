@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { getIterator } from '../../lib/utils/getIterator';
+import { toArray } from '../../lib/reducers/toArray';
 
 describe('iterators/getIterator', () => {
   describe('When called on empty array', () => {
