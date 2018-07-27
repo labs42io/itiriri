@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { leftJoin } from '../../lib/iterators/leftJoin';
 import { toArray } from '../../lib/reducers/toArray';
 
-describe.only('iterators/leftJoin', () => {
+describe('iterators/leftJoin', () => {
   describe('When called on empty source', () => {
     it('Should return empty source', () => {
       const source = [];
