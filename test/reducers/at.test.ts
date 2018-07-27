@@ -3,19 +3,19 @@ import { at } from '../../lib/reducers/at';
 
 describe('reducers/at', () => {
   describe('When accessing an element that exists', () => {
-    it('Should return the element', () => {
+    it('Should return the element from first position', () => {
       const source = [1, 2, 3, 4, 5];
       expect(at(source, 0)).to.be.equal(1);
     });
 
-    it('Should return the element', () => {
-      const source = [1, 2, 3, 4, 5];
-      expect(at(source, 1)).to.be.equal(2);
-    });
-
-    it('Should return the element', () => {
+    it('Should return the element from a middle position', () => {
       const source = [1, 2, 3, 4, 5];
       expect(at(source, 2)).to.be.equal(3);
+    });
+
+    it('Should return the element from last position', () => {
+      const source = [1, 2, 3, 4, 5];
+      expect(at(source, 4)).to.be.equal(5);
     });
   });
 
@@ -31,14 +31,14 @@ describe('reducers/at', () => {
   });
 
   describe('When accessing negative index element', () => {
-    it('Should return 1', () => {
-      const source = [1, 4, 1, 5];
-      expect(at(source, -2)).to.be.equal(1);
-    });
-
     it('Should return last element', () => {
       const source = [32, 49, 3, 20];
       expect(at(source, -1)).to.be.equal(20);
+    });
+
+    it('Should return a middle element', () => {
+      const source = [1, 4, 1, 5];
+      expect(at(source, -2)).to.be.equal(1);
     });
 
     it('Should return first element', () => {
