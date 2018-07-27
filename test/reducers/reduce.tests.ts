@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { sum } from '../../lib/reducers/sum';
 import { reduce } from '../../lib/reducers/reduce';
 
-describe.only('reducers/reduce', () => {
+describe('reducers/reduce', () => {
   describe('When called without initial value', () => {
     it('Should throw on empty source', () => {
       const source = [];
