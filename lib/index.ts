@@ -4,7 +4,6 @@ import { distinct } from './iterators/distinct';
 import { except } from './iterators/except';
 import { filter } from './iterators/filter';
 import { flatten } from './iterators/flatten';
-import { fromArray } from './iterators/fromArray';
 import { getIterator } from './iterators/getIterator';
 import { groupBy } from './iterators/groupBy';
 import { groupJoin } from './iterators/groupJoin';
@@ -38,8 +37,7 @@ export { Query, QueryGroup };
 export function query<T>(items: Iterable<T>): Query<T>;
 export function query<T>(items: T[]): Query<T>;
 export function query<T>(items: T[] | Iterable<T>): Query<T> {
-  return Array.isArray(items) ?
-    new IterableQuery(fromArray(items)) : new IterableQuery(items);
+  return new IterableQuery(items);
 }
 
 class IterableQuery<T> implements Query<T> {
@@ -289,5 +287,5 @@ function toPredicate<T>(predicateOrElement: T | ((element: T, index: number) => 
 }
 
 function toQuery<T>(query: Query<T> | T[]): Query<T> {
-  return Array.isArray(query) ? new IterableQuery(fromArray(query)) : query;
+  return Array.isArray(query) ? new IterableQuery(query) : query;
 }

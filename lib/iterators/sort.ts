@@ -1,5 +1,4 @@
 import { toArray } from '../reducers/toArray';
-import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 import { map } from './map';
 
@@ -29,7 +28,7 @@ function generator<TElement, TKey>(
     toArray(indexedElements).sort(comparer) :
     toArray(indexedElements).sort((a, b) => comparer(b, a));
 
-  return map(fromArray(elements), e => e.value);
+  return map(elements, e => e.value);
 }
 
 type SortElement<T, K> = { key: K, value: T, index: number };

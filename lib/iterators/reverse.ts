@@ -1,5 +1,4 @@
 import { execute } from '../reducers/execute';
-import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 
 export function reverse<TElement>(source: Iterable<TElement>) {
@@ -10,5 +9,5 @@ export function generator<TElement>(source: Iterable<TElement>) {
   const elements = [];
   execute(source, (elem, idx) => elements.unshift(elem));
 
-  return fromArray(elements);
+  return elements;
 }

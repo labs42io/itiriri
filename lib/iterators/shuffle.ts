@@ -1,5 +1,4 @@
 import { toArray } from '../reducers/toArray';
-import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 
 export function shuffle<TElement>(source: Iterable<TElement>): Iterable<TElement> {
@@ -16,5 +15,5 @@ function generator<TElement>(source: Iterable<TElement>) {
     [elements[i], elements[j]] = [elements[j], elements[i]];
   }
 
-  return fromArray(elements);
+  return elements;
 }

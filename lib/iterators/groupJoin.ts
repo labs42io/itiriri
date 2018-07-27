@@ -1,6 +1,5 @@
 import { toMapAll } from '../reducers/toMapAll';
 import { flatten } from './flatten';
-import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 import { map } from './map';
 
@@ -29,7 +28,7 @@ function generator<TLeft, TRight, TKey, TResult>(
   const result = map(leftMap, ([leftKey, leftValues]) => {
     const rightValues = rightMap.get(leftKey);
     return map(
-      fromArray(leftValues),
+      leftValues,
       leftValue => joinSelector(leftValue, rightValues || []));
   });
 
