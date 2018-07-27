@@ -5,7 +5,7 @@ export function indexOf<TElement>(
   let index = -1;
 
   for (const element of source) {
-    if (predicate(element, index++)) {
+    if (predicate(element, ++index)) {
       return index;
     }
   }
