@@ -1,7 +1,3 @@
-import { skip } from '../iterators/skip';
-import { execute } from './execute';
-import { first } from './first';
-
 export function reduce<TElement>(
   source: Iterable<TElement>,
   callback: (accumulator: TElement, current: TElement, index: number) => TElement,
@@ -19,22 +15,17 @@ export function reduce<TElement>(
   initialValue?: any,
 ): any {
 
-  let skippedCount = 0;
-  let accumulator = initialValue;
+  let [index, accumulator] = [-1, initialValue];
 
-  if (accumulator === undefined) {
-    accumulator = first(source);
-
-    if (accumulator === undefined) {
-      throw new Error('Sequence contains no elements.');
-    }
-
-    skippedCount = 1;
+  for (const element of source) {
+    accumulator = ++index === 0 && initialValue === undefined ?
+      element :
+      callback(accumulator, element, index);
   }
 
-  execute(
-    skip(source, skippedCount),
-    (elem, idx) => accumulator = callback(accumulator, elem, idx + skippedCount));
+  if (index === 0) {
+    throw new Error('Sequence contains no elements.');
+  }
 
   return accumulator;
 }

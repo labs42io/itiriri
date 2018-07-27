@@ -1,9 +1,7 @@
 export function at<TElement>(source: Iterable<TElement>, index: number): TElement {
-  if (index >= 0) {
-    return fromFront(source, index);
-  }
-
-  return fromBack(source, -index);
+  return index >= 0 ?
+    fromFront(source, index) :
+    fromBack(source, -index);
 }
 
 function fromFront<TElement>(source: Iterable<TElement>, index: number): TElement {
