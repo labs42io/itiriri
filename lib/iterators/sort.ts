@@ -35,10 +35,7 @@ function generator<TElement, TKey>(
 type SortElement<T, K> = { key: K, value: T, index: number };
 
 function comparer<T, K>(a: SortElement<T, K>, b: SortElement<T, K>) {
-  const valueA = a.key;
-  const valueB = b.key;
-
-  if (valueA < valueB) return -1;
-  if (valueA > valueB) return 1;
+  if (a.key < b.key) return -1;
+  if (a.key > b.key) return 1;
   return a.index - b.index;
 }

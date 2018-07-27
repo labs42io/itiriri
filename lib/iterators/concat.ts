@@ -1,4 +1,3 @@
-import { flatten } from './flatten';
 import { fromGenerator } from './fromGenerator';
 
 export function concat<TElement>(

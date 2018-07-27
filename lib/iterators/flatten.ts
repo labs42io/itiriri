@@ -1,4 +1,3 @@
-import { getIterator } from './getIterator';
 import { fromGenerator } from './fromGenerator';
 
 export function flatten<T>(iterables: Iterable<Iterable<T>>): Iterable<T> {

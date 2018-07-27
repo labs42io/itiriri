@@ -2,7 +2,6 @@ import { toMapAll } from '../reducers/toMapAll';
 import { flatten } from './flatten';
 import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
-import { getIterator } from './getIterator';
 import { map } from './map';
 
 export function groupJoin<TLeft, TRight, TKey, TResult>(

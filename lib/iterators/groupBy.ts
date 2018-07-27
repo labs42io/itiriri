@@ -1,5 +1,4 @@
 import { toMapAll } from '../reducers/toMapAll';
-import { fromArray } from './fromArray';
 import { fromGenerator } from './fromGenerator';
 
 export function groupBy<TElement, TKey, TResult>(
