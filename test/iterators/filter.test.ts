@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { filter } from '../../lib/iterators/filter';
 import { toArray } from '../../lib/reducers/toArray';
-import { getIterator } from '../../lib/iterators/getIterator';
+import { getIterator } from '../../lib/utils/getIterator';
 
 describe('iterators/filter', () => {
   describe('when called multiple times', () => {

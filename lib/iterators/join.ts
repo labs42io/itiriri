@@ -1,7 +1,7 @@
 import { toMapAll } from '../reducers/toMapAll';
 import { filter } from './filter';
 import { flatten } from './flatten';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
 export function join<TLeft, TRight, TKey, TResult>(

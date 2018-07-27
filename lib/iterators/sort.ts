@@ -1,5 +1,5 @@
 import { toArray } from '../reducers/toArray';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
 export function sort<TElement, TKey>(

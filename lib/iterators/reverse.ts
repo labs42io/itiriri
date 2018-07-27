@@ -1,5 +1,5 @@
 import { execute } from '../reducers/execute';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function reverse<TElement>(source: Iterable<TElement>) {
   return fromGenerator(() => generator(source));

@@ -1,4 +1,4 @@
-import { getIterator } from '../iterators/getIterator';
+import { getIterator } from '../utils/getIterator';
 
 export function first<TElement>(source: Iterable<TElement>): TElement {
   const iterator = getIterator(source);

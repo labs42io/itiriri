@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { flatten } from '../../lib/iterators/flatten';
-import { getIterator } from '../../lib/iterators/getIterator';
+import { getIterator } from '../../lib/utils/getIterator';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('iterators/flatten', () => {

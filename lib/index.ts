@@ -4,7 +4,7 @@ import { distinct } from './iterators/distinct';
 import { except } from './iterators/except';
 import { filter } from './iterators/filter';
 import { flatten } from './iterators/flatten';
-import { getIterator } from './iterators/getIterator';
+import { getIterator } from './utils/getIterator';
 import { groupBy } from './iterators/groupBy';
 import { groupJoin } from './iterators/groupJoin';
 import { intersect } from './iterators/intersect';
@@ -34,9 +34,7 @@ import { toSet } from './reducers/toSet';
 
 export { Query, QueryGroup };
 
-export function query<T>(items: Iterable<T>): Query<T>;
-export function query<T>(items: T[]): Query<T>;
-export function query<T>(items: T[] | Iterable<T>): Query<T> {
+export function query<T>(items: Iterable<T>): Query<T> {
   return new IterableQuery(items);
 }
 

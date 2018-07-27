@@ -1,4 +1,4 @@
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function concat<TElement>(
   left: Iterable<TElement>,

@@ -1,5 +1,5 @@
 import { toArray } from '../reducers/toArray';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function shuffle<TElement>(source: Iterable<TElement>): Iterable<TElement> {
   return fromGenerator(() => generator(source));

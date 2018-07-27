@@ -1,6 +1,6 @@
 import { toSet } from '../reducers/toSet';
 import { filter } from './filter';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
 export function intersect<TElement, TKey>(

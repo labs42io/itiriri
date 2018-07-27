@@ -1,4 +1,4 @@
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function flatten<T>(iterables: Iterable<Iterable<T>>): Iterable<T> {
   return fromGenerator(function* () {

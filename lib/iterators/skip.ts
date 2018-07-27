@@ -1,5 +1,5 @@
 import { filter } from './filter';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function skip<TElement>(
   source: Iterable<TElement>,

@@ -1,6 +1,6 @@
 import { toMapAll } from '../reducers/toMapAll';
 import { flatten } from './flatten';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
 export function* leftJoin<TLeft, TRight, TKey, TResult>(

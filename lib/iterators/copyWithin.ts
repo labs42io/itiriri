@@ -1,5 +1,5 @@
-import { getIterator } from './getIterator';
-import { fromGenerator } from './fromGenerator';
+import { getIterator } from '../utils/getIterator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function copyWithin<T>(
   source: Iterable<T>, target: number, start: number, end?: number,

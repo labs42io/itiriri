@@ -1,5 +1,5 @@
 import { toMapAll } from '../reducers/toMapAll';
-import { fromGenerator } from './fromGenerator';
+import { fromGenerator } from '../utils/fromGenerator';
 
 export function groupBy<TElement, TKey, TResult>(
   source: Iterable<TElement>,
