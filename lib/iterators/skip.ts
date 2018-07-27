@@ -26,10 +26,8 @@ function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
   for (const element of source) {
     buffer.push(element);
 
-    if (index - count >= 0) {
+    if (index++ - count >= 0) {
       yield buffer.shift();
     }
-
-    index++;
   }
 }
