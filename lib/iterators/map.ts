@@ -14,7 +14,6 @@ export function* generator<TElement, TResult>(
   let index = 0;
 
   for (const element of source) {
-    yield transform(element, index);
-    index++;
+    yield transform(element, index++);
   }
 }
