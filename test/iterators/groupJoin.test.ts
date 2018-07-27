@@ -40,7 +40,7 @@ describe('iterators/groupJoin', () => {
         others,
         x => x.val,
         x => x.val,
-        (x, y) => ({ y: y, x: x.val }),
+        (x, y) => ({ y, x: x.val }),
       );
 
       expect(toArray(iterator)).to.be.deep.equal([
