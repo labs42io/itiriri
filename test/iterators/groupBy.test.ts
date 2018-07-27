@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { groupBy } from '../../lib/iterators/groupBy';
 import { toArray } from '../../lib/reducers/toArray';
 
-describe.only('iterators/groupBy', () => {
+describe('iterators/groupBy', () => {
   describe('When calling on epmpty source', () => {
     it('Should return empty source', () => {
       const source = [];
