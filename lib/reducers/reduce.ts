@@ -23,7 +23,7 @@ export function reduce<TElement>(
       callback(accumulator, element, index);
   }
 
-  if (index === 0) {
+  if (initialValue === undefined && index === -1) {
     throw new Error('Sequence contains no elements.');
   }
 
