@@ -7,24 +7,17 @@ export function intersect<TElement, TKey>(
   others: Iterable<TElement>,
   selector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, others, selector));
-}
+  return fromGenerator(function* () {
+    const includedSet = new Set<TKey>();
+    const othersSet = toSet(map(others, selector));
 
-function* generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  others: Iterable<TElement>,
-  selector: (element: TElement) => TKey,
-): Iterable<TElement> {
+    for (const element of source) {
+      const key = selector(element);
 
-  const includedSet = new Set<TKey>();
-  const othersSet = toSet(map(others, selector));
-
-  for (const element of source) {
-    const key = selector(element);
-
-    if (!includedSet.has(key) && othersSet.has(key)) {
-      includedSet.add(key);
-      yield element;
+      if (!includedSet.has(key) && othersSet.has(key)) {
+        includedSet.add(key);
+        yield element;
+      }
     }
-  }
+  });
 }

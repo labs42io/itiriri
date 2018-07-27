@@ -7,22 +7,16 @@ export function except<TElement, TKey>(
   exclude: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, exclude, keySelector));
-}
+  return fromGenerator(function* () {
+    const exclusionSet = toSet(map(exclude, keySelector));
 
-function* generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  exclude: Iterable<TElement>,
-  keySelector: (element: TElement) => TKey,
-): Iterable<TElement> {
-  const exclusionSet = toSet(map(exclude, keySelector));
+    for (const element of source) {
+      const key = keySelector(element);
 
-  for (const element of source) {
-    const key = keySelector(element);
-
-    if (!exclusionSet.has(key)) {
-      exclusionSet.add(key);
-      yield element;
+      if (!exclusionSet.has(key)) {
+        exclusionSet.add(key);
+        yield element;
+      }
     }
-  }
+  });
 }

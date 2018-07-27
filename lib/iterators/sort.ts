@@ -9,12 +9,24 @@ export function sort<TElement, TKey>(
   return fromGenerator(() => generator(source, keySelector, descending));
 }
 
+type SortElement<T, K> = { key: K, value: T, index: number };
+
 function generator<TElement, TKey>(
   source: Iterable<TElement>,
   keySelector: (element: TElement, index: number) => TKey,
   descending = false,
 ): Iterable<TElement> {
 
+  const indexed = indexElements(source, keySelector);
+  const sorted = indexed.sort(descending ? desc : asc);
+
+  return map(sorted, e => e.value);
+}
+
+function indexElements<TElement, TKey>(
+  source: Iterable<TElement>,
+  keySelector: (element: TElement, index: number) => TKey,
+) {
   let index = 0;
   const indexed: SortElement<TElement, TKey>[] = [];
 
@@ -26,17 +38,15 @@ function generator<TElement, TKey>(
     });
   }
 
-  const elements = !descending ?
-    indexed.sort(comparer) :
-    indexed.sort((a, b) => comparer(b, a));
-
-  return map(elements, e => e.value);
+  return indexed;
 }
 
-type SortElement<T, K> = { key: K, value: T, index: number };
-
-function comparer<T, K>(a: SortElement<T, K>, b: SortElement<T, K>) {
+function asc<T, K>(a: SortElement<T, K>, b: SortElement<T, K>) {
   if (a.key < b.key) return -1;
   if (a.key > b.key) return 1;
   return a.index - b.index;
+}
+
+function desc<T, K>(a: SortElement<T, K>, b: SortElement<T, K>) {
+  return asc(b, a);
 }
