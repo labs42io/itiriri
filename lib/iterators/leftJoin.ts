@@ -3,7 +3,7 @@ import { flatten } from './flatten';
 import { fromGenerator } from '../utils/fromGenerator';
 import { map } from './map';
 
-export function* leftJoin<TLeft, TRight, TKey, TResult>(
+export function leftJoin<TLeft, TRight, TKey, TResult>(
   source: Iterable<TLeft>,
   others: Iterable<TRight>,
   leftKeySelector: (element: TLeft, index: number) => TKey,
