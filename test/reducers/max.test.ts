@@ -11,19 +11,19 @@ describe('reducers/max', () => {
   });
 
   describe('When calle on some array', () => {
-    it('Should return first element', () => {
+    it('Should return the first element', () => {
       const source = [4, 0, 1, 3];
 
       expect(max(source)).to.be.equal(4);
     });
 
-    it('Should return last element', () => {
+    it('Should return the last element', () => {
       const source = [-1, 0, 1, 3];
 
-      expect(max(source)).to.be.equal(-1);
+      expect(max(source)).to.be.equal(3);
     });
 
-    it('Should return -2', () => {
+    it('Should return the middle element', () => {
       const source = [-10, -2, -11, -13, -664];
 
       expect(max(source)).to.be.equal(-2);
