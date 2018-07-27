@@ -37,5 +37,12 @@ describe('reducers/toMap', () => {
           [10, 4], [8, 3], [6, 2], [4, 1], [2, 0]],
       );
     });
+
+    it('Should throw an error for duplicate keys', () => {
+      const source = 'asdfa';
+
+      expect(() => toArray(toMap(source, x => x, x => x + 'a')))
+        .to.throw(Error, 'Duplicate map entry key: a.');
+    });
   });
 });
