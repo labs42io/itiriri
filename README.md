@@ -34,7 +34,6 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 
 
 ## Roadmap
-### Cover with unit tests existing code
 ### Make the API more inline with JS [array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/@@iterator) functions 
 ### Add documentation with examples
 ### Publish to NPM
