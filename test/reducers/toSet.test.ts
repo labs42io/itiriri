@@ -29,5 +29,11 @@ describe('reducers/toSet', () => {
 
       expect(toArray(toSet(source))).to.be.deep.equal([5, 4, 3, 2, 1]);
     });
+
+    it('Should return array of distinct elements', () => {
+      const source = [1, 2, 3, 1, 1, 42];
+
+      expect(toArray(toSet(source))).to.be.deep.equal([1, 2, 3, 42]);
+    });
   });
 });
