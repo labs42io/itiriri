@@ -11,18 +11,18 @@ describe('reducers/count', () => {
     });
   });
 
-  describe('When called on arbitrary source', () => {
-    it('Should return it\'s length', () => {
+  describe('When called on a non-empty source', () => {
+    it('Should return count for 4 elements', () => {
       const arr = [0, 1, 2, 1];
 
       expect(count(arr)).to.equal(4);
     });
-    it('Should return it\'s length', () => {
+    it('Should return count for 1 element', () => {
       const arr = [0];
 
       expect(count(arr)).to.equal(1);
     });
-    it('Should return it\'s length', () => {
+    it('Should return count for 6 elements', () => {
       const arr = [0, 1, 1, 1, 0, 0];
 
       expect(count(arr)).to.equal(6);
