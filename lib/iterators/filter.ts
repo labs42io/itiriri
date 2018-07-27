@@ -1,28 +1,16 @@
 import { fromGenerator } from './fromGenerator';
-import { getIterator } from './getIterator';
 
 export function filter<TElement>(
   source: Iterable<TElement>,
   predicate: (element: TElement, index: number) => boolean,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, predicate));
-}
+  return fromGenerator(function* () {
+    let index = 0;
 
-function* generator<TElement>(
-  source: Iterable<TElement>,
-  predicate: (element: TElement, index: number) => boolean,
-): IterableIterator<TElement> {
-
-  const iterator = getIterator(source);
-  let current = iterator.next();
-  let index = 0;
-
-  while (!current.done) {
-    if (predicate(current.value, index)) {
-      yield current.value;
+    for (const element of source) {
+      if (predicate(element, index++)) {
+        yield element;
+      }
     }
-
-    index += 1;
-    current = iterator.next();
-  }
+  });
 }

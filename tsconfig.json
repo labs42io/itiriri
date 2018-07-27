@@ -4,7 +4,7 @@
             "es6"
         ],
         "module": "commonjs",
-        "target": "es5",
+        "target": "es6",
         "moduleResolution": "node",
         "emitDecoratorMetadata": false,
         "experimentalDecorators": true,

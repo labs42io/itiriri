@@ -5,18 +5,13 @@ export function concat<TElement>(
   left: Iterable<TElement>,
   rigth: Iterable<TElement>,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(left, rigth));
-}
+  return fromGenerator(function* () {
+    for (const element of left) {
+      yield element;
+    }
 
-function generator<TElement>(
-  left: Iterable<TElement>,
-  rigth: Iterable<TElement>,
-): Iterable<TElement> {
-
-  const src = function* () {
-    yield left;
-    yield rigth;
-  };
-
-  return flatten(src());
+    for (const element of rigth) {
+      yield element;
+    }
+  });
 }
