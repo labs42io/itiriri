@@ -27,7 +27,7 @@ import { reduce } from './reducers/reduce';
 import { sum } from './reducers/sum';
 import { toArray } from './reducers/toArray';
 import { toMap } from './reducers/toMap';
-import { toPartitions } from './reducers/toPartitions';
+import { toGroups } from './reducers/toGroups';
 import { toSet } from './reducers/toSet';
 import { iterator } from './utils/ierator';
 
@@ -184,7 +184,7 @@ class IterableQuery<T> implements Query<T> {
     valueSelector: (element: T, index: number) => S = x => <any>x,
   ): Query<QueryGroup<K, T | S>> {
     const result = map(
-      toPartitions(this, keySelector, valueSelector),
+      toGroups(this, keySelector, valueSelector),
       elem => <QueryGroup<K, T | S>>new EnumerableGroup(elem[0], elem[1]));
 
     return new IterableQuery(result);
@@ -261,7 +261,7 @@ class IterableQuery<T> implements Query<T> {
     keySelector: (element: T, index: number) => K,
     valueSelector?: (element: T, index: number) => E,
   ): Map<K, (E | T)[]> {
-    return toPartitions(this, keySelector, valueSelector);
+    return toGroups(this, keySelector, valueSelector);
   }
 
   toSet<S>(selector?: (element: T, index: number) => S): Set<S> {

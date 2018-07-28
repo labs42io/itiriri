@@ -1,4 +1,4 @@
-import { toPartitions } from '../reducers/toPartitions';
+import { toGroups } from '../reducers/toGroups';
 import { iterable } from '../utils/iterable';
 
 export function groupJoin<TLeft, TRight, TKey, TResult>(
@@ -10,7 +10,7 @@ export function groupJoin<TLeft, TRight, TKey, TResult>(
 ): Iterable<TResult> {
   return iterable(function* () {
     let index = 0;
-    const rightMap = toPartitions(others, rightKeySelector, x => x);
+    const rightMap = toGroups(others, rightKeySelector, x => x);
 
     for (const element of source) {
       const leftKey = leftKeySelector(element, index++);
