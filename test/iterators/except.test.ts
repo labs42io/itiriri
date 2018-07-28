@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { except } from '../../lib/iterators/except';
 import { toArray } from '../../lib/reducers/toArray';
-import { getIterator } from '../../lib/utils/getIterator';
+import { iterator } from '../../lib/utils/ierator';
 
 describe('iterators/except', () => {
   describe('when called multiple times', () => {
@@ -17,17 +17,17 @@ describe('iterators/except', () => {
     it('Should return completed iterator', () => {
       const left = [];
       const right = [];
-      const iterator = getIterator(except(left, right, x => x));
+      const it = iterator(except(left, right, x => x));
 
-      expect(iterator.next()).to.have.property('done').that.is.true;
+      expect(it.next()).to.have.property('done').that.is.true;
     });
 
     it('Should return completed iterator for non-empty exclusions', () => {
       const left = [];
       const right = [1, 2, 3];
-      const iterator = getIterator(except(left, right, x => x));
+      const it = iterator(except(left, right, x => x));
 
-      expect(iterator.next()).to.have.property('done').that.is.true;
+      expect(it.next()).to.have.property('done').that.is.true;
     });
   });
 
@@ -58,9 +58,9 @@ describe('iterators/except', () => {
       it('Should return empty iterator', () => {
         const left = [1, 2, 3];
         const right = [1, 2, 3];
-        const iterator = getIterator(except(left, right, x => x));
+        const it = iterator(except(left, right, x => x));
 
-        expect(iterator.next()).to.have.property('done').that.is.true;
+        expect(it.next()).to.have.property('done').that.is.true;
       });
     });
 

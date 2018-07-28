@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { filter } from '../../lib/iterators/filter';
 import { toArray } from '../../lib/reducers/toArray';
-import { getIterator } from '../../lib/utils/getIterator';
+import { iterator } from '../../lib/utils/ierator';
 
 describe('iterators/filter', () => {
   describe('when called multiple times', () => {
@@ -9,7 +9,7 @@ describe('iterators/filter', () => {
       const source = [1, 2, 3];
       const result = filter(source, x => true);
 
-      expect(getIterator(result)).not.equals(getIterator(result));
+      expect(iterator(result)).not.equals(iterator(result));
     });
   });
 

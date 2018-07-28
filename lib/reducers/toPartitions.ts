@@ -1,4 +1,4 @@
-export function toMapAll<TElement, TKey, TResult>(
+export function toPartitions<TElement, TKey, TResult>(
   source: Iterable<TElement>,
   keySelector: (element: TElement, index: number) => TKey,
   valueSelector: (element: TElement, index: number) => TResult,

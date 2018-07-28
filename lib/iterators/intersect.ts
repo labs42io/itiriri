@@ -1,5 +1,5 @@
 import { toSet } from '../reducers/toSet';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 import { map } from './map';
 
 export function intersect<TElement, TKey>(
@@ -7,7 +7,7 @@ export function intersect<TElement, TKey>(
   others: Iterable<TElement>,
   selector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     const includedSet = new Set<TKey>();
     const othersSet = toSet(map(others, selector));
 

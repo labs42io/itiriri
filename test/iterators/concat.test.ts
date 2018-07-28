@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { concat } from '../../lib/iterators/concat';
-import { getIterator } from '../../lib/utils/getIterator';
+import { iterator } from '../../lib/utils/ierator';
 
 describe('iterators/concat', () => {
   describe('when called multiple times', () => {
@@ -9,7 +9,7 @@ describe('iterators/concat', () => {
       const right = [3, 4, 5];
       const source = concat(left, right);
 
-      expect(getIterator(source)).not.equals(getIterator(source));
+      expect(iterator(source)).not.equals(iterator(source));
     });
   });
 
@@ -17,7 +17,7 @@ describe('iterators/concat', () => {
     it('Should return a completed iterator', () => {
       const left = [];
       const right = [];
-      const result = getIterator(concat(left, right));
+      const result = iterator(concat(left, right));
 
       expect(result.next())
         .to.have.property('done')
@@ -29,21 +29,21 @@ describe('iterators/concat', () => {
     it('Should return items from right', () => {
       const left = [];
       const right = [1, 2, 3];
-      const iterator = getIterator(concat(left, right));
+      const it = iterator(concat(left, right));
 
-      let current = iterator.next();
+      let current = it.next();
       expect(current.value).to.equal(1);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(2);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(3);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.be.undefined;
       expect(current.done).to.be.true;
     });
@@ -53,21 +53,21 @@ describe('iterators/concat', () => {
     it('Should return items from left', () => {
       const left = [1, 2, 3];
       const right = [];
-      const iterator = getIterator(concat(left, right));
+      const it = iterator(concat(left, right));
 
-      let current = iterator.next();
+      let current = it.next();
       expect(current.value).to.equal(1);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(2);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(3);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.be.undefined;
       expect(current.done).to.be.true;
     });
@@ -77,21 +77,21 @@ describe('iterators/concat', () => {
     it('Should iterate over concatenated elements', () => {
       const left = [1];
       const right = [2, 3];
-      const iterator = getIterator(concat(left, right));
+      const it = iterator(concat(left, right));
 
-      let current = iterator.next();
+      let current = it.next();
       expect(current.value).to.equal(1);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(2);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.equal(3);
       expect(current.done).to.be.false;
 
-      current = iterator.next();
+      current = it.next();
       expect(current.value).to.be.undefined;
       expect(current.done).to.be.true;
     });

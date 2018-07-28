@@ -1,11 +1,11 @@
 import { filter } from './filter';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function skip<TElement>(
   source: Iterable<TElement>,
   count: number,
 ): Iterable<TElement> {
-  return fromGenerator(() => {
+  return iterable(() => {
     return count >= 0 ?
       filter(source, (elem, idx) => idx >= count) :
       skipLast(source, -count);

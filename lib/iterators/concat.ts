@@ -1,10 +1,10 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function concat<TElement>(
   left: Iterable<TElement>,
   rigth: Iterable<TElement>,
 ): Iterable<TElement> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     yield* left;
     yield* rigth;
   });

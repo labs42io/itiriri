@@ -1,10 +1,10 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function filter<TElement>(
   source: Iterable<TElement>,
   predicate: (element: TElement, index: number) => boolean,
 ): Iterable<TElement> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     let index = 0;
 
     for (const element of source) {

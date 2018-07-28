@@ -1,5 +1,5 @@
-import { toMapAll } from '../reducers/toMapAll';
-import { fromGenerator } from '../utils/fromGenerator';
+import { toPartitions } from '../reducers/toPartitions';
+import { iterable } from '../utils/iterable';
 
 export function leftJoin<TLeft, TRight, TKey, TResult>(
   source: Iterable<TLeft>,
@@ -8,9 +8,9 @@ export function leftJoin<TLeft, TRight, TKey, TResult>(
   rightKeySelector: (element: TRight, index: number) => TKey,
   joinSelector: (left: TLeft, right?: TRight) => TResult,
 ): Iterable<TResult> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     let index = 0;
-    const rightMap = toMapAll(others, rightKeySelector, x => x);
+    const rightMap = toPartitions(others, rightKeySelector, x => x);
 
     for (const element of source) {
       const leftKey = leftKeySelector(element, index++);

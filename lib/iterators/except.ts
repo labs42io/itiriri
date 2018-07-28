@@ -1,5 +1,5 @@
 import { toSet } from '../reducers/toSet';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 import { map } from './map';
 
 export function except<TElement, TKey>(
@@ -7,7 +7,7 @@ export function except<TElement, TKey>(
   exclude: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     const exclusionSet = toSet(map(exclude, keySelector));
 
     for (const element of source) {

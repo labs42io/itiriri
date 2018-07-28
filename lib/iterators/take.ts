@@ -1,12 +1,12 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function take<TElement>(
   source: Iterable<TElement>,
   count: number,
 ): Iterable<TElement> {
   return count >= 0 ?
-    fromGenerator(() => takeFirst(source, count)) :
-    fromGenerator(() => takeLast(source, -count));
+    iterable(() => takeFirst(source, count)) :
+    iterable(() => takeLast(source, -count));
 }
 
 function* takeFirst<TElement>(source: Iterable<TElement>, count: number) {

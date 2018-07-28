@@ -1,7 +1,7 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function reverse<TElement>(source: Iterable<TElement>) {
-  return fromGenerator(() => {
+  return iterable(() => {
     const elements: TElement[] = [];
 
     for (const element of source) {

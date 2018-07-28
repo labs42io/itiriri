@@ -1,4 +1,4 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 import { map } from './map';
 
 export function sort<TElement, TKey>(
@@ -6,22 +6,15 @@ export function sort<TElement, TKey>(
   keySelector: (element: TElement, index: number) => TKey,
   descending = false,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, keySelector, descending));
+  return iterable(() => {
+    const indexed = indexElements(source, keySelector);
+    const sorted = indexed.sort(descending ? desc : asc);
+
+    return map(sorted, e => e.value);
+  });
 }
 
 type SortElement<T, K> = { key: K, value: T, index: number };
-
-function generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  keySelector: (element: TElement, index: number) => TKey,
-  descending = false,
-): Iterable<TElement> {
-
-  const indexed = indexElements(source, keySelector);
-  const sorted = indexed.sort(descending ? desc : asc);
-
-  return map(sorted, e => e.value);
-}
 
 function indexElements<TElement, TKey>(
   source: Iterable<TElement>,

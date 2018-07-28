@@ -1,10 +1,10 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function distinct<TElement, TKey>(
   source: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(function* () {
+  return iterable(function* () {
     const set = new Set<TKey>();
 
     for (const element of source) {
