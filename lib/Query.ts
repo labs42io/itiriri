@@ -539,6 +539,12 @@ export interface Query<T> extends Iterable<T> {
   concat(items: T[]): Query<T>;
 
   /**
+ * Returns a new Query that contains the key/value for each value.
+ * @returns Query
+ */
+  entries(): Query<[number, T]>;
+
+  /**
    * Concatenates the sequence with specified query.
    * @param  {Query<T>} query
    * @returns Query

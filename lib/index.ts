@@ -243,6 +243,12 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(concat(this, toQuery(query)));
   }
 
+  entries(): Query<[number, T]> {
+    return new IterableQuery(
+      map(this, (elem, idx) => <[number, T]>[idx, elem])
+    );
+  }
+
   prepend(query: Query<T> | T[]): Query<T> {
     return new IterableQuery(concat(toQuery(query), this));
   }
