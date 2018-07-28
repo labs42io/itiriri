@@ -244,7 +244,7 @@ class IterableQuery<T> implements Query<T> {
 
   entries(): Query<[number, T]> {
     return new IterableQuery(
-      map(this, (elem, idx) => <[number, T]>[idx, elem])
+      map(this, (elem, idx) => <[number, T]>[idx, elem]),
     );
   }
 
