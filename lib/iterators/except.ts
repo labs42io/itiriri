@@ -1,6 +1,5 @@
 import { toSet } from '../reducers/toSet';
-import { filter } from './filter';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 import { map } from './map';
 
 export function except<TElement, TKey>(
@@ -8,25 +7,16 @@ export function except<TElement, TKey>(
   exclude: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, exclude, keySelector));
-}
+  return iterable(function* () {
+    const exclusionSet = toSet(map(exclude, keySelector));
 
-function generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  exclude: Iterable<TElement>,
-  keySelector: (element: TElement) => TKey,
-): Iterable<TElement> {
+    for (const element of source) {
+      const key = keySelector(element);
 
-  const exclusionSet = toSet(map(exclude, keySelector));
-
-  return filter(source, (elem) => {
-    const key = keySelector(elem);
-
-    if (!exclusionSet.has(key)) {
-      exclusionSet.add(key);
-      return true;
+      if (!exclusionSet.has(key)) {
+        exclusionSet.add(key);
+        yield element;
+      }
     }
-
-    return false;
   });
 }

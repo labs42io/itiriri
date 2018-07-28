@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { distinct } from '../../lib/iterators/distinct';
 import { toArray } from '../../lib/reducers/toArray';
-import { getIterator } from '../../lib/utils/getIterator';
+import { iterator } from '../../lib/utils/ierator';
 
 describe('iterators/distinct', () => {
   describe('when called multiple times', () => {
@@ -9,7 +9,7 @@ describe('iterators/distinct', () => {
       const source = [1, 2, 3];
       const result = distinct(source, x => x);
 
-      expect(getIterator(result)).not.equals(getIterator(result));
+      expect(iterator(result)).not.equals(iterator(result));
     });
   });
 

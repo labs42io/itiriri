@@ -1,13 +1,13 @@
-import { execute } from '../reducers/execute';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function reverse<TElement>(source: Iterable<TElement>) {
-  return fromGenerator(() => generator(source));
-}
+  return iterable(() => {
+    const elements: TElement[] = [];
 
-export function generator<TElement>(source: Iterable<TElement>) {
-  const elements = [];
-  execute(source, (elem, idx) => elements.unshift(elem));
+    for (const element of source) {
+      elements.unshift(element);
+    }
 
-  return elements;
+    return elements;
+  });
 }

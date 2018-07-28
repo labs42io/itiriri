@@ -1,14 +1,14 @@
-import { execute } from './execute';
-
 export function lastIndexOf<TElement>(
   source: Iterable<TElement>,
   predicate: (element: TElement, index: number) => boolean,
 ): number {
-  let index = -1;
+  let [result, index] = [-1, -1];
 
-  execute(source, (elem, idx) => {
-    if (predicate(elem, idx)) index = idx;
-  });
+  for (const element of source) {
+    if (predicate(element, ++index)) {
+      result = index;
+    }
+  }
 
-  return index;
+  return result;
 }

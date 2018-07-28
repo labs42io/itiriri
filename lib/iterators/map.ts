@@ -1,19 +1,14 @@
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function map<TElement, TResult>(
   source: Iterable<TElement>,
   transform: (element: TElement, index: number) => TResult,
 ): Iterable<TResult> {
-  return fromGenerator(() => generator(source, transform));
-}
+  return iterable(function* () {
+    let index = 0;
 
-export function* generator<TElement, TResult>(
-  source: Iterable<TElement>,
-  transform: (element: TElement, index: number) => TResult,
-): IterableIterator<TResult> {
-  let index = 0;
-
-  for (const element of source) {
-    yield transform(element, index++);
-  }
+    for (const element of source) {
+      yield transform(element, index++);
+    }
+  });
 }

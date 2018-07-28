@@ -1,28 +1,19 @@
-import { filter } from './filter';
-import { fromGenerator } from '../utils/fromGenerator';
+import { iterable } from '../utils/iterable';
 
 export function distinct<TElement, TKey>(
   source: Iterable<TElement>,
   keySelector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, keySelector));
-}
+  return iterable(function* () {
+    const set = new Set<TKey>();
 
-function generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  keySelector: (element: TElement) => TKey,
-): Iterable<TElement> {
+    for (const element of source) {
+      const key = keySelector(element);
 
-  const set = new Set<TKey>();
-
-  return filter(source, (elem, idx) => {
-    const key = keySelector(elem);
-
-    if (!set.has(key)) {
-      set.add(key);
-      return true;
+      if (!set.has(key)) {
+        set.add(key);
+        yield element;
+      }
     }
-
-    return false;
   });
 }

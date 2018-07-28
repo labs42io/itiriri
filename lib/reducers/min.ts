@@ -1,15 +1,10 @@
-import { execute } from './execute';
-
 export function min(source: Iterable<number>) {
-  let m = Number.MAX_VALUE;
+  let [result, hasElements] = [Number.MAX_VALUE, false];
 
-  const hasItems = execute(source, (elem) => {
-    if (elem < m) m = elem;
-  });
-
-  if (!hasItems) {
-    return undefined;
+  for (const element of source) {
+    hasElements = true;
+    if (element < result) result = element;
   }
 
-  return m;
+  return hasElements ? result : undefined;
 }

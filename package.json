@@ -4,7 +4,7 @@
   "description": "Simple array manipulation.",
   "scripts": {
     "test": "gulp test",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha ./build/compiled/test -- --recursive"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha ./build/compiled/test ./build/compiled/lib -- --recursive"
   },
   "repository": {},
   "keywords": [

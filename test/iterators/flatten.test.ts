@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { flatten } from '../../lib/iterators/flatten';
-import { getIterator } from '../../lib/utils/getIterator';
+import { iterator } from '../../lib/utils/ierator';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('iterators/flatten', () => {
@@ -17,9 +17,9 @@ describe('iterators/flatten', () => {
   describe('When source is empty', () => {
     it('Should return completed iterator', () => {
       const source = [];
-      const iterator = getIterator(flatten(source));
+      const it = iterator(flatten(source));
 
-      expect(iterator.next())
+      expect(it.next())
         .to.have.property('done')
         .that.is.true;
     });

@@ -1,13 +1,9 @@
-import { execute } from './execute';
-
 export function sum(source: Iterable<number>) {
-  let s = 0;
+  let [result, hasElements] = [0, false];
 
-  const hasItems = execute(source, elem => s += elem);
-
-  if (!hasItems) {
-    return undefined;
+  for (const element of source) {
+    [result, hasElements] = [result + element, true];
   }
 
-  return s;
+  return hasElements ? result : undefined;
 }

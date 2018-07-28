@@ -1,11 +1,8 @@
-import { Query, QueryGroup } from './Query';
 import { concat } from './iterators/concat';
 import { distinct } from './iterators/distinct';
 import { except } from './iterators/except';
 import { filter } from './iterators/filter';
 import { flatten } from './iterators/flatten';
-import { getIterator } from './utils/getIterator';
-import { groupBy } from './iterators/groupBy';
 import { groupJoin } from './iterators/groupJoin';
 import { intersect } from './iterators/intersect';
 import { join } from './iterators/join';
@@ -16,6 +13,7 @@ import { shuffle } from './iterators/shuffle';
 import { skip } from './iterators/skip';
 import { sort } from './iterators/sort';
 import { take } from './iterators/take';
+import { Query, QueryGroup } from './Query';
 import { at } from './reducers/at';
 import { average } from './reducers/average';
 import { count } from './reducers/count';
@@ -29,8 +27,9 @@ import { reduce } from './reducers/reduce';
 import { sum } from './reducers/sum';
 import { toArray } from './reducers/toArray';
 import { toMap } from './reducers/toMap';
-import { toMapAll } from './reducers/toMapAll';
+import { toGroups } from './reducers/toGroups';
 import { toSet } from './reducers/toSet';
+import { iterator } from './utils/ierator';
 
 export { Query, QueryGroup };
 
@@ -43,7 +42,7 @@ class IterableQuery<T> implements Query<T> {
   }
 
   [Symbol.iterator](): Iterator<T> {
-    return getIterator(this.source);
+    return iterator(this.source);
   }
 
   at(index: number): T {
@@ -185,7 +184,7 @@ class IterableQuery<T> implements Query<T> {
     valueSelector: (element: T, index: number) => S = x => <any>x,
   ): Query<QueryGroup<K, T | S>> {
     const result = map(
-      groupBy(this, keySelector, valueSelector),
+      toGroups(this, keySelector, valueSelector),
       elem => <QueryGroup<K, T | S>>new EnumerableGroup(elem[0], elem[1]));
 
     return new IterableQuery(result);
@@ -268,7 +267,7 @@ class IterableQuery<T> implements Query<T> {
     keySelector: (element: T, index: number) => K,
     valueSelector?: (element: T, index: number) => E,
   ): Map<K, (E | T)[]> {
-    return toMapAll(this, keySelector, valueSelector);
+    return toGroups(this, keySelector, valueSelector);
   }
 
   toSet<S>(selector?: (element: T, index: number) => S): Set<S> {

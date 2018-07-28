@@ -1,14 +1,9 @@
-import { execute } from './execute';
-
 export function average(source: Iterable<number>): number {
-  let s = 0;
-  let n = 0;
+  let [s, n] = [0, 0];
 
-  execute(source, elem => [s, n] = [s + elem, n + 1]);
-
-  if (n === 0) {
-    return undefined;
+  for (const element of source) {
+    [s, n] = [s + element, n + 1];
   }
 
-  return s / n;
+  return n > 0 ? s / n : undefined;
 }

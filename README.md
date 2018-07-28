@@ -38,3 +38,7 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 ### Add documentation with examples
 ### Publish to NPM
 ### Implement performance tests: CPU and memory (if possible)
+
+## To be discussed
+### Review name of `toMapAll` iterator;
+### Review name of `getIterator` and `fromGenerator` utils;

@@ -10,7 +10,7 @@ describe('reducers/sum', () => {
     });
   });
 
-  describe('When calle on some array', () => {
+  describe('When called on some array', () => {
     it('Should return 3', () => {
       const source = [-1, 0, 1, 3];
 

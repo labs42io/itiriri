@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { average } from '../../lib/reducers/average';
-import { toArray } from '../../lib/reducers/toArray';
 
 describe('reducers/average', () => {
   describe('When calling on some integer array', () => {

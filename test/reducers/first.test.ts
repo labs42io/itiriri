@@ -8,15 +8,17 @@ describe('reducers/first', () => {
 
       expect(first(arr)).to.be.equal(1);
     });
-    it('Should return the first element', () => {
+
+    it('Should return the first negative element', () => {
       const arr = [-1, 2, 3];
 
       expect(first(arr)).to.be.equal(-1);
     });
-    it('Should return the first element', () => {
-      const arr = [100, 1, 2, 3];
 
-      expect(first(arr)).to.be.equal(100);
+    it('Should return the first object element', () => {
+      const arr = [{}, 1, 2, 3];
+
+      expect(first(arr)).to.be.equal(arr[0]);
     });
   });
 

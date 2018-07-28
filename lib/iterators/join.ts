@@ -1,8 +1,5 @@
-import { toMapAll } from '../reducers/toMapAll';
-import { filter } from './filter';
-import { flatten } from './flatten';
-import { fromGenerator } from '../utils/fromGenerator';
-import { map } from './map';
+import { toGroups } from '../reducers/toGroups';
+import { iterable } from '../utils/iterable';
 
 export function join<TLeft, TRight, TKey, TResult>(
   source: Iterable<TLeft>,
@@ -11,28 +8,19 @@ export function join<TLeft, TRight, TKey, TResult>(
   rightKeySelector: (element: TRight, index: number) => TKey,
   joinSelector: (left: TLeft, right: TRight) => TResult,
 ): Iterable<TResult> {
-  return fromGenerator(() =>
-    generator(source, others, leftKeySelector, rightKeySelector, joinSelector));
-}
+  return iterable(function* () {
+    let index = 0;
+    const rightMap = toGroups(others, rightKeySelector, x => x);
 
-function generator<TLeft, TRight, TKey, TResult>(
-  source: Iterable<TLeft>,
-  others: Iterable<TRight>,
-  leftKeySelector: (element: TLeft, index: number) => TKey,
-  rightKeySelector: (element: TRight, index: number) => TKey,
-  joinSelector: (left: TLeft, right: TRight) => TResult,
-): Iterable<TResult> {
+    for (const element of source) {
+      const leftKey = leftKeySelector(element, index++);
 
-  const leftMap = toMapAll(source, leftKeySelector, x => x);
-  const rightMap = toMapAll(others, rightKeySelector, x => x);
+      if (rightMap.has(leftKey)) {
+        for (const rightMatch of rightMap.get(leftKey)) {
+          yield joinSelector(element, rightMatch);
+        }
+      }
 
-  const result = map(
-    leftMap,
-    ([leftKey, leftValues]) => map(
-      filter(leftValues, x => rightMap.has(leftKey)),
-      left => map(
-        rightMap.get(leftKey) || [],
-        right => joinSelector(left, right))));
-
-  return flatten<TResult>(flatten<Iterable<TResult>>(result));
+    }
+  });
 }
