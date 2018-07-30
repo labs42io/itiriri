@@ -34,7 +34,7 @@ console.log(`SortDesc: ${q.sortDesc().toArray().join(', ')}`);
 console.log(`Reverse: ${q.reverse().toArray().join(', ')}`);
 
 console.log(`Filter > 5: ${q.filter(x => x > 5).toArray().join(', ')}`);
-console.log(`Exclude [1,2,9]: ${q.exclue([1, 2, 9]).toArray().join(', ')}`);
+console.log(`Exclude [1,2,9]: ${q.exclude([1, 2, 9]).toArray().join(', ')}`);
 console.log(`Map: ${q.map(x => x % 2 === 0 ? 0 : 1).toArray().join(', ')}`);
 console.log(`MapAll: 
  ${q.flatten(x => x % 2 === 0 ? [x] : [x, 10 * x]).toArray().join(', ')}`);
