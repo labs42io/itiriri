@@ -38,7 +38,7 @@ console.log(`Except [1,2,9]: ${q.except([1, 2, 9]).toArray().join(', ')}`);
 
 console.log(`Map: ${q.map(x => x % 2 === 0 ? 0 : 1).toArray().join(', ')}`);
 console.log(`MapAll: 
- ${q.mapAll(x => x % 2 === 0 ? [x] : [x, 10 * x]).toArray().join(', ')}`);
+ ${q.flatten(x => x % 2 === 0 ? [x] : [x, 10 * x]).toArray().join(', ')}`);
 
 console.log(`Take 3: ${q.take(3).toArray().join(', ')}`);
 console.log(`Skip 7: ${q.skip(7).toArray().join(', ')}`);

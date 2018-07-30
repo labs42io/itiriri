@@ -144,30 +144,24 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(skip(this, count));
   }
 
-  except<S>(queryOrArray: Query<T> | T[], selector: (element: T) => S = e => <any>e): Query<T> {
-    return new IterableQuery(except(this, toQuery(queryOrArray), selector));
+  except<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+    return new IterableQuery(except(this, items, selector));
   }
 
-  intersect<S>(
-    queryOrArray: Query<T> | T[],
-    selector: (element: T) => S = e => <S><any>e,
-  ): Query<T> {
-    return new IterableQuery(intersect(this, toQuery(queryOrArray), selector));
+  intersect<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+    return new IterableQuery(intersect(this, items, selector));
   }
 
-  union<S>(queryOrArray: Query<T> | T[], selector?: (element: T) => S): Query<T> {
-    return new IterableQuery(distinct(concat(this, toQuery(queryOrArray)), selector));
+  union<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+    return new IterableQuery(distinct(concat(this, items), selector));
   }
 
   map<S>(selector: (element: T, index: number) => S): Query<S> {
     return new IterableQuery(map(this, selector));
   }
 
-  mapAll<S>(selector: (element: T, index: number) => Query<S> | S[]): Query<S> {
-    const iterator = this
-      .map((e, i) => toQuery(selector(e, i)));
-
-    return new IterableQuery(flatten<S>(iterator));
+  flatten<S>(selector: (element: T, index: number) => Iterable<S>): Query<S> {
+    return new IterableQuery(flatten<S>(this.map(selector)));
   }
 
   forEach(action: (element: T, index: number) => void): Query<T> {
@@ -191,14 +185,14 @@ class IterableQuery<T> implements Query<T> {
   }
 
   groupJoin<TKey, TRight, TResult>(
-    queryOrItems: Query<TRight> | TRight[],
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight[]) => TResult,
   ): Query<TResult> {
     const iterator = groupJoin(
       this,
-      toQuery(queryOrItems),
+      items,
       leftKeySelector,
       rightKeySelector,
       joinSelector);
@@ -207,14 +201,14 @@ class IterableQuery<T> implements Query<T> {
   }
 
   join<TKey, TRight, TResult>(
-    queryOrItems: Query<TRight> | TRight[],
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight) => TResult,
   ): Query<TResult> {
     const iterator = join(
       this,
-      toQuery(queryOrItems),
+      items,
       leftKeySelector,
       rightKeySelector,
       joinSelector);
@@ -223,14 +217,14 @@ class IterableQuery<T> implements Query<T> {
   }
 
   leftJoin<TKey, TRight, TResult>(
-    queryOrItems: Query<TRight> | TRight[],
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right?: TRight) => TResult,
   ): Query<TResult> {
     const iterator = leftJoin(
       this,
-      toQuery(queryOrItems),
+      items,
       leftKeySelector,
       rightKeySelector,
       joinSelector);
@@ -238,8 +232,8 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(iterator);
   }
 
-  concat(query: Query<T> | T[]): Query<T> {
-    return new IterableQuery(concat(this, toQuery(query)));
+  concat(items: Iterable<T>): Query<T> {
+    return new IterableQuery(concat(this, items));
   }
 
   entries(): Query<[number, T]> {
@@ -248,12 +242,12 @@ class IterableQuery<T> implements Query<T> {
     );
   }
 
-  prepend(query: Query<T> | T[]): Query<T> {
-    return new IterableQuery(concat(toQuery(query), this));
+  prepend(items: Iterable<T>): Query<T> {
+    return new IterableQuery(concat(items, this));
   }
 
-  toArray<S = T>(selector?: (element: T, index: number) => S): (T | S)[] {
-    return toArray(this);
+  toArray<S = T>(selector: (element: T, index: number) => S = e => <any>e): (T | S)[] {
+    return toArray(map(this, selector));
   }
 
   toMap<K, E = T>(
@@ -287,8 +281,4 @@ class EnumerableGroup<K, E> extends IterableQuery<E> implements QueryGroup<K, E>
 function toPredicate<T>(predicateOrElement: T | ((element: T, index: number) => boolean)) {
   return typeof predicateOrElement === 'function' ?
     predicateOrElement : (x => x === predicateOrElement);
-}
-
-function toQuery<T>(query: Query<T> | T[]): Query<T> {
-  return Array.isArray(query) ? new IterableQuery(query) : query;
 }

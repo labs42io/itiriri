@@ -307,94 +307,48 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns a query with excluded items.
-   * @param  {T[]} items items to exclude
+   * @param  {Iterable<T>} items items to exclude
    * @returns Query
    */
-  except(items: T[]): Query<T>;
+  except(items: Iterable<T>): Query<T>;
 
   /**
    * Returns a query with excluded items comparing by the given field selector.
-   * @param  {T[]} items items to compare and exclude
+   * @param  {Iterable<T>} items items to compare and exclude
    * @param  {(element: T)=>S} selector element field selector
    * @returns Query
    */
-  except<S>(items: T[], selector: (element: T) => S): Query<T>;
+  except<S>(items: Iterable<T>, selector: (element: T) => S): Query<T>;
 
   /**
-   * Returns a query with excluded items from specified query.
-   * @param  {Query<T>} query
+   * Returns a set intersection with a given sequence.
+   * @param  {Iterable<T>} items
    * @returns Query
    */
-  except(query: Query<T>): Query<T>;
+  intersect(items: Iterable<T>): Query<T>;
 
   /**
-   * Returns a query with excluded items using a comparer function.
-   * @param  {Query<T>} query query items to compare and exclude
-   * @param  {(element: T)=>S} selector element field selector
-   * true if elements match, false otherwise
-   * @returns Query
-   */
-  except<S>(query: Query<T>, selector: (element: T) => S): Query<T>;
-
-  /**
-   * Returns a set intersection of elements with given items.
-   * @param  {T[]} items
-   * @returns Query
-   */
-  intersect(items: T[]): Query<T>;
-
-  /**
-   * Returns a set intersection of elements with given items using a field selector for comparisons.
-   * @param  {T[]} items
+   * Returns a set intersection with a given sequence using a field selector for comparisons.
+   * @param  {Iterable<T>} items
    * @pa{(element: T)=>S} selector element field selector
    * @returns Query
    */
-  intersect<S>(items: T[], selector: (element: T) => S): Query<T>;
+  intersect<S>(items: Iterable<T>, selector: (element: T) => S): Query<T>;
 
   /**
-   * Returns a set intersection of elements with given query.
-   * @param  {Query<T>} query
+   * Returns a set union with a given sequence.
+   * @param  {Iterable<T>} items
    * @returns Query
    */
-  intersect(query: Query<T>): Query<T>;
+  union(items: Iterable<T>): Query<T>;
 
   /**
-   * Returns a set intersection of elements with given query using a field selector for comparisons.
-   * @param  {Query<T>} query
-   * @param  {(element: T)=>S} selector element field selector
-   * @returns Query
-   */
-  intersect<S>(query: Query<T>, selector: (element: T) => S): Query<T>;
-
-  /**
-   * Returns a set union of elements with given items.
-   * @param  {T[]} items
-   * @returns Query
-   */
-  union(items: T[]): Query<T>;
-
-  /**
-   * Returns a set union of elements with given items using a field selector for comparisons.
-   * @param  {T[]} items
+   *Returns a set union with a given sequence using a field selector for comparisons.
+   * @param  {Iterable<T>} items
    * @pa{(element: T)=>S} selector element field selector
    * @returns Query
    */
-  union<S>(items: T[], selector: (element: T) => S): Query<T>;
-
-  /**
-   * Returns a set union of elements with given query.
-   * @param  {Query<T>} query
-   * @returns Query
-   */
-  union(query: Query<T>): Query<T>;
-
-  /**
-   * Returns a set union of elements with given query using a field selector for comparisons.
-   * @param  {Query<T>} query
-   * @param  {(element: T)=>S} selector element field selector
-   * @returns Query
-   */
-  union<S>(query: Query<T>, selector: (element: T) => S): Query<T>;
+  union<S>(items: Iterable<T>, selector: (element: T) => S): Query<T>;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
   /// Projection functions
@@ -408,18 +362,11 @@ export interface Query<T> extends Iterable<T> {
   map<S>(selector: (element: T, index: number) => S): Query<S>;
 
   /**
-   * Projects each element of an array into a new form and flattens the result.
-   * @param  {(element:T,index:number)=>S[]} selector
+   * Returns a new sequence with all sub-sequences concatenated.
+   * @param  {(element:T,index:number)=>Iterable<S>} selector
    * @returns Query
    */
-  mapAll<S>(selector: (element: T, index: number) => S[]): Query<S>;
-
-  /**
-   * Projects each element of a query into a new form and flattens the result.
-   * @param  {(element:T)=>Query<S>} selector
-   * @returns Query
-   */
-  mapAll<S>(selector: (element: T, index: number) => Query<S>): Query<S>;
+  flatten<S>(selector: (element: T, index: number) => Iterable<S>): Query<S>;
 
   /**
    * Runs through every element and applies a given function
@@ -452,29 +399,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Correlates the elements with given items based on equality of keys and groups the results.
-   * @param  {TRight[]} items
+   * @param  {Iterable<TRight>} items
    * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
    * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
    * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
    * @returns Query
    */
   groupJoin<TKey, TRight, TResult>(
-    items: TRight[],
-    leftKeySelector: (element: T, index: number) => TKey,
-    rightKeySelector: (element: TRight, index: number) => TKey,
-    joinSelector: (left: T, right: TRight[]) => TResult,
-  ): Query<TResult>;
-
-  /**
-   * Correlates the elements with given query based on equality of keys and groups the results.
-   * @param  {Query<TRight>} query
-   * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
-   * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
-   * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
-   * @returns Query
-   */
-  groupJoin<TKey, TRight, TResult>(
-    query: Query<TRight>,
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight[]) => TResult,
@@ -486,29 +418,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Correlates the elements with given items based on equality of keys.
-   * @param  {TRight[]} items
+   * @param  {Iterable<TRight>} items
    * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
    * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
    * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
    * @returns Query
    */
   join<TKey, TRight, TResult>(
-    items: TRight[],
-    leftKeySelector: (element: T, index: number) => TKey,
-    rightKeySelector: (element: TRight, index: number) => TKey,
-    joinSelector: (left: T, right: TRight) => TResult,
-  ): Query<TResult>;
-
-  /**
-   * Correlates the elements with given query based on equality of keys.
-   * @param  {Query<TRight>} query
-   * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
-   * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
-   * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
-   * @returns Query
-   */
-  join<TKey, TRight, TResult>(
-    query: Query<TRight>,
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight) => TResult,
@@ -516,29 +433,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Correlates all the elements from current query with given items based on equality of keys.
-   * @param  {TRight[]} items
+   * @param  {Iterable<TRight>} items
    * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
    * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
    * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
    * @returns Query
    */
   leftJoin<TKey, TRight, TResult>(
-    items: TRight[],
-    leftKeySelector: (element: T, index: number) => TKey,
-    rightKeySelector: (element: TRight, index: number) => TKey,
-    joinSelector: (left: T, right?: TRight) => TResult,
-  ): Query<TResult>;
-
-  /**
-   * Correlates all the elements from current query with given query based on equality of keys.
-   * @param  {Query<TRight>} query
-   * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
-   * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
-   * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
-   * @returns Query
-   */
-  leftJoin<TKey, TRight, TResult>(
-    query: Query<TRight>,
+    items: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right?: TRight) => TResult,
@@ -550,10 +452,10 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Concatenates the sequence with specified array.
-   * @param  {T[]} items
+   * @param  {Iterable<T>} items
    * @returns Query
    */
-  concat(items: T[]): Query<T>;
+  concat(items: Iterable<T>): Query<T>;
 
   /**
  * Returns a new Query that contains the key/value for each value.
@@ -562,25 +464,11 @@ export interface Query<T> extends Iterable<T> {
   entries(): Query<[number, T]>;
 
   /**
-   * Concatenates the sequence with specified query.
-   * @param  {Query<T>} query
-   * @returns Query
-   */
-  concat(query: Query<T>): Query<T>;
-
-  /**
    * Adds items at the beggining of sequence.
-   * @param  {T[]} items
+   * @param  {Iterable<T>} items
    * @returns Query
    */
-  prepend(items: T[]): Query<T>;
-
-  /**
-   * Adds query items at the beginning of query.
-   * @param  {Query<T>} query
-   * @returns Query
-   */
-  prepend(query: Query<T>): Query<T>;
+  prepend(items: Iterable<T>): Query<T>;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
   /// Transformation functions
