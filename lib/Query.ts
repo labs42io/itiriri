@@ -33,7 +33,6 @@ import { IterableQueryGroup } from './types/IterableTransformation';
 import { iterator } from './utils/iterator';
 import { iterable } from './utils/iterable';
 
-
 export function query<T>(items: Iterable<T>): IterableQuery<T> {
   return new Query(items);
 }
