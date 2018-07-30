@@ -57,31 +57,31 @@ class IterableQuery<T> implements Query<T> {
     return lastIndexOf(this, toPredicate(predicateOrElement));
   }
 
-  count(predicate: (element: T, index: number) => boolean = x => true): number {
+  count(predicate: (element: T, index: number) => boolean = alwaysTrue()): number {
     return count(filter(this, predicate));
   }
 
-  first(predicate: (element: T, index: number) => boolean = x => true): T {
+  first(predicate: (element: T, index: number) => boolean = alwaysTrue()): T {
     return first(filter(this, predicate));
   }
 
-  last(predicate: (element: T, index: number) => boolean = x => true): T {
+  last(predicate: (element: T, index: number) => boolean = alwaysTrue()): T {
     return last(filter(this, predicate));
   }
 
-  average(selector: (element: T, index: number) => number = x => <any>x): number {
+  average(selector: (element: T, index: number) => number = element<number>()): number {
     return average(map(this, selector));
   }
 
-  min(selector: (element: T, index: number) => number = x => <any>x): number {
+  min(selector: (element: T, index: number) => number = element<number>()): number {
     return min(map(this, selector));
   }
 
-  max(selector: (element: T, index: number) => number = x => <any>x): number {
+  max(selector: (element: T, index: number) => number = element<number>()): number {
     return max(map(this, selector));
   }
 
-  sum(selector: (element: T, index: number) => number = x => <any>x): number {
+  sum(selector: (element: T, index: number) => number = element<number>()): number {
     return sum(map(this, selector));
   }
 
@@ -120,15 +120,15 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(reverse(this));
   }
 
-  sort<S>(selector: (element: T) => S = x => <any>x): Query<T> {
+  sort<S>(selector: (element: T, index: number) => S = element<S>()): Query<T> {
     return new IterableQuery(sort(this, selector));
   }
 
-  sortDesc<S>(selector: (element: T) => S = x => <any>x): Query<T> {
+  sortDesc<S>(selector: (element: T, index: number) => S = element<S>()): Query<T> {
     return new IterableQuery(sort(this, selector, true));
   }
 
-  distinct<S>(selector: (element: T) => S = x => <any>x): Query<T> {
+  distinct<S>(selector: (element: T) => S = element<S>()): Query<T> {
     return new IterableQuery(distinct(this, selector));
   }
 
@@ -144,15 +144,15 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(skip(this, count));
   }
 
-  except<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+  except<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
     return new IterableQuery(except(this, items, selector));
   }
 
-  intersect<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+  intersect<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
     return new IterableQuery(intersect(this, items, selector));
   }
 
-  union<S>(items: Iterable<T>, selector: (element: T) => S = e => <any>e): Query<T> {
+  union<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
     return new IterableQuery(distinct(concat(this, items), selector));
   }
 
@@ -246,25 +246,25 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(concat(items, this));
   }
 
-  toArray<S = T>(selector: (element: T, index: number) => S = e => <any>e): (T | S)[] {
+  toArray<S = T>(selector: (element: T, index: number) => S = element<S>()): (T | S)[] {
     return toArray(map(this, selector));
   }
 
   toMap<K, E = T>(
-    keySelector: (element: T, index: number) => K,
-    valueSelector: (element: T, index: number) => E = x => <any>x,
+    keySelector: (element: T, index: number) => K = element<K>(),
+    valueSelector: (element: T, index: number) => E = element<E>(),
   ): Map<K, E | T> {
     return toMap(this, keySelector, valueSelector);
   }
 
   toGroups<K, E = T>(
-    keySelector: (element: T, index: number) => K,
-    valueSelector?: (element: T, index: number) => E,
+    keySelector: (element: T, index: number) => K = element<K>(),
+    valueSelector: (element: T, index: number) => E = element<E>(),
   ): Map<K, (E | T)[]> {
     return toGroups(this, keySelector, valueSelector);
   }
 
-  toSet<S>(selector?: (element: T, index: number) => S): Set<S> {
+  toSet<S>(selector: (element: T, index: number) => S = element<S>()): Set<S> {
     return toSet(map(this, selector));
   }
 }
@@ -281,4 +281,12 @@ class EnumerableGroup<K, E> extends IterableQuery<E> implements QueryGroup<K, E>
 function toPredicate<T>(predicateOrElement: T | ((element: T, index: number) => boolean)) {
   return typeof predicateOrElement === 'function' ?
     predicateOrElement : (x => x === predicateOrElement);
+}
+
+function element<T>() {
+  return (e: any, index?: number) => <T>e;
+}
+
+function alwaysTrue<T>() {
+  return (e: any) => true;
 }
