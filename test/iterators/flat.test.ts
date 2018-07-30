@@ -1,23 +1,23 @@
 import { expect } from 'chai';
-import { flatten } from '../../lib/iterators/flatten';
+import { flat } from '../../lib/iterators/flat';
 import { iterator } from '../../lib/utils/iterator';
 import { toArray } from '../../lib/reducers/toArray';
 
-describe('iterators/flatten', () => {
+describe('iterators/flat', () => {
   describe('when called multiple times', () => {
     it('Should return new iterator on each call', () => {
       const left = [1, 2, 3];
       const right = [4, 5];
       const source = [left, right];
 
-      expect(flatten(source)).not.equals(flatten(source));
+      expect(flat(source)).not.equals(flat(source));
     });
   });
 
   describe('When source is empty', () => {
     it('Should return completed iterator', () => {
       const source = [];
-      const it = iterator(flatten(source));
+      const it = iterator(flat(source));
 
       expect(it.next())
         .to.have.property('done')
@@ -30,7 +30,7 @@ describe('iterators/flatten', () => {
       const left = [];
       const right = [4, 5];
       const source = [left, right];
-      const iterator = flatten(source);
+      const iterator = flat(source);
       const result = toArray(iterator);
 
       expect(result).to.deep.equal([4, 5]);
@@ -42,7 +42,7 @@ describe('iterators/flatten', () => {
       const left = [1, 2, 3];
       const right = [];
       const source = [left, right];
-      const iterator = flatten(source);
+      const iterator = flat(source);
       const result = toArray(iterator);
 
       expect(result).to.deep.equal([1, 2, 3]);
@@ -56,7 +56,7 @@ describe('iterators/flatten', () => {
       const source3 = [42];
 
       const source = [source1, source2, source3];
-      const iterator = flatten(source);
+      const iterator = flat(source);
       const result = toArray(iterator);
 
       expect(result).to.deep.equal([1, 2, 3, 4, 5, 1, 42]);

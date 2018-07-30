@@ -367,7 +367,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {(element:T,index:number)=>Iterable<S>} selector
    * @returns Query
    */
-  flatten<S>(selector: (element: T, index: number) => Iterable<S>): Query<S>;
+  flat<S>(selector: (element: T, index: number) => Iterable<S>): Query<S>;
 
   /**
    * Runs through every element and applies a given function

@@ -2,7 +2,7 @@ import { concat } from './iterators/concat';
 import { distinct } from './iterators/distinct';
 import { exclude } from './iterators/exclude';
 import { filter } from './iterators/filter';
-import { flatten } from './iterators/flatten';
+import { flat } from './iterators/flat';
 import { groupJoin } from './iterators/groupJoin';
 import { intersect } from './iterators/intersect';
 import { join } from './iterators/join';
@@ -160,8 +160,8 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(map(this, selector));
   }
 
-  flatten<S>(selector: (element: T, index: number) => Iterable<S>): Query<S> {
-    return new IterableQuery(flatten<S>(this.map(selector)));
+  flat<S>(selector: (element: T, index: number) => Iterable<S>): Query<S> {
+    return new IterableQuery(flat<S>(this.map(selector)));
   }
 
   forEach(action: (element: T, index: number) => void): Query<T> {
