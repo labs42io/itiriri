@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { concat } from '../../lib/iterators/concat';
-import { iterator } from '../../lib/utils/ierator';
+import { iterator } from '../../lib/utils/iterator';
 
 describe('iterators/concat', () => {
   describe('when called multiple times', () => {

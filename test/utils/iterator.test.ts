@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { iterator } from '../../lib/utils/ierator';
+import { iterator } from '../../lib/utils/iterator';
 
 describe('iterators/iterator', () => {
   describe('When called on empty array', () => {

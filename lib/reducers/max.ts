@@ -1,4 +1,4 @@
-export function max(source: Iterable<number>) {
+export function max(source: Iterable<number>): number {
   let [result, hasElements] = [-Number.MAX_VALUE, false];
 
   for (const element of source) {

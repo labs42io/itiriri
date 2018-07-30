@@ -1,6 +1,6 @@
 import { iterable } from '../utils/iterable';
 
-export function reverse<TElement>(source: Iterable<TElement>) {
+export function reverse<TElement>(source: Iterable<TElement>): Iterable<TElement> {
   return iterable(() => {
     const elements: TElement[] = [];
 

@@ -1,4 +1,4 @@
-import { iterator } from './ierator';
+import { iterator } from './iterator';
 
 export function iterable<TElement>(target: () => Iterable<TElement>): Iterable<TElement> {
   return {

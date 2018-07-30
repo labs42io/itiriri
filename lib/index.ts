@@ -29,7 +29,7 @@ import { toArray } from './reducers/toArray';
 import { toMap } from './reducers/toMap';
 import { toGroups } from './reducers/toGroups';
 import { toSet } from './reducers/toSet';
-import { iterator } from './utils/ierator';
+import { iterator } from './utils/iterator';
 
 export { Query, QueryGroup };
 
