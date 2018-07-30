@@ -9,21 +9,24 @@ export interface Query<T> extends Iterable<T> {
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Returns the element at a given index.
+   * Returns the element at a specified index.
+   * For a negative index returns the element from the end of the iterable.
+   * If index is out of the range, returns undefined.
    * @param  {number} index element's index
    * @returns T
    */
   at(index: number): T;
 
   /**
-   * Returns the first index at which a given element can be found. If not present, returns -1.
+   * Returns the first index at which a given element can be found.
+   * If not present, returns -1.
    * @param  {T} element element to search
    * @returns number
    */
   indexOf(element: T): number;
 
   /**
-   * Returns the first index at which a given element matching the predicate can be found.
+   * Returns the first index at which a given element satisfies the specified predicate.
    * If not present, returns -1.
    * @param  {(element:T)=>boolean} predicate element predicate
    * @returns number
@@ -31,14 +34,15 @@ export interface Query<T> extends Iterable<T> {
   indexOf(predicate: (element: T) => boolean): number;
 
   /**
-   * Returns the last index at which a given element can be found. If not present, returns -1.
+   * Returns the last index at which a given element can be found.
+   * If not present, returns -1.
    * @param  {T} element element to search
    * @returns number
    */
   lastIndexOf(element: T): number;
 
   /**
-   * Returns the last index at which a given element matching the predicate can be found.
+   * Returns the last index at which a given element satisfies the specified predicate.
    * If not present, returns -1.
    * @param  {T} element element to search
    * @returns number
@@ -52,7 +56,7 @@ export interface Query<T> extends Iterable<T> {
   count(): number;
 
   /**
-   * Returns the count of elements matching a given predicate.
+   * Returns the count of elements matching the specified predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns number
    */
@@ -60,12 +64,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
   * Returns the first element.
+   * For an empty sequence returns undefined.
   * @returns T
   */
   first(): T;
 
   /**
-   * Returns the first element that satisfies a given predicate.
+   * Returns the first element that satisfies the specified predicate.
+   * If no elements satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
@@ -78,7 +84,8 @@ export interface Query<T> extends Iterable<T> {
   last(): T;
 
   /**
-   * Returns the last element that satisfies a given predicate.
+   * Returns the last element that satisfies the specified predicate.
+   * If no elements satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
@@ -86,12 +93,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns the average value.
+   * If sequence is empty, returns undefined.
    * @returns number
    */
   average(): number;
 
   /**
    * Invokes the transformation of elements with a given selector and returns the average value.
+   * If sequence is empty, returns undefined.
    * @param  {(element:T,index:number)=>number} selector element field selector
    * @returns number
    */
@@ -99,12 +108,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns the minimum value.
+   * If sequence is empty, returns undefined.
    * @returns number
    */
   min(): number;
 
   /**
    * Invokes the transformation of elements with a given selector and returns the minimum value.
+   * If sequence is empty, returns undefined.
    * @param  {(element:T,index:number)=>number} selector element field selector
    * @returns number
    */
@@ -112,12 +123,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns the maximum value.
+   * If sequence is empty, returns undefined.
    * @returns number
    */
   max(): number;
 
   /**
    * Invokes the transformation of elements with a given selector and returns the maximum value.
+   * If sequence is empty, returns undefined.
    * @param  {(element:T,index:number)=>number} selector element field selector
    * @returns number
    */
@@ -125,12 +138,14 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns the sum of all elements.
+   * If sequence is empty, returns undefined.
    * @returns number
    */
   sum(): number;
 
   /**
    * Invokes the transformation of elements with a given selector and returns the sum of values.
+   * If sequence is empty, returns undefined.
    * @param  {(element:T,index:number)=>number} selector element field selector
    * @returns number
    */
@@ -199,7 +214,7 @@ export interface Query<T> extends Iterable<T> {
   some(predicate: (element: T, index: number) => boolean): boolean;
 
   /**
-   * Determines whether a given element is contained within current elements.
+   * Determines whether a given element is contained within the sequence.
    * @param  {T} element element to search
    */
   contains(element: T): boolean;
@@ -256,14 +271,14 @@ export interface Query<T> extends Iterable<T> {
   distinct(): Query<T>;
 
   /**
-   * Returns elements having unique field values.
+   * Returns elements only having unique field values.
    * @param  {(element:T)=>S} selector element field selector
    * @returns Query
    */
   distinct<S>(selector: (element: T) => S): Query<T>;
 
   /**
-   * Returns a new query with elements that match the given predicate.
+   * Returns elements that match the given predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns Query
    */
@@ -271,6 +286,7 @@ export interface Query<T> extends Iterable<T> {
 
   /**
    * Returns a specified number of elements from the beginning of sequence.
+   * If a negative count is specified, returns elements from the end of the sequence.
    * @param  {number} count
    * @returns Query
    */
@@ -279,6 +295,7 @@ export interface Query<T> extends Iterable<T> {
   /**
    * Skips the specified number of elements from the beggining of sequence
    * and returns the remaining ones.
+   * If a negative count is specified, skips elements from the end of the sequence.
    * @param  {number} count
    * @returns Query
    */
@@ -605,7 +622,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {(element:T)=>M} keySelector key selector
    * @returns Map
    */
-  toMapAll<M>(
+  toGroups<M>(
     keySelector: (element: T, index: number) => M): Map<M, T[]>;
 
   /**
@@ -614,7 +631,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {(element:T)=>N} valueSelector value selector
    * @returns Map
    */
-  toMapAll<M, N>(
+  toGroups<M, N>(
     keySelector: (element: T, index: number) => M,
     valueSelector: (element: T, index: number) => N): Map<M, N[]>;
 

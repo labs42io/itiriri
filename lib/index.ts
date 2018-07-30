@@ -26,8 +26,8 @@ import { min } from './reducers/min';
 import { reduce } from './reducers/reduce';
 import { sum } from './reducers/sum';
 import { toArray } from './reducers/toArray';
-import { toMap } from './reducers/toMap';
 import { toGroups } from './reducers/toGroups';
+import { toMap } from './reducers/toMap';
 import { toSet } from './reducers/toSet';
 import { iterator } from './utils/iterator';
 
@@ -263,7 +263,7 @@ class IterableQuery<T> implements Query<T> {
     return toMap(this, keySelector, valueSelector);
   }
 
-  toMapAll<K, E = T>(
+  toGroups<K, E = T>(
     keySelector: (element: T, index: number) => K,
     valueSelector?: (element: T, index: number) => E,
   ): Map<K, (E | T)[]> {
