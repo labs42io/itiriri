@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { query } from '../../lib';
 import { count } from '../../lib/reducers/count';
 
 describe('reducers/count', () => {

@@ -1,12 +1,10 @@
-import { query, Query } from './lib';
+import { query } from './lib/Query';
+import { IterableQuery } from './lib/types/IterableQuery';
 
 // This is a sample test file.
-// In order to run code in this file, use following command:
-// $ ts-node "lib/Lesson 4/index"
-// Providing that earlier you do: $ npm i
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const q: Query<number> = query(arr);
+const q: IterableQuery<number> = query(arr);
 
 console.log(`Count: ${q.count()}`);
 console.log(`Count > 5: ${q.count(x => x > 5)}`);
@@ -47,11 +45,12 @@ console.log(`DistinctBy: ${q.distinct(x => x % 2 === 0 ? 0 : 1).toArray().join('
 
 console.log(`ForEach: ${q.map(x => ({ x })).forEach(x => x.x *= 10)
   .map(x => x.x).toArray().join(', ')}`);
-console.log(`GroupBy: ${q.groupBy(x => x < 5 ? 0 : 1, x => x).toArray().join(', ')}`);
+console.log(`GroupBy: ${q.groupBy(x => x < 5 ? 0 : 1)
+  .toArray()
+  .map(x => `(${x.key})[${x.toArray().join(', ')}]`).join(', ')}`);
 console.log(`Concat: ${q.concat(query([11, 12])).toArray().join(', ')}`);
 console.log(`ToMap: ${q.toMap(x => x, x => x)}`);
 
-// Available only when targeting ES6
-// for (const e of q) {
-//   console.log(e);
-// }
+for (const e of q) {
+  console.log(e);
+}
