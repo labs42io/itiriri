@@ -218,7 +218,7 @@ export interface Query<T> extends Iterable<T> {
    * Determines whether a given element is contained within the sequence.
    * @param  {T} element element to search
    */
-  contains(element: T): boolean;
+  includes(element: T): boolean;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
   /// Permutation functions
@@ -405,6 +405,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
    * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
    * @returns Query
+   * @todo review name
    */
   groupJoin<TKey, TRight, TResult>(
     items: Iterable<TRight>,
@@ -447,6 +448,21 @@ export interface Query<T> extends Iterable<T> {
     joinSelector: (left: T, right?: TRight) => TResult,
   ): Query<TResult>;
 
+  /**
+   * Correlates all the elements from current query with given items based on equality of keys.
+   * @param  {Iterable<TRight>} items
+   * @param  {(element:T,index:number)=>TKey} leftKeySelector left item key selector
+   * @param  {(element:TRight,index:number)=>TKey} rightKeySelector right item key selector
+   * @param  {(left:T,right:TRight)=>TResult} joinSelector projection selector
+   * @returns Query
+   */
+  rightJoin<TKey, TRight, TResult>(
+    items: Iterable<TRight>,
+    rightKeySelector: (element: TRight, index: number) => TKey,
+    leftKeySelector: (element: T, index: number) => TKey,
+    joinSelector: (right: TRight, left?: T) => TResult,
+  ): Query<TResult>;
+
   /////////////////////////////////////////////////////////////////////////////////////////////////
   /// Concatenation functions
   /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -465,9 +481,18 @@ export interface Query<T> extends Iterable<T> {
   entries(): Query<[number, T]>;
 
   /**
+   *
+   * @param value
+   * @param start
+   * @param end
+   */
+  fill(value: T, start?: number, end?: number): Query<T>;
+
+  /**
    * Adds items at the beggining of sequence.
    * @param  {Iterable<T>} items
    * @returns Query
+   * @todo review name
    */
   prepend(items: Iterable<T>): Query<T>;
 
@@ -510,6 +535,7 @@ export interface Query<T> extends Iterable<T> {
    * Returns a dictionary of key array values pairs.
    * @param  {(element:T)=>M} keySelector key selector
    * @returns Map
+   * @todo review name
    */
   toGroups<M>(
     keySelector: (element: T, index: number) => M): Map<M, T[]>;

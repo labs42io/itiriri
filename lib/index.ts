@@ -108,7 +108,7 @@ class IterableQuery<T> implements Query<T> {
     return indexOf(this, predicate) !== -1;
   }
 
-  contains(element: T): boolean {
+  includes(element: T): boolean {
     return this.some(x => x === element);
   }
 
@@ -232,6 +232,23 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(iterator);
   }
 
+  rightJoin<TKey, TRight, TResult>(
+    items: Iterable<TRight>,
+    rightKeySelector: (element: TRight, index: number) => TKey,
+    leftKeySelector: (element: T, index: number) => TKey,
+    joinSelector: (right: TRight, left?: T) => TResult,
+  ): Query<TResult> {
+    throw new Error('not implemented');
+    // const iterator = leftJoin(
+    //   this,
+    //   items,
+    //   leftKeySelector,
+    //   rightKeySelector,
+    //   joinSelector);
+
+    // return new IterableQuery(iterator);
+  }
+
   concat(items: Iterable<T>): Query<T> {
     return new IterableQuery(concat(this, items));
   }
@@ -240,6 +257,10 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(
       map(this, (elem, idx) => <[number, T]>[idx, elem]),
     );
+  }
+
+  fill(value: T, start?: number, end?: number): Query<T> {
+    throw new Error('not implemented');
   }
 
   prepend(items: Iterable<T>): Query<T> {
