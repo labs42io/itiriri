@@ -49,23 +49,39 @@ class IterableQuery<T> implements Query<T> {
     return at(this, index);
   }
 
-  indexOf(predicateOrElement: T | ((element: T) => boolean)): number {
-    return indexOf(this, toPredicate(predicateOrElement));
+  indexOf(element: T): number {
+    return indexOf(this, elem => elem === element);
   }
 
-  lastIndexOf(predicateOrElement: T | ((element: T) => boolean)): number {
-    return lastIndexOf(this, toPredicate(predicateOrElement));
+  findIndex(predicate: (element: T) => boolean): number {
+    return indexOf(this, predicate);
+  }
+
+  lastIndexOf(element: T): number {
+    return lastIndexOf(this, elem => elem === element);
+  }
+
+  findLastIndex(predicate: (element: T) => boolean): number {
+    return lastIndexOf(this, predicate);
   }
 
   count(predicate: (element: T, index: number) => boolean = alwaysTrue()): number {
     return count(filter(this, predicate));
   }
 
-  first(predicate: (element: T, index: number) => boolean = alwaysTrue()): T {
+  first(): T {
+    return first(this);
+  }
+
+  find(predicate: (element: T, index: number) => boolean): T {
     return first(filter(this, predicate));
   }
 
-  last(predicate: (element: T, index: number) => boolean = alwaysTrue()): T {
+  last(): T {
+    return last(this);
+  }
+
+  findLast(predicate: (element: T, index: number) => boolean): T {
     return last(filter(this, predicate));
   }
 
@@ -259,6 +275,10 @@ class IterableQuery<T> implements Query<T> {
     );
   }
 
+  keys(): Query<number> {
+    throw new Error('Not implemented.');
+  }
+
   fill(value: T, start?: number, end?: number): Query<T> {
     throw new Error('not implemented');
   }
@@ -267,8 +287,20 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(concat(items, this));
   }
 
+  slice(begin: number, end: number): Query<T> {
+    throw new Error('Not implemented.');
+  }
+
+  splice(start: number, deleteCount: number, ...items: T[]): Query<T> {
+    throw new Error('Not implemented');
+  }
+
   toArray<S = T>(selector: (element: T, index: number) => S = element<S>()): (T | S)[] {
     return toArray(map(this, selector));
+  }
+
+  toString(): string {
+    throw new Error('Not implemented.');
   }
 
   toMap<K, E = T>(

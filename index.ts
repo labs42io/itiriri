@@ -17,9 +17,9 @@ console.log(`Maximum: ${q.max()}`);
 console.log(`Sum: ${q.sum()}`);
 
 console.log(`First: ${q.first()}`);
-console.log(`First > 5: ${q.first(x => x > 5)}`);
+console.log(`First > 5: ${q.find(x => x > 5)}`);
 console.log(`Last: ${q.last()}`);
-console.log(`Last < 5: ${q.last(x => x < 5)}`);
+console.log(`Last < 5: ${q.findLast(x => x < 5)}`);
 
 console.log(`At(0): ${q.at(0)}`);
 console.log(`At(100): ${q.at(100)}`);

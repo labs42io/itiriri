@@ -33,22 +33,11 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 
 
 ## Todo
-* Tests .entries
+* Tests index.ts
 * Example folder with examples
 * Documentation
 * Publish to NPM
 * Performance tests (CPU, memory)
-* To implement:  
-  * fill
-  * rightJoin
-  * find(instead of first by predicate)
-  * findLast(instead of last by predicate)
-  * findIndex(instead of indexOf by predicate)
-  * findLastIndex(instead of lastIndexOf by predicate)
-  * keys
-  * slice
-  * splice
-  * [unshift](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift)
 
 ---
 

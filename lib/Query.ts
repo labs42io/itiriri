@@ -1,4 +1,3 @@
-
 /**
  * A queryable collection representation.
  */
@@ -27,12 +26,12 @@ export interface Query<T> extends Iterable<T> {
   indexOf(element: T): number;
 
   /**
-   * Returns the first index at which a given element satisfies the specified predicate.
+   * Finds the first index at which a given element satisfies the specified predicate.
    * If not present, returns -1.
    * @param  {(element:T)=>boolean} predicate element predicate
    * @returns number
    */
-  indexOf(predicate: (element: T) => boolean): number;
+  findIndex(predicate: (element: T) => boolean): number;
 
   /**
    * Returns the last index at which a given element can be found.
@@ -43,12 +42,12 @@ export interface Query<T> extends Iterable<T> {
   lastIndexOf(element: T): number;
 
   /**
-   * Returns the last index at which a given element satisfies the specified predicate.
+   * Finds the last index at which a given element satisfies the specified predicate.
    * If not present, returns -1.
    * @param  {T} element element to search
    * @returns number
    */
-  lastIndexOf(predicate: (element: T) => boolean): number;
+  findLastIndex(predicate: (element: T) => boolean): number;
 
   /**
    * Returns the count of elements.
@@ -64,19 +63,19 @@ export interface Query<T> extends Iterable<T> {
   count(predicate: (element: T, index: number) => boolean): number;
 
   /**
-  * Returns the first element.
+   * Returns the first element.
    * For an empty sequence returns undefined.
-  * @returns T
-  */
+   * @returns T
+   */
   first(): T;
 
   /**
-   * Returns the first element that satisfies the specified predicate.
+   * Finds the first element that satisfies the specified predicate.
    * If no elements satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
-  first(predicate: (element: T, index: number) => boolean): T;
+  find(predicate: (element: T, index: number) => boolean): T;
 
   /**
    * Returns the last element.
@@ -85,12 +84,12 @@ export interface Query<T> extends Iterable<T> {
   last(): T;
 
   /**
-   * Returns the last element that satisfies the specified predicate.
+   * Finds the last element that satisfies the specified predicate.
    * If no elements satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
-  last(predicate: (element: T, index: number) => boolean): T;
+  findLast(predicate: (element: T, index: number) => boolean): T;
 
   /**
    * Returns the average value.
@@ -370,6 +369,18 @@ export interface Query<T> extends Iterable<T> {
   flat<S>(selector: (element: T, index: number) => Iterable<S>): Query<S>;
 
   /**
+   * Returns a new Query that contains the key/value pair for each element and its index.
+   * @returns Query
+   */
+  entries(): Query<[number, T]>;
+
+  /**
+   * Returns a new Query that contains the keys for each index in the sequence.
+   * @returns Query
+   */
+  keys(): Query<number>;
+
+  /**
    * Runs through every element and applies a given function
    * @param  {(element:T,index:number)=>void} action action to apply on each element
    * @returns Query
@@ -475,16 +486,12 @@ export interface Query<T> extends Iterable<T> {
   concat(items: Iterable<T>): Query<T>;
 
   /**
- * Returns a new Query that contains the key/value for each value.
- * @returns Query
- */
-  entries(): Query<[number, T]>;
-
-  /**
-   *
-   * @param value
-   * @param start
-   * @param end
+   * Returns a new query filled from a start index to an end index with a static value.
+   * The end index is not included.
+   * @param value value to fill
+   * @param start start index, defaults to 0
+   * @param end end index, defaults to sequence count
+   * @returns Query
    */
   fill(value: T, start?: number, end?: number): Query<T>;
 
@@ -496,6 +503,21 @@ export interface Query<T> extends Iterable<T> {
    */
   prepend(items: Iterable<T>): Query<T>;
 
+  /**
+   * Returns a new sequence that represents the portion from begin to end.
+   * @param begin zero-based index at which to begin extraction
+   * @param end zero-based index before which to end extraction (not including)
+   */
+  slice(begin: number, end: number): Query<T>;
+
+  /**
+   * Returns a new query that skips elements and/or adds new elements.
+   * @param start index at which to start skip elements
+   * @param deleteCount the number of elements to skip
+   * @param items the elements to add at start index
+   */
+  splice(start: number, deleteCount: number, ...items: T[]): Query<T>;
+
   /////////////////////////////////////////////////////////////////////////////////////////////////
   /// Transformation functions
   /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -505,6 +527,11 @@ export interface Query<T> extends Iterable<T> {
    * @returns T
    */
   toArray(): T[];
+
+  /**
+   * Returns a string representing the specified sequence and its elements.
+   */
+  toString(): string;
 
   /**
    * Returns an array copy of projected values for current query.
