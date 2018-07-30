@@ -14,6 +14,7 @@ export interface Query<T> extends Iterable<T> {
    * If index is out of the range, returns undefined.
    * @param  {number} index element's index
    * @returns T
+   * @todo review name
    */
   at(index: number): T;
 
@@ -310,7 +311,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {Iterable<T>} items items to exclude
    * @returns Query
    */
-  except(items: Iterable<T>): Query<T>;
+  exclude(items: Iterable<T>): Query<T>;
 
   /**
    * Returns a query with excluded items comparing by the given field selector.
@@ -318,7 +319,7 @@ export interface Query<T> extends Iterable<T> {
    * @param  {(element: T)=>S} selector element field selector
    * @returns Query
    */
-  except<S>(items: Iterable<T>, selector: (element: T) => S): Query<T>;
+  exclude<S>(items: Iterable<T>, selector: (element: T) => S): Query<T>;
 
   /**
    * Returns a set intersection with a given sequence.

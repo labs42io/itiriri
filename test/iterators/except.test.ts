@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import { except } from '../../lib/iterators/except';
+import { exclude } from '../../lib/iterators/exclude';
 import { toArray } from '../../lib/reducers/toArray';
 import { iterator } from '../../lib/utils/iterator';
 
-describe('iterators/except', () => {
+describe('iterators/exclude', () => {
   describe('when called multiple times', () => {
     it('Should return new iterator on each call', () => {
       const left = [1, 2];
       const right = [3, 4, 5];
 
-      expect(except(left, right, x => x)).not.equals(except(left, right, x => x));
+      expect(exclude(left, right, x => x)).not.equals(exclude(left, right, x => x));
     });
   });
 
@@ -17,7 +17,7 @@ describe('iterators/except', () => {
     it('Should return completed iterator', () => {
       const left = [];
       const right = [];
-      const it = iterator(except(left, right, x => x));
+      const it = iterator(exclude(left, right, x => x));
 
       expect(it.next()).to.have.property('done').that.is.true;
     });
@@ -25,7 +25,7 @@ describe('iterators/except', () => {
     it('Should return completed iterator for non-empty exclusions', () => {
       const left = [];
       const right = [1, 2, 3];
-      const it = iterator(except(left, right, x => x));
+      const it = iterator(exclude(left, right, x => x));
 
       expect(it.next()).to.have.property('done').that.is.true;
     });
@@ -36,7 +36,7 @@ describe('iterators/except', () => {
       it('Should return elements from source', () => {
         const left = [1, 2, 3];
         const right = [];
-        const iterator = except(left, right, x => x);
+        const iterator = exclude(left, right, x => x);
         const result = toArray(iterator);
 
         expect(result).to.deep.equal([1, 2, 3]);
@@ -47,7 +47,7 @@ describe('iterators/except', () => {
       it('Should return elements from source', () => {
         const left = [1, 2, 3];
         const right = [4, 5];
-        const iterator = except(left, right, x => x);
+        const iterator = exclude(left, right, x => x);
         const result = toArray(iterator);
 
         expect(result).to.deep.equal([1, 2, 3]);
@@ -58,7 +58,7 @@ describe('iterators/except', () => {
       it('Should return empty iterator', () => {
         const left = [1, 2, 3];
         const right = [1, 2, 3];
-        const it = iterator(except(left, right, x => x));
+        const it = iterator(exclude(left, right, x => x));
 
         expect(it.next()).to.have.property('done').that.is.true;
       });
@@ -68,7 +68,7 @@ describe('iterators/except', () => {
       it('Should return correct result', () => {
         const left = [1, 2, 3];
         const right = [2, 3, 4];
-        const iterator = except(left, right, x => x);
+        const iterator = exclude(left, right, x => x);
         const result = toArray(iterator);
 
         expect(result).to.deep.equal([1]);
@@ -83,7 +83,7 @@ describe('iterators/except', () => {
         const elem4 = { p: 4 };
         const left = [elem1, elem2, elem3, { p: 1 }];
         const right = [{ p: 2 }, elem3, elem4];
-        const iterator = except(left, right, x => x.p);
+        const iterator = exclude(left, right, x => x.p);
         const result = toArray(iterator);
 
         expect(result).to.deep.equal([elem1]);
@@ -94,7 +94,7 @@ describe('iterators/except', () => {
       it('Should return correct result', () => {
         const left = [1, 1, 2, 3, 3];
         const right = [2, 2, 3, 3, 4];
-        const iterator = except(left, right, x => x);
+        const iterator = exclude(left, right, x => x);
         const result = toArray(iterator);
 
         expect(result).to.deep.equal([1]);

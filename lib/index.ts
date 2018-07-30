@@ -1,6 +1,6 @@
 import { concat } from './iterators/concat';
 import { distinct } from './iterators/distinct';
-import { except } from './iterators/except';
+import { exclude } from './iterators/exclude';
 import { filter } from './iterators/filter';
 import { flatten } from './iterators/flatten';
 import { groupJoin } from './iterators/groupJoin';
@@ -144,8 +144,8 @@ class IterableQuery<T> implements Query<T> {
     return new IterableQuery(skip(this, count));
   }
 
-  except<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
-    return new IterableQuery(except(this, items, selector));
+  exclude<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
+    return new IterableQuery(exclude(this, items, selector));
   }
 
   intersect<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): Query<T> {
