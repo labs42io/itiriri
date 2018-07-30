@@ -1,13 +1,12 @@
 import { iterable } from '../utils/iterable';
+import { toArray } from '../reducers/toArray';
 
 export function reverse<TElement>(source: Iterable<TElement>): Iterable<TElement> {
-  return iterable(() => {
-    const elements: TElement[] = [];
+  return iterable(function* () {
+    const elements = toArray(source);
 
-    for (const element of source) {
-      elements.unshift(element);
+    for (let n = elements.length - 1, i = n; i >= 0; i--) {
+      yield elements[i];
     }
-
-    return elements;
   });
 }
