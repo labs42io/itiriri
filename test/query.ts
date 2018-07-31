@@ -986,7 +986,7 @@ describe('Query', () => {
       expect(q.toArray()).to.be.deep.equal([4]);
     });
 
-    it('Should return array of 3 elements', () => {
+    it('Should return array of 1 elements', () => {
       const source1 = new SpyIterable([
         { val: 1, tag: 'a' },
         { val: 2, tag: 'b' },
