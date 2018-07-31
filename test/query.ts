@@ -1037,4 +1037,35 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling union', () => {
+    it('Should return array of 4 elements', () => {
+      const source1 = new SpyIterable([0, 4, 4, 0, 1]);
+      const source2 = new SpyIterable([0, 5, 4]);
+      const q = query(source1).union(source2, x => x);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
+    });
+
+    it('Should return array of 3 elements', () => {
+      const source1 = new SpyIterable([
+        { val: 1, tag: 'a' },
+        { val: 11, tag: 'b' },
+        { val: 111, tag: 'a' },
+        { val: 1111, tag: 'c' },
+      ]);
+      const source2 = new SpyIterable([{ val: 10, tag: 'a' }]);
+      const q = query(source1).union(source2, x => x.tag);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([
+        { val: 1, tag: 'a' },
+        { val: 11, tag: 'b' },
+        { val: 1111, tag: 'c' },
+      ]);
+    });
+  });
 });
