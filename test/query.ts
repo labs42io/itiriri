@@ -561,4 +561,30 @@ describe('Query', () => {
       expect(q.max(x => x.val)).to.be.equal(1010);
     });
   });
+
+  describe('When calling sum', () => {
+    it('Should return 30', () => {
+      const source = new SpyIterable([0, -4, 4, 30, 10, -10]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.sum()).to.be.equal(30);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.sum()).to.be.undefined;
+    });
+    it('Should return 20', () => {
+      const source = new SpyIterable([
+        { val: 0, tag: 'a' }, { val: 20, tag: 'b' }, { val: 0, tag: 'c' },
+      ]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.max(x => x.val)).to.be.equal(20);
+    });
+  });
 });
