@@ -53,7 +53,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   keys(): IterableQuery<number> {
-    throw new Error('Method not implemented.');
+    return new Query(map(this, (elem, idx) => idx));
   }
 
   values(): IterableQuery<T> {
