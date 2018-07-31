@@ -1006,4 +1006,35 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling intersect', () => {
+    it('Should return array of 2 elements', () => {
+      const source1 = new SpyIterable([0, 4, 4, 0, 1]);
+      const source2 = new SpyIterable([0, 5, 4]);
+      const q = query(source1).intersect(source2, x => x);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 4]);
+    });
+
+    it('Should return array of 1 elements', () => {
+      const source1 = new SpyIterable([
+        { val: 1, tag: 'a' },
+        { val: 2, tag: 'b' },
+        { val: 3, tag: 'a' },
+        { val: 4, tag: 'a' },
+        { val: 5, tag: 'b' },
+        { val: 6, tag: 'c' },
+      ]);
+      const source2 = new SpyIterable([{ val: 10, tag: 'a' }]);
+      const q = query(source1).intersect(source2, x => x.tag);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([
+        { val: 1, tag: 'a' },
+      ]);
+    });
+  });
 });
