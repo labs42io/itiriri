@@ -483,4 +483,31 @@ describe('Query', () => {
       expect(q.findLast(x => x === 3)).to.be.equal(3);
     });
   });
+
+  describe('When calling average', () => {
+    it('Should return 33', () => {
+      const source = new SpyIterable([66, 0, 33]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.average()).to.be.equal(33);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.average()).to.be.undefined;
+    });
+    it('Should return 10', () => {
+      const source = new SpyIterable([
+        { val: 10, tag: 'a' }, { val: 20, tag: 'b' }, { val: 0, tag: 'c' },
+      ]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.average(x => x.val)).to.be.equal(10);
+    });
+  });
+
 });
