@@ -28,6 +28,26 @@ describe('Query', () => {
     });
   });
 
+  describe('When calling at with positive index', () => {
+    it('Should return first element', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.at(3)).to.be.equal(3);
+    });
+  });
+
+  describe('When calling at with negative index', () => {
+    it('Should return last element', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).take(100);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.at(-1)).to.be.equal(99);
+    });
+  });
+
   describe('When calling skip and take', () => {
     it('Should return 4 elemens', () => {
       const source = new SpyIterable(numberGenerator(1, 2));
