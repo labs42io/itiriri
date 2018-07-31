@@ -363,4 +363,28 @@ describe('Query', () => {
       expect(q.findLastIndex(x => x < 0)).to.be.equal(-1);
     });
   });
+
+  describe('When calling count', () => {
+    it('Should return 6', () => {
+      const source = new SpyIterable([1, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.count()).to.be.equal(6);
+    });
+    it('Should return 1', () => {
+      const source = new SpyIterable([1, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.count(x => x > 10)).to.be.equal(1);
+    });
+    it('Should return 3', () => {
+      const source = new SpyIterable([1, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.count((elem, idx) => idx > 2)).to.be.equal(3);
+    });
+  });
 });
