@@ -25,7 +25,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {(element:T)=>boolean} predicate element predicate
    * @returns number
    */
-  findIndex(predicate: (element: T) => boolean): number;
+  findIndex(predicate: (element: T, index: number) => boolean): number;
 
   /**
    * Returns the last index at which a given element can be found.
@@ -41,7 +41,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {T} element element to search
    * @returns number
    */
-  findLastIndex(predicate: (element: T) => boolean): number;
+  findLastIndex(predicate: (element: T, index: number) => boolean): number;
 
   /**
    * Returns the number of elements.
@@ -190,9 +190,9 @@ export interface IterableValue<T> extends Iterable<T> {
   ): S;
 
   /**
- * Runs through every element and applies a given function.
- * @param  {(element:T,index:number)=>void} action action to apply on each element
- * @returns void
- */
+   * Runs through every element and applies a given function.
+   * @param  {(element:T,index:number)=>void} action function to apply on each element
+   * @returns void
+   */
   forEach(action: (element: T, index: number) => void): void;
 }

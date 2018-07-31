@@ -59,5 +59,7 @@ export interface IterableQuery<T> extends
    * @param end end index, defaults to sequence count
    * @returns Iterable<T>
    */
-  fill(value: T, start?: number, end?: number): IterableQuery<T>;
+  fill(value: T): IterableQuery<T>;
+  fill(value: T, start: number): IterableQuery<T>;
+  fill(value: T, start: number, end: number): IterableQuery<T>;
 }
