@@ -1068,4 +1068,34 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling toMap', () => {
+    it('Should throw error', () => {
+      const source = new SpyIterable([0, 4, 4, 0, 1]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(() => q.toMap(x => x)).to.throw(Error);
+    });
+    it('Should return map of 4 elements', () => {
+      const source = new SpyIterable([0, 4, 5, 1]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+
+      const result = q.toMap(x => x, x => x);
+
+      expect(query(result).toArray()).to.deep.equal([[0, 0], [4, 4], [5, 5], [1, 1]]);
+    });
+    it('Should return map of 4 elements', () => {
+      const source = new SpyIterable([1, 4, 44, 11]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+
+      const result = q.toMap(x => x, x => x % 10);
+
+      expect(query(result).toArray()).to.deep.equal([[1, 1], [4, 4], [44, 4], [11, 1]]);
+    });
+  });
 });
