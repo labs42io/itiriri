@@ -193,4 +193,28 @@ describe('Query', () => {
       expect(q.indexOf(12)).to.be.equal(4);
     });
   });
+
+  describe('When calling lastIndexOf', () => {
+    it('Should return first element index', () => {
+      const source = new SpyIterable([1, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.lastIndexOf(1)).to.be.equal(0);
+    });
+    it('Should return last element index', () => {
+      const source = new SpyIterable([1, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.lastIndexOf(4)).to.be.equal(5);
+    });
+    it('Should return 5th element index', () => {
+      const source = new SpyIterable([0, 1, 0, 0, 0, 2, 2, 2]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.lastIndexOf(0)).to.be.equal(4);
+    });
+  });
 });
