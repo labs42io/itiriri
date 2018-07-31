@@ -103,4 +103,21 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling skip', () => {
+    it('Should return 5 elements', () => {
+      const q1 = query(numberGenerator());
+      const res = q1.skip(2).take(5).toArray();
+      chai.expect(res).to.be.deep.equal([2, 3, 4, 5, 6]);
+    });
+  });
+
+  describe('When calling prepend', () => {
+    it('Should return 6 elemnts', () => {
+      const q1 = query(numberGenerator(0, 10));
+      const q2 = query(numberGenerator(100, 100));
+      const res = q2.prepend(q1.skip(2).take(3).toArray()).take(6).toArray();
+      chai.expect(res).to.be.deep.equal([20, 30, 40, 100, 200, 300]);
+    });
+  });
 });
