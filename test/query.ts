@@ -786,4 +786,25 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling reverse', () => {
+    it('Should return array of 6 elements', () => {
+      const source = new SpyIterable([0, -4, 4, 30, -10, 10]);
+      const q = query(source).reverse();
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([10, -10, 30, 4, -4, 0]);
+    });
+    it('Should return array of 3 objects', () => {
+      const source = new SpyIterable([
+        { val: 10, tag: 'a' }, { val: 20, tag: 'b' }, { val: -10, tag: 'c' },
+      ]);
+      const q = query(source).reverse();
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([
+        { val: -10, tag: 'c' }, { val: 20, tag: 'b' }, { val: 10, tag: 'a' },
+      ]);
+    });
+  });
 });
