@@ -57,6 +57,13 @@ describe('Query', () => {
     });
   });
 
+  describe('When calling keys', () => {
+    it('Should return the keys', () => {
+      const q = query(numberGenerator());
+      chai.expect(q.take(10).keys().toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+  });
+
   describe('When calling values', () => {
     it('Should return a new query with same values', () => {
       const q = query([1, 3, 4, 2, 2]);
