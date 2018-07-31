@@ -77,7 +77,7 @@ describe('Query', () => {
     it('Should return 4 transfromed elements', () => {
       const q = query(numberGenerator());
       const result = [];
-      console.log(q.take(4).forEach((elem, idx) => result.push(elem + 10)));
+      q.take(4).forEach((elem, idx) => result.push(elem + 10));
       chai.expect(result).to.be.deep.equal([
         10, 11, 12, 13,
       ]);
@@ -89,6 +89,17 @@ describe('Query', () => {
       q.take(3).forEach((elem, idx) => result.push(elem + idx));
       chai.expect(result).to.be.deep.equal([
         10, 21, 32,
+      ]);
+    });
+  });
+
+  describe('When calling concat', () => {
+    it('Should return 10 elements', () => {
+      const q1 = query(numberGenerator());
+      const q2 = query(numberGenerator(0, 2));
+      const res = q1.take(5).concat(q2.take(5)).toArray();
+      chai.expect(res).to.be.deep.equal([
+        0, 1, 2, 3, 4, 0, 2, 4, 6, 8,
       ]);
     });
   });
