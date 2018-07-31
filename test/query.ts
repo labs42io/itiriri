@@ -727,4 +727,21 @@ describe('Query', () => {
       expect(q.some((elem, idx) => idx < 10)).to.be.true;
     });
   });
+
+  describe('When calling includes', () => {
+    it('Should return true on array', () => {
+      const source = new SpyIterable([0, 4, 4, 30, 10, 10]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.includes(4)).to.be.true;
+    });
+    it('Should return false on empty source', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.includes(0)).to.be.false;
+    });
+  });
 });
