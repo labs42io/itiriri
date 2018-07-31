@@ -442,4 +442,21 @@ describe('Query', () => {
       expect(q.find((elem, idx) => idx === 10)).to.be.equal(33);
     });
   });
+
+  describe('When calling last', () => {
+    it('Should return 4', () => {
+      const source = new SpyIterable([6, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.last()).to.be.equal(4);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.last()).to.be.undefined;
+    });
+  });
 });
