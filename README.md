@@ -1,7 +1,7 @@
 # ArrayQuery: A powerfull iterator library
 
-[![Build Status](https://travis-ci.org/labs42io/array-query.svg?branch=vlad)](https://travis-ci.org/labs42io/array-query)
-[![Coverage Status](https://coveralls.io/repos/github/labs42io/array-query/badge.svg?branch=vlad)](https://coveralls.io/github/labs42io/array-query?branch=vlad)
+[![Build Status](https://travis-ci.org/labs42io/array-query.svg?branch=dev)](https://travis-ci.org/labs42io/array-query)
+[![Coverage Status](https://coveralls.io/repos/github/labs42io/array-query/badge.svg?branch=dev)](https://coveralls.io/github/labs42io/array-query?branch=dev)
 
 ## Basic Examples
 
