@@ -807,4 +807,18 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling shuffle', () => {
+    it('Should return array of 6 elements', () => {
+      const source = new SpyIterable([0, -4, 4, 30, -10, 10]);
+      const q = query(source).shuffle();
+
+      expect(source.wasIterated).to.be.false;
+      const result = q.toArray();
+
+      const resultCheck = query(result).sort().toArray();
+      expect(resultCheck).to.be.deep.equal([-10, -4, 0, 4, 10, 30]);
+    });
+  });
+
 });
