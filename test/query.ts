@@ -387,4 +387,28 @@ describe('Query', () => {
       expect(q.count((elem, idx) => idx > 2)).to.be.equal(3);
     });
   });
+
+  describe('When calling first', () => {
+    it('Should return 6', () => {
+      const source = new SpyIterable([6, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.first()).to.be.equal(6);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.first()).to.be.undefined;
+    });
+    it('Should return 3', () => {
+      const source = new SpyIterable(numberGenerator(3, 0));
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.first()).to.be.equal(3);
+    });
+  });
 });
