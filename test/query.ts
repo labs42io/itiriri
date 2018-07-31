@@ -529,11 +529,36 @@ describe('Query', () => {
       const source = new SpyIterable([
         { val: -10, tag: 'a' }, { val: 20, tag: 'b' }, { val: 0, tag: 'c' },
       ]);
-      const q = query(source).take(10);
+      const q = query(source);
 
       expect(source.wasIterated).to.be.false;
       expect(q.min(x => x.val)).to.be.equal(-10);
     });
   });
 
+  describe('When calling max', () => {
+    it('Should return 30', () => {
+      const source = new SpyIterable([-1, 3, 4, 30, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.max()).to.be.equal(30);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.max()).to.be.undefined;
+    });
+    it('Should return first element', () => {
+      const source = new SpyIterable([
+        { val: 1010, tag: 'a' }, { val: 20, tag: 'b' }, { val: 0, tag: 'c' },
+      ]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.max(x => x.val)).to.be.equal(1010);
+    });
+  });
 });
