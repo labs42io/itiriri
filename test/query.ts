@@ -56,4 +56,13 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling values', () => {
+    it('Should return a new query with same values', () => {
+      const q = query([1, 3, 4, 2, 2]);
+      const q1 = q.values();
+      chai.expect(q1).to.not.be.equal(q);
+      chai.expect(q1.toArray()).to.be.deep.equal(q.toArray());
+    });
+  });
 });

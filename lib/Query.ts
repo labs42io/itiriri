@@ -57,7 +57,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   values(): IterableQuery<T> {
-    throw new Error('Method not implemented.');
+    return new Query(this);
   }
 
   forEach(action: (element: T, index: number) => void): IterableQuery<T> {
