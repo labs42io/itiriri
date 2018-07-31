@@ -120,4 +120,18 @@ describe('Query', () => {
       chai.expect(res).to.be.deep.equal([20, 30, 40, 100, 200, 300]);
     });
   });
+
+  describe.skip('When calling fill', () => {
+    it('Should return 5 elements', () => {
+      const q = query(numberGenerator());
+      const res = q.fill(10, 1, 3).take(5).toArray();
+      chai.expect(res).to.be.deep.equal([0, 10, 10, 10, 4]);
+    });
+
+    it('Should return 4 elements', () => {
+      const q = query(numberGenerator());
+      const res = q.fill(11, 1, 1).take(4).toArray();
+      chai.expect(res).to.be.deep.equal([0, 11, 2, 3]);
+    });
+  });
 });
