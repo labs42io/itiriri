@@ -876,4 +876,30 @@ describe('Query', () => {
       expect(q.toArray()).to.be.deep.equal([{ val: 10, tag: 'a' }]);
     });
   });
+
+  describe('When calling map', () => {
+    it('Should return array of 3 elements', () => {
+      const source = new SpyIterable([0, -4, 4]);
+      const q = query(source).map(x => x <= 0);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([true, true, false]);
+    });
+
+    it('Should return array of 4 element', () => {
+      const source = new SpyIterable([0, -4, 4, 30]);
+      const q = query(source).map((elem, idx) => elem + idx);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, -3, 6, 33]);
+    });
+
+    it('Should return array of 1 object', () => {
+      const source = new SpyIterable([]);
+      const q = query(source).filter(x => x);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+  });
 });
