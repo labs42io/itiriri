@@ -945,4 +945,33 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling distinct', () => {
+    it('Should return array of 2 elements', () => {
+      const source = new SpyIterable([0, 4, 4, 0]);
+      const q = query(source).distinct(x => x);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 4]);
+    });
+
+    it('Should return array of 3 elements', () => {
+      const source = new SpyIterable([
+        { val: 1, tag: 'a' },
+        { val: 2, tag: 'b' },
+        { val: 3, tag: 'a' },
+        { val: 4, tag: 'a' },
+        { val: 5, tag: 'b' },
+        { val: 6, tag: 'c' },
+      ]);
+      const q = query(source).distinct(x => x.tag);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([
+        { val: 1, tag: 'a' },
+        { val: 2, tag: 'b' },
+        { val: 6, tag: 'c' },
+      ]);
+    });
+  });
 });
