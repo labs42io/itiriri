@@ -587,4 +587,30 @@ describe('Query', () => {
       expect(q.max(x => x.val)).to.be.equal(20);
     });
   });
+
+  describe('When calling reduce', () => {
+    it('Should return 0', () => {
+      const source = new SpyIterable([0, -4, 4, 30, 10, -10]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.reduce(() => 0, 0)).to.be.equal(0);
+    });
+    it('Should throw exception', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(() => q.reduce(() => 0)).to.throw(Error, 'Sequence contains no elements.');
+    });
+    it('Should return 20', () => {
+      const source = new SpyIterable([
+        { val: 10, tag: 'a' }, { val: 20, tag: 'b' }, { val: -10, tag: 'c' },
+      ]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.reduce((x, e, idx) => x + e.val, 0)).to.be.equal(20);
+    });
+  });
 });
