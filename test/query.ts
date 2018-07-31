@@ -183,7 +183,14 @@ describe('Query', () => {
       const q = query(source);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.indexOf(30)).to.be.equal(10);
+      expect(q.indexOf(0)).to.be.equal(0);
+    });
+    it('Should return 5th element index', () => {
+      const source = new SpyIterable(numberGenerator(0, 3));
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.indexOf(12)).to.be.equal(4);
     });
   });
 });
