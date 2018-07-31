@@ -176,4 +176,14 @@ describe('Query', () => {
       expect(q.toArray()).to.be.deep.equal([0, 11, 2, 3]);
     });
   });
+
+  describe('When calling indexOf', () => {
+    it('Should return first element index', () => {
+      const source = new SpyIterable(numberGenerator(0, 3));
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.indexOf(30)).to.be.equal(10);
+    });
+  });
 });
