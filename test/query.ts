@@ -72,4 +72,24 @@ describe('Query', () => {
       chai.expect(q1.toArray()).to.be.deep.equal(q.toArray());
     });
   });
+
+  describe('When calling forEach', () => {
+    it('Should return 4 transfromed elements', () => {
+      const q = query(numberGenerator());
+      const result = [];
+      console.log(q.take(4).forEach((elem, idx) => result.push(elem + 10)));
+      chai.expect(result).to.be.deep.equal([
+        10, 11, 12, 13,
+      ]);
+    });
+
+    it('Should return 3 transformed elemnts', () => {
+      const q = query(numberGenerator(10, 10));
+      const result = [];
+      q.take(3).forEach((elem, idx) => result.push(elem + idx));
+      chai.expect(result).to.be.deep.equal([
+        10, 21, 32,
+      ]);
+    });
+  });
 });

@@ -188,4 +188,11 @@ export interface IterableValue<T> extends Iterable<T> {
     callback: (accumulator: S, current: T, index: number) => S,
     initialValue: S,
   ): S;
+
+  /**
+ * Runs through every element and applies a given function.
+ * @param  {(element:T,index:number)=>void} action action to apply on each element
+ * @returns void
+ */
+  forEach(action: (element: T, index: number) => void): void;
 }

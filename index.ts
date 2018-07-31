@@ -43,8 +43,7 @@ console.log(`Skip 7: ${q.skip(7).toArray().join(', ')}`);
 console.log(`Distinct: ${q.distinct().toArray().join(', ')}`);
 console.log(`DistinctBy: ${q.distinct(x => x % 2 === 0 ? 0 : 1).toArray().join(', ')}`);
 
-console.log(`ForEach: ${q.map(x => ({ x })).forEach(x => x.x *= 10)
-  .map(x => x.x).toArray().join(', ')}`);
+console.log(`ForEach: ${q.map(x => ({ x })).forEach(x => x.x *= 10)}`);
 console.log(`GroupBy: ${q.groupBy(x => x < 5 ? 0 : 1)
   .toArray()
   .map(x => `(${x.key})[${x.toArray().join(', ')}]`).join(', ')}`);

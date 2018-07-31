@@ -60,13 +60,8 @@ class Query<T> implements IterableQuery<T>{
     return new Query(this);
   }
 
-  forEach(action: (element: T, index: number) => void): IterableQuery<T> {
-    const iterator = map(this, (elem, idx) => {
-      action(elem, idx);
-      return elem;
-    });
-
-    return new Query(iterator);
+  forEach(action: (element: T, index: number) => void): void {
+    reduce(map(this, (elem, idx) => action(elem, idx)), x => x);
   }
 
   concat(other: Iterable<T>): IterableQuery<T> {

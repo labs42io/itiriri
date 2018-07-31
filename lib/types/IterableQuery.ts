@@ -37,13 +37,6 @@ export interface IterableQuery<T> extends
   values(): IterableQuery<T>;
 
   /**
-   * Runs through every element and applies a given function.
-   * @param  {(element:T,index:number)=>void} action action to apply on each element
-   * @returns Iterable<T>
-   */
-  forEach(action: (element: T, index: number) => void): IterableQuery<T>;
-
-  /**
    * Concatenates the sequence with another one.
    * @param  {Iterable<T>} other
    * @returns Iterable<T>
