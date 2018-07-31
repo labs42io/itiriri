@@ -5,39 +5,40 @@ import { IterableQuery } from './IterableQuery';
  */
 export interface IterablePermutation<T> extends Iterable<T> {
   /**
-   * Sorts the elements.
-   * @returns Query
+   * Returns a sequence of sorted elements.
+   * @returns Iterable<T>
    */
   sort(): IterableQuery<T>;
 
   /**
-   * Sorts the elements by a given field.
+   * Returns a sequence of sorted elements compared by a given transformation.
    * @param  {(element:T)=>S} selector field selector
-   * @returns Query
+   * @returns Iterable<T>
    */
   sort<S>(selector: (element: T) => S): IterableQuery<T>;
 
   /**
-   * Sorts the elements in a descending order.
-   * @returns Query
+   * Returns a sequence of sorted elements in a descending order.
+   * @returns Iterable<T>
    */
   sortDesc(): IterableQuery<T>;
 
   /**
-   * Sorts the elements by a given field in a descending order.
+   * Returns a sequence of sorted elements in a descending order
+   * compared by a given transformation.
    * @param  {(element:T)=>S} selector field selector
-   * @returns Query
+   * @returns Iterable<T>
    */
   sortDesc<S>(selector: (element: T) => S): IterableQuery<T>;
 
   /**
-   * Creates a random permutation of elements.
+   * Returns a sequence of elements in a random order.
    */
   shuffle(): IterableQuery<T>;
 
   /**
-   * Reverses the order of elements.
-   * @returns Query
+   * Returns a sequence of elements in a reversed order.
+   * @returns Iterable<T>
    */
   reverse(): IterableQuery<T>;
 }

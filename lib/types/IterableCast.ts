@@ -3,65 +3,65 @@
  */
 export interface IterableCast<T> extends Iterable<T> {
   /**
-   * Returns an array copy of current query.
-   * @returns T
+   * Creates an array copy of the sequence.
+   * @returns T[]
    */
   toArray(): T[];
 
   /**
-   * Returns an array copy of projected values for current query.
-   * @param  {(element:T,index:number)=>S} selector field selector
-   * @returns S
+   * Creates an array copy of transformed values of the sequence.
+   * @param  {(element:T,index:number)=>S} selector element transformation
+   * @returns S[]
    */
   toArray<S>(selector: (element: T, index: number) => S): S[];
 
   /**
-     * Returns a dictionary of key value pairs.
-     * @param  {(element:T)=>M} keySelector key selector
-     * @returns Map
-     */
+   * Creates a map of elements by a given key.
+   * @param  {(element:T)=>M} keySelector key selector
+   * @returns Map<M,N>
+   */
   toMap<M>(
     keySelector: (element: T, index: number) => M): Map<M, T>;
 
   /**
-   * Returns a dictionary of key value pairs by applying a trasformation on values.
+   * Creates a map of transformed elements by a given key.
    * @param  {(element:T)=>M} keySelector key selector
-   * @param  {(element:T)=>N} valueSelector value selector
-   * @returns Map
+   * @param  {(element:T)=>N} valueSelector element transformation
+   * @returns Map<M,N>
    */
   toMap<M, N>(
     keySelector: (element: T, index: number) => M,
     valueSelector: (element: T, index: number) => N): Map<M, N>;
 
   /**
-   * Returns a dictionary of key array values pairs.
+   * Creates a map of element groups by a given key.
    * @param  {(element:T)=>M} keySelector key selector
-   * @returns Map
+   * @returns Map<M,T[]>
    * @todo review name
    */
   toGroups<M>(
     keySelector: (element: T, index: number) => M): Map<M, T[]>;
 
   /**
-   * Returns a dictionary of key array values pairs by applying a trasformation on values.
+   * Creates a map of transformed element groups by a given key.
    * @param  {(element:T)=>M} keySelector key selector
-   * @param  {(element:T)=>N} valueSelector value selector
-   * @returns Map
+   * @param  {(element:T)=>N} valueSelector element transformation
+   * @returns Map<M,N[]>
    */
   toGroups<M, N>(
     keySelector: (element: T, index: number) => M,
     valueSelector: (element: T, index: number) => N): Map<M, N[]>;
 
   /**
-   * Returns elements set.
-   * @returns Set
+   * Creates a set of elements.
+   * @returns Set<T>
    */
   toSet(): Set<T>;
 
   /**
-   * Returns element projected values set.
-   * @param  {(element:T,index:number)=>S} selector filed selector
-   * @returns Set
+   * Creates a set of transformed values.
+   * @param  {(element:T,index:number)=>S} selector element transformation
+   * @returns Set<T>
    */
   toSet<S>(selector: (element: T, index: number) => S): Set<S>;
 

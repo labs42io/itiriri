@@ -19,52 +19,52 @@ export interface IterableQuery<T> extends
   Iterable<T> {
 
   /**
-   * Returns a new Query that contains the key/value pair for each element and its index.
-   * @returns Query
+   * Returns a sequence of key/value pair for each element and its index.
+   * @returns Iterable<[number,T]>
    */
   entries(): IterableQuery<[number, T]>;
 
   /**
-   * Returns a new Query that contains the keys for each index in the sequence.
-   * @returns Query
+   * Returns a sequence of keys for each index in the source sequence.
+   * @returns Iterable<number>
    */
   keys(): IterableQuery<number>;
 
   /**
-   * Returns a new Query that contains the values for each index in the sequence.
-   * @returns Query
+   * Returns a sequence of values for each index in the source sequence.
+   * @returns Iterable<T>
    */
   values(): IterableQuery<T>;
 
   /**
-   * Runs through every element and applies a given function
+   * Runs through every element and applies a given function.
    * @param  {(element:T,index:number)=>void} action action to apply on each element
-   * @returns Query
+   * @returns Iterable<T>
    */
   forEach(action: (element: T, index: number) => void): IterableQuery<T>;
 
   /**
-   * Concatenates the sequence with specified array.
-   * @param  {Iterable<T>} items
-   * @returns Query
+   * Concatenates the sequence with another one.
+   * @param  {Iterable<T>} other
+   * @returns Iterable<T>
    */
-  concat(items: Iterable<T>): IterableQuery<T>;
+  concat(other: Iterable<T>): IterableQuery<T>;
 
   /**
-   * Adds items at the beggining of sequence.
-   * @param  {Iterable<T>} items
-   * @returns Query
+   * Returns a sequence with given elements at the beggining.
+   * @param  {Iterable<T>} other
+   * @returns Iterable<T>
    * @todo review name
    */
-  prepend(items: Iterable<T>): IterableQuery<T>;
+  prepend(other: Iterable<T>): IterableQuery<T>;
 
   /**
-   * Returns a new query filled from a start index to an end index with a static value.
+   * Returns a sequence filled from a start index to an end index with a static value.
    * The end index is not included.
    * @param value value to fill
    * @param start start index, defaults to 0
    * @param end end index, defaults to sequence count
-   * @returns Query
+   * @returns Iterable<T>
    */
   fill(value: T, start?: number, end?: number): IterableQuery<T>;
 }

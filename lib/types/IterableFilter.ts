@@ -5,9 +5,9 @@ import { IterableQuery } from './IterableQuery';
  */
 export interface IterableFilter<T> extends Iterable<T> {
   /**
-   * Returns elements that match the given predicate.
+   * Returns a sequence of elements that pass the predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
-   * @returns Query
+   * @returns Iterable<T>
    */
   filter(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 
@@ -15,7 +15,7 @@ export interface IterableFilter<T> extends Iterable<T> {
    * Returns a specified number of elements from the beginning of sequence.
    * If a negative count is specified, returns elements from the end of the sequence.
    * @param  {number} count
-   * @returns Query
+   * @returns Iterable<T>
    */
   take(count: number): IterableQuery<T>;
 
@@ -24,22 +24,24 @@ export interface IterableFilter<T> extends Iterable<T> {
    * and returns the remaining ones.
    * If a negative count is specified, skips elements from the end of the sequence.
    * @param  {number} count
-   * @returns Query
+   * @returns Iterable<T>
    */
   skip(count: number): IterableQuery<T>;
 
   /**
-   * Returns a new sequence that represents the portion from begin to end.
+   * Returns a sequence that represents the range of elements from begin to end.
    * @param begin zero-based index at which to begin extraction
    * @param end zero-based index before which to end extraction (not including)
+   * @returns Iterable<T>
    */
   slice(begin: number, end: number): IterableQuery<T>;
 
   /**
-   * Returns a new query that skips elements and/or adds new elements.
+   *  Returns a sequence that skips elements and/or adds new elements.
    * @param start index at which to start skip elements
    * @param deleteCount the number of elements to skip
    * @param items the elements to add at start index
+   * @returns Iterable<T>
    */
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T>;
 }

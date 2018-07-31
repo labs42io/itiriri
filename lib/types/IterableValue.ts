@@ -1,14 +1,13 @@
 /**
- * Calcualte a scalar value over an iterable.
+ * Calculate a scalar value over an iterable.
  */
 export interface IterableValue<T> extends Iterable<T> {
   /**
    * Returns the element at a specified index.
-   * For a negative index returns the element from the end of the iterable.
+   * For a negative index returns the element from the end of the sequence.
    * If index is out of the range, returns undefined.
    * @param  {number} index element's index
    * @returns T
-   * @todo review name
    */
   at(index: number): T;
 
@@ -45,13 +44,13 @@ export interface IterableValue<T> extends Iterable<T> {
   findLastIndex(predicate: (element: T) => boolean): number;
 
   /**
-   * Returns the count of elements.
+   * Returns the number of elements.
    * @returns number
    */
   count(): number;
 
   /**
-   * Returns the count of elements matching the specified predicate.
+   * Returns the number of elements matching the specified predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns number
    */
@@ -66,7 +65,7 @@ export interface IterableValue<T> extends Iterable<T> {
 
   /**
    * Finds the first element that satisfies the specified predicate.
-   * If no elements satisfies the predicate, returns undefined.
+   * If no element satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
@@ -80,7 +79,7 @@ export interface IterableValue<T> extends Iterable<T> {
 
   /**
    * Finds the last element that satisfies the specified predicate.
-   * If no elements satisfies the predicate, returns undefined.
+   * If no element satisfies the predicate, returns undefined.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
@@ -94,9 +93,9 @@ export interface IterableValue<T> extends Iterable<T> {
   average(): number;
 
   /**
-   * Invokes the transformation of elements with a given selector and returns the average value.
+   * Returns the average value over a sequence of transformed values.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element field selector
+   * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
   average(selector: (element: T, index: number) => number): number;
@@ -109,9 +108,9 @@ export interface IterableValue<T> extends Iterable<T> {
   min(): number;
 
   /**
-   * Invokes the transformation of elements with a given selector and returns the minimum value.
+   * Returns the minimum value from a sequence of transformed values.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element field selector
+   * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
   min(selector: (element: T, index: number) => number): number;
@@ -124,9 +123,9 @@ export interface IterableValue<T> extends Iterable<T> {
   max(): number;
 
   /**
-   * Invokes the transformation of elements with a given selector and returns the maximum value.
+   * Returns the maximum value from a sequence of transformed values.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element field selector
+   * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
   max(selector: (element: T, index: number) => number): number;
@@ -139,9 +138,9 @@ export interface IterableValue<T> extends Iterable<T> {
   sum(): number;
 
   /**
-   * Invokes the transformation of elements with a given selector and returns the sum of values.
+   * Returns the sum of elements from a sequence of transformed values.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element field selector
+   * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
   sum(selector: (element: T, index: number) => number): number;

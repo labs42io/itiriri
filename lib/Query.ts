@@ -33,8 +33,8 @@ import { IterableQueryGroup } from './types/IterableTransformation';
 import { iterator } from './utils/iterator';
 import { iterable } from './utils/iterable';
 
-export function query<T>(items: Iterable<T>): IterableQuery<T> {
-  return new Query(items);
+export function query<T>(source: Iterable<T>): IterableQuery<T> {
+  return new Query(source);
 }
 
 class Query<T> implements IterableQuery<T>{
@@ -69,12 +69,12 @@ class Query<T> implements IterableQuery<T>{
     return new Query(iterator);
   }
 
-  concat(items: Iterable<T>): IterableQuery<T> {
-    return new Query(concat(this, items));
+  concat(other: Iterable<T>): IterableQuery<T> {
+    return new Query(concat(this, other));
   }
 
-  prepend(items: Iterable<T>): IterableQuery<T> {
-    return new Query(concat(items, this));
+  prepend(other: Iterable<T>): IterableQuery<T> {
+    return new Query(concat(other, this));
   }
 
   fill(value: T, start?: number, end?: number): IterableQuery<T> {
@@ -234,29 +234,29 @@ class Query<T> implements IterableQuery<T>{
     return new Query(distinct(this, selector));
   }
 
-  exclude<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(exclude(this, items, selector));
+  exclude<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
+    return new Query(exclude(this, other, selector));
   }
 
-  intersect<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(intersect(this, items, selector));
+  intersect<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
+    return new Query(intersect(this, other, selector));
   }
 
-  union<S>(items: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(distinct(concat(this, items), selector));
+  union<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
+    return new Query(distinct(concat(this, other), selector));
   }
   // #endregion
 
   // #region IterableJoin implementation
   join<TKey, TRight, TResult>(
-    items: Iterable<TRight>,
+    other: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight) => TResult,
   ): IterableQuery<TResult> {
     const iterator = join(
       this,
-      items,
+      other,
       leftKeySelector,
       rightKeySelector,
       joinSelector);
@@ -265,14 +265,14 @@ class Query<T> implements IterableQuery<T>{
   }
 
   leftJoin<TKey, TRight, TResult>(
-    items: Iterable<TRight>,
+    other: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right?: TRight) => TResult,
   ): IterableQuery<TResult> {
     const iterator = leftJoin(
       this,
-      items,
+      other,
       leftKeySelector,
       rightKeySelector,
       joinSelector);
@@ -281,7 +281,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   rightJoin<TKey, TRight, TResult>(
-    items: Iterable<TRight>,
+    other: Iterable<TRight>,
     rightKeySelector: (element: TRight, index: number) => TKey,
     leftKeySelector: (element: T, index: number) => TKey,
     joinSelector: (right: TRight, left?: T) => TResult,
@@ -290,14 +290,14 @@ class Query<T> implements IterableQuery<T>{
   }
 
   groupJoin<TKey, TRight, TResult>(
-    items: Iterable<TRight>,
+    other: Iterable<TRight>,
     leftKeySelector: (element: T, index: number) => TKey,
     rightKeySelector: (element: TRight, index: number) => TKey,
     joinSelector: (left: T, right: TRight[]) => TResult,
   ): IterableQuery<TResult> {
     const iterator = groupJoin(
       this,
-      items,
+      other,
       leftKeySelector,
       rightKeySelector,
       joinSelector);

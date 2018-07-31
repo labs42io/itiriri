@@ -5,61 +5,62 @@ import { IterableQuery } from './IterableQuery';
  */
 export interface IterableSet<T> extends Iterable<T> {
   /**
-   * Returns unique elements.
-   * @returns Query
+   * Returns a sequence of unique elements.
+   * @returns Iterable<T>
    */
   distinct(): IterableQuery<T>;
 
   /**
-   * Returns elements only having unique field values.
-   * @param  {(element:T)=>S} selector element field selector
-   * @returns Query
+   * Returns a sequence of unique element transformations.
+   * @param  {(element:T)=>S} selector element transformation
+   * @returns Iterable<T>
    */
   distinct<S>(selector: (element: T) => S): IterableQuery<T>;
 
   /**
-   * Returns a query with excluded items.
-   * @param  {Iterable<T>} items items to exclude
-   * @returns Query
+   * Returns a sequence of unique elements not contained in a given sequence.
+   * @param  {Iterable<T>} others element transformation
+   * @returns Iterable<T>
    */
-  exclude(items: Iterable<T>): IterableQuery<T>;
+  exclude(others: Iterable<T>): IterableQuery<T>;
 
   /**
-   * Returns a query with excluded items comparing by the given field selector.
-   * @param  {Iterable<T>} items items to compare and exclude
-   * @param  {(element: T)=>S} selector element field selector
-   * @returns Query
+   * Returns a sequence of unique elements not contained in a given sequence
+   * using a transformation for value comparisons.
+   * @param  {Iterable<T>} others items to compare and exclude
+   * @param  {(element: T)=>S} selector element transformation
+   * @returns Iterable<T>
    */
-  exclude<S>(items: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
+  exclude<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
   /**
    * Returns a set intersection with a given sequence.
-   * @param  {Iterable<T>} items
-   * @returns Query
+   * @param  {Iterable<T>} others
+   * @returns Iterable<T>
    */
-  intersect(items: Iterable<T>): IterableQuery<T>;
+  intersect(others: Iterable<T>): IterableQuery<T>;
 
   /**
-   * Returns a set intersection with a given sequence using a field selector for comparisons.
-   * @param  {Iterable<T>} items
-   * @pa{(element: T)=>S} selector element field selector
-   * @returns Query
+   * Returns a set intersection with a given sequence using a transformation for comparisons.
+   * @param  {Iterable<T>} others
+   * @pa{(element: T)=>S} element transformation
+   * @returns Iterable<T>
    */
-  intersect<S>(items: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
+  intersect<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
   /**
    * Returns a set union with a given sequence.
-   * @param  {Iterable<T>} items
-   * @returns Query
+   * @param  {Iterable<T>} others
+   * @returns Iterable<T>
    */
-  union(items: Iterable<T>): IterableQuery<T>;
+  union(others: Iterable<T>): IterableQuery<T>;
 
   /**
-   *Returns a set union with a given sequence using a field selector for comparisons.
-   * @param  {Iterable<T>} items
-   * @pa{(element: T)=>S} selector element field selector
-   * @returns Query
+   * Returns a set union with a given sequence using a transformation for comparisons.
+   * @param  {Iterable<T>} others
+   * @pa{(element: T)=>S} element transformation
+   * @returns Iterable<T>
    */
-  union<S>(items: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
+  union<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
 }

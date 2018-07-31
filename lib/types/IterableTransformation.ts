@@ -5,32 +5,32 @@ import { IterableQuery } from './IterableQuery';
  */
 export interface IterableTransformation<T> extends Iterable<T> {
   /**
-   * Projects each element into a new form.
-   * @param  {(element:T,index:number)=>S} selector
-   * @returns Query
+   * Returns a sequence of transformed values.
+   * @param  {(element:T,index:number)=>S} selector element transformation
+   * @returns Iterable<T>
    */
   map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 
   /**
-   * Returns a new sequence with all sub-sequences concatenated.
-   * @param  {(element:T,index:number)=>Iterable<S>} selector
-   * @returns Query
+   * Returns a sequence with all sub-sequences concatenated.
+   * @param  {(element:T,index:number)=>Iterable<S>} selector sub-sequence
+   * @returns Iterable<T>
    */
   flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S>;
 
   /**
    * Groups elements by a given key.
    * @param  {(element:T,index:number)=>K} keySelector key selector
-   * @returns Query
+   * @returns Iterable<T>
    */
   groupBy<K>(
     keySelector: (element: T, index: number) => K): IterableQuery<IterableQueryGroup<K, T>>;
 
   /**
-   * Groups elements by a given key and applies a transformation on the grouped items.
+   * Groups elements by a given key and applies a transformation over the elements.
    * @param  {(element:T,index:number)=>K} keySelector key selector
-   * @param  {(element:T,index:number)=>E} valueSelector value selector
-   * @returns Query
+   * @param  {(element:T,index:number)=>E} valueSelector element transformation
+   * @returns Iterable<T>
    */
   groupBy<K, E>(
     keySelector: (element: T, index: number) => K,
@@ -38,7 +38,7 @@ export interface IterableTransformation<T> extends Iterable<T> {
 }
 
 /**
- * A queryable collection group representation.
+ * An iterable group representation.
  */
 export interface IterableQueryGroup<K, T> extends IterableQuery<T> {
   /**

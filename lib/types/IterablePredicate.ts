@@ -3,21 +3,21 @@
  */
 export interface IterablePredicate<T> extends Iterable<T> {
   /**
-   * Determines whether all elements satisfy the given predicate.
+   * Tests whether all the elements pass the predicate.
    * @param  {(element:T, index:number)=>boolean} predicate element predicate
    * @returns boolean
    */
   every(predicate: (element: T, index: number) => boolean): boolean;
 
   /**
-   * Determines whether any element satisfies the given predicate.
+   * Tests whether at least one element passes the predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns boolean
    */
   some(predicate: (element: T, index: number) => boolean): boolean;
 
   /**
-   * Determines whether a given element is contained within the sequence.
+   * Determines whether the sequence includes the element.
    * @param  {T} element element to search
    */
   includes(element: T): boolean;
