@@ -459,4 +459,28 @@ describe('Query', () => {
       expect(q.last()).to.be.undefined;
     });
   });
+
+  describe('When calling findLast', () => {
+    it('Should return 33', () => {
+      const source = new SpyIterable([6, 3, 4, 33, 2, 4]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.findLast(x => x > 30)).to.be.equal(33);
+    });
+    it('Should return undefined', () => {
+      const source = new SpyIterable([1, 2]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.findLast((elem, idx) => elem + idx === 0)).to.be.undefined;
+    });
+    it('Should return first element', () => {
+      const source = new SpyIterable([3, 4, 5, 5]);
+      const q = query(source).take(10);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.findLast(x => x === 3)).to.be.equal(3);
+    });
+  });
 });
