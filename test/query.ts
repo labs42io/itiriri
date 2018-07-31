@@ -159,7 +159,7 @@ describe('Query', () => {
     });
   });
 
-  describe.skip('When calling fill', () => {
+  describe.skip('When calling fill with positive indexes', () => {
     it('Should return 5 elements', () => {
       const source = new SpyIterable(numberGenerator());
       const q = query(source).fill(10, 1, 3).take(5);
@@ -174,6 +174,90 @@ describe('Query', () => {
 
       expect(source.wasIterated).to.be.false;
       expect(q.toArray()).to.be.deep.equal([0, 11, 2, 3]);
+    });
+
+    it('Should return same elements', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).fill(100, 4, 1).take(10);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+
+    it('Should return 10 elements', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).fill(10, 2).take(10);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 1, 10, 10, 10, 10, 10, 10, 10, 10, 10]);
+    });
+
+    it('Should return 4 elements', () => {
+      const source = new SpyIterable([1, -2, 3, -4]);
+      const q = query(source).fill(0);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 0, 0, 0]);
+    });
+  });
+
+  describe.skip('When calling fill with negative indexes', () => {
+    it('Should return 5 elements', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).take(5).fill(10, -3, -1);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 1, 10, 10, 4]);
+    });
+
+    it('Should return 4 elements', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).take(4).fill(11, -1, -1);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 1, 11, 2]);
+    });
+
+    it('Should return same elements', () => {
+      const source = new SpyIterable(numberGenerator());
+      const q = query(source).fill(100, -1, -4).take(10);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+
+    it('Should return 4 elements', () => {
+      const source = new SpyIterable([-1, 2, -3, 4]);
+      const q = query(source).fill(0, -2);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([-1, 0, 0, 0]);
+    });
+  });
+
+  describe.skip('When called with mixed indexes', () => {
+    it('Should return 5 elements', () => {
+      const source = new SpyIterable([4, 5, 1, 2, 3]);
+      const q = query(source).fill(0, 1, -1);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([4, 0, 0, 2, 3]);
+    });
+
+    it('Should return 4 elements', () => {
+      const source = new SpyIterable([4, 1, 2, 3]);
+      const q = query(source).fill(0, -2, 3);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([4, 0, 0, 0]);
+    });
+
+    it('Should return 6 elements', () => {
+      const source = new SpyIterable([4, 1, 5, 1, 2, 3]);
+      const q = query(source).fill(0, 4, -4);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([4, 1, 5, 1, 2, 3]);
     });
   });
 
