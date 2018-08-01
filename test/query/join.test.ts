@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { query } from '../../lib/Query';
 import { SpyIterable } from '../helpers/SpyIterable';
 
-describe('Qwery (join)', () => {
+describe('Query (join)', () => {
   describe('When calling join', () => {
     it('Should return array of 2 elements', () => {
       const source1 = new SpyIterable([0, 4, 5, 1]);
