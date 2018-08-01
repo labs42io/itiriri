@@ -69,6 +69,13 @@ describe('Query (query)', () => {
       expect(source2.wasIterated).to.be.false;
       expect(q2.toArray()).to.be.deep.equal([20, 30, 40, 100, 200, 300]);
     });
+    it('Should return 2 elements', () => {
+      const source = new SpyIterable([1]);
+      const q = query(source).prepend(2);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([2, 1]);
+    });
   });
 
   describe('When calling fill with positive indexes', () => {

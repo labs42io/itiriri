@@ -38,18 +38,18 @@ export interface IterableQuery<T> extends
 
   /**
    * Concatenates the sequence with another one.
-   * @param  {Iterable<T>} other
+   * @param  {Iterable<T> | T} other
    * @returns Iterable<T>
    */
   concat(other: T | Iterable<T>): IterableQuery<T>;
 
   /**
    * Returns a sequence with given elements at the beggining.
-   * @param  {Iterable<T>} other
+   * @param  {Iterable<T> | T} other
    * @returns Iterable<T>
    * @todo review name
    */
-  prepend(other: Iterable<T>): IterableQuery<T>;
+  prepend(other: Iterable<T> | T): IterableQuery<T>;
 
   /**
    * Returns a sequence filled from a start index to an end index with a static value.

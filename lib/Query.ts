@@ -72,8 +72,10 @@ class Query<T> implements IterableQuery<T>{
       new Query(concat(this, [other]));
   }
 
-  prepend(other: Iterable<T>): IterableQuery<T> {
-    return new Query(concat(other, this));
+  prepend(other: T | Iterable<T>): IterableQuery<T> {
+    return isIterable(other) ?
+      new Query(concat(other, this)) :
+      new Query(concat([other], this));
   }
 
   fill(value: T, start?: number, end?: number): IterableQuery<T> {
