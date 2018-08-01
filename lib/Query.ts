@@ -200,7 +200,9 @@ class Query<T> implements IterableQuery<T>{
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {
-    throw new Error('Method not implemented.');
+    return new Query(take(this, start))
+      .concat([...items])
+      .concat(skip(this, start + deleteCount));
   }
   // #endregion
 

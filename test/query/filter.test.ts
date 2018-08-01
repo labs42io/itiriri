@@ -83,4 +83,21 @@ describe('Query (filter)', () => {
       expect(q.toArray()).to.be.deep.equal([10]);
     });
   });
+
+  describe('When calling splice', () => {
+    it('Should return 5 elemens', () => {
+      const source = new SpyIterable([1, 2, 3, 4, 5, 6, 7]);
+      const q = query(source).splice(1, 5, -1, -2, -3);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([1, -1, -2, -3, 7]);
+    });
+    it('Should return 3 elemens', () => {
+      const source = new SpyIterable([1, 2, 3, 4, 5, 6, 7]);
+      const q = query(source).splice(0, 7, -1, -2, -3);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([-1, -2, -3]);
+    });
+  });
 });
