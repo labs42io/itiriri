@@ -71,4 +71,22 @@ describe('Query (transformation)', () => {
       ]);
     });
   });
+
+  describe('When calling flat', () => {
+    it('Should return array of 5 elements', () => {
+      const source = new SpyIterable([[1, 2, 3], [4, 5]]);
+      const q = query(source).flat((elem, idx) => {
+        const res = [];
+
+        elem.forEach((element) => {
+          res.push(element);
+        });
+
+        return res;
+      });
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+  });
 });
