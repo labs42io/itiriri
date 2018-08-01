@@ -32,6 +32,7 @@ import { IterableQuery } from './types/IterableQuery';
 import { IterableQueryGroup } from './types/IterableTransformation';
 import { iterator } from './utils/iterator';
 import { iterable } from './utils/iterable';
+import { fill } from './iterators/fill';
 
 export function query<T>(source: Iterable<T>): IterableQuery<T> {
   return new Query(source);
@@ -73,7 +74,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   fill(value: T, start?: number, end?: number): IterableQuery<T> {
-    throw new Error('Method not implemented.');
+    return new Query(fill(this, value, start, end));
   }
   // #endregion
 

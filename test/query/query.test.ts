@@ -64,7 +64,7 @@ describe('Query (query)', () => {
     });
   });
 
-  describe.skip('When calling fill with positive indexes', () => {
+  describe('When calling fill with positive indexes', () => {
     it('Should return 5 elements', () => {
       const source = new SpyIterable(numberGenerator());
       const q = query(source).fill(10, 1, 3).take(5);
@@ -120,12 +120,12 @@ describe('Query (query)', () => {
       const q = query(source).take(4).fill(11, -1, -1);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.toArray()).to.be.deep.equal([0, 1, 11, 2]);
+      expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3]);
     });
 
     it('Should return same elements', () => {
       const source = new SpyIterable(numberGenerator());
-      const q = query(source).fill(100, -1, -4).take(10);
+      const q = query(source).take(10).fill(100, -1, -4);
 
       expect(source.wasIterated).to.be.false;
       expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -136,7 +136,7 @@ describe('Query (query)', () => {
       const q = query(source).fill(0, -2);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.toArray()).to.be.deep.equal([-1, 0, 0, 0]);
+      expect(q.toArray()).to.be.deep.equal([-1, 2, 0, 0]);
     });
   });
 
@@ -154,7 +154,7 @@ describe('Query (query)', () => {
       const q = query(source).fill(0, -2, 3);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.toArray()).to.be.deep.equal([4, 0, 0, 0]);
+      expect(q.toArray()).to.be.deep.equal([4, 1, 0, 3]);
     });
 
     it('Should return 6 elements', () => {
