@@ -53,7 +53,7 @@ describe('Query (join)', () => {
     });
   });
 
-  describe.only('When calling rightJoin', () => {
+  describe('When calling rightJoin', () => {
     it('Should return array of 4 elements', () => {
       const source1 = new SpyIterable([0, 4, 5, 1]);
       const source2 = new SpyIterable([-1, 4, 5, -2]);

@@ -286,7 +286,7 @@ class Query<T> implements IterableQuery<T>{
       this,
       rightKeySelector,
       leftKeySelector,
-      joinSelector
+      joinSelector,
     );
 
     return new Query(iterator);
