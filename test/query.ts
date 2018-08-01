@@ -1171,4 +1171,36 @@ describe('Query', () => {
       ]);
     });
   });
+
+  describe('When calling join', () => {
+    it('Should return array of 2 elements', () => {
+      const source1 = new SpyIterable([0, 4, 5, 1]);
+      const source2 = new SpyIterable([-1, 4, 5, -1]);
+      const q = query(source1).join(source2, x => x, x => x, x => x);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+
+      expect(q.toArray()).to.deep.equal([4, 5]);
+    });
+
+    it('Should return array of 3 elements', () => {
+      const source1 = new SpyIterable([
+        { val: 1, tag: 'a' },
+        { val: 11, tag: 'b' },
+        { val: 111, tag: 'a' },
+        { val: 1111, tag: 'c' },
+      ]);
+      const source2 = new SpyIterable([
+        { val: 2, tag: 'a' },
+        { val: 2222, tag: 'c' },
+      ]);
+      const q = query(source1).join(source2, x => x.tag, x => x.tag, (e1, e2) => e1.val + e2.val);
+
+      expect(source1.wasIterated).to.be.false;
+      expect(source2.wasIterated).to.be.false;
+
+      expect(q.toArray()).to.deep.equal([3, 113, 3333]);
+    });
+  });
 });
