@@ -59,4 +59,28 @@ describe('Query (filter)', () => {
       expect(q.at(0)).to.be.equal(21);
     });
   });
+
+  describe('When calling slice', () => {
+    it('Should return 3 elemens', () => {
+      const source = new SpyIterable(numberGenerator(1, 2));
+      const q = query(source).slice(4, 6);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([9, 11, 13]);
+    });
+    it('Should return empty source', () => {
+      const source = new SpyIterable(numberGenerator(10, 2));
+      const q = query(source).slice(7, 6);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+    it('Should return one element', () => {
+      const source = new SpyIterable(numberGenerator(10, 2));
+      const q = query(source).slice(0, 0);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([10]);
+    });
+  });
 });

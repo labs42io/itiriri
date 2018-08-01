@@ -195,8 +195,8 @@ class Query<T> implements IterableQuery<T>{
     return new Query(skip(this, count));
   }
 
-  slice(begin: number, end: number): IterableQuery<T> {
-    throw new Error('Method not implemented.');
+  slice(start: number, end: number): IterableQuery<T> {
+    return new Query(skip(take(this, end + 1), start));
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {

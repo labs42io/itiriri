@@ -29,12 +29,12 @@ export interface IterableFilter<T> extends Iterable<T> {
   skip(count: number): IterableQuery<T>;
 
   /**
-   * Returns a sequence that represents the range of elements from begin to end.
-   * @param begin zero-based index at which to begin extraction
+   * Returns a sequence that represents the range of elements from start to end.
+   * @param start zero-based index at which to start extraction
    * @param end zero-based index before which to end extraction (not including)
    * @returns Iterable<T>
    */
-  slice(begin: number, end: number): IterableQuery<T>;
+  slice(start: number, end: number): IterableQuery<T>;
 
   /**
    *  Returns a sequence that skips elements and/or adds new elements.
