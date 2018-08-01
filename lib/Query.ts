@@ -335,11 +335,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   toString(): string {
-    return reduce(
-      this,
-      (s, e, i) => s + (i !== 0 ? ',' : '') + (e !== null && e !== undefined ? e.toString() : ''),
-      '',
-    );
+    return this.toArray().toString();
   }
   // #endregion
 }
