@@ -53,7 +53,7 @@ describe('Query (join)', () => {
     });
   });
 
-  describe.skip('When calling rightJoin', () => {
+  describe.only('When calling rightJoin', () => {
     it('Should return array of 4 elements', () => {
       const source1 = new SpyIterable([0, 4, 5, 1]);
       const source2 = new SpyIterable([-1, 4, 5, -2]);
@@ -63,10 +63,10 @@ describe('Query (join)', () => {
       expect(source2.wasIterated).to.be.false;
 
       expect(q.toArray()).to.deep.equal([
-        { e1: undefined, e2: -1 },
-        { e1: 4, e2: 4 },
-        { e1: 5, e2: 5 },
-        { e1: undefined, e2: -2 },
+        { e2: undefined, e1: -1 },
+        { e2: 4, e1: 4 },
+        { e2: 5, e1: 5 },
+        { e2: undefined, e1: -2 },
       ]);
     });
   });

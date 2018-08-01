@@ -281,7 +281,16 @@ class Query<T> implements IterableQuery<T>{
     leftKeySelector: (element: T, index: number) => TKey,
     joinSelector: (right: TRight, left?: T) => TResult,
   ): IterableQuery<TResult> {
-    throw new Error('Method not implemented.');
+    const iterator = leftJoin(
+      other,
+      this,
+      rightKeySelector,
+      leftKeySelector,
+      joinSelector
+    );
+
+    return new Query(iterator);
+    // throw new Error('Method not implemented.');
   }
 
   groupJoin<TKey, TRight, TResult>(
