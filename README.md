@@ -31,14 +31,15 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 
 ```
 
-
 ## Todo
+
 * Implement .toString
 * Implement .fill
 * Implement .slice
 * Implement .splice
 * Implement .rightJoin
 * Example folder with examples
+* Create and test Browserify bundle 
 * Documentation
 * Publish to NPM
 * Performance tests (CPU, memory)
@@ -46,11 +47,13 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 ---
 
 ## Features to consider
-#### [.flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) ?
 
+### [.flatMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) ?
 
-___
+---
+
 ### API Documentation
+
 * [at](#at)
 * [average](#average)
 * [concat](#concat)
