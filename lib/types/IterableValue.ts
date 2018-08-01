@@ -73,6 +73,7 @@ export interface IterableValue<T> extends Iterable<T> {
 
   /**
    * Returns the last element.
+   * For an empty sequence returns undefined.
    * @returns T
    */
   last(): T;

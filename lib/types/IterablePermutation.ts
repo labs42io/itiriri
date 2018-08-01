@@ -32,7 +32,7 @@ export interface IterablePermutation<T> extends Iterable<T> {
   sortDesc<S>(selector: (element: T) => S): IterableQuery<T>;
 
   /**
-   * Returns a sequence of elements in a random order.
+   * Returns the sequence of elements in a random order.
    */
   shuffle(): IterableQuery<T>;
 

@@ -17,7 +17,7 @@ export interface IterablePredicate<T> extends Iterable<T> {
   some(predicate: (element: T, index: number) => boolean): boolean;
 
   /**
-   * Determines whether the sequence includes the element.
+   * Determines whether the sequence includes a certain element.
    * @param  {T} element element to search
    */
   includes(element: T): boolean;

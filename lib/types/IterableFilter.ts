@@ -37,7 +37,7 @@ export interface IterableFilter<T> extends Iterable<T> {
   slice(start: number, end: number): IterableQuery<T>;
 
   /**
-   *  Returns a sequence that skips elements and/or adds new elements.
+   * Returns a sequence that skips elements and/or adds new elements.
    * @param start index at which to start skip elements
    * @param deleteCount the number of elements to skip
    * @param items the elements to add at start index
