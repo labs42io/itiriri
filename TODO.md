@@ -1,36 +1,74 @@
+## Todo
+### Current release
+* Examples folder
+* Finish documentation
+* Publish to NPM
+
+### Next release
+* Performance tests (CPU, memory)
+  * Comparison with JS native array
+  * Comparison with popular JS libraries
+* Create ES5 `...-es5` dedicated package from current one
+* Async iterables - possibly create a separate `...-async` package
+
 # Proposal and to be discussed
-
-* (TBD) Consider `index()` instead of `at()`
-* (TBD) Consider `length()` instead of `count()`
-
-* `concat()` should have the parameter optional and allow direct value
-* `prepend()` should have the parameter optional and allow direct value
-
+* ensure in `slice` both parameters are optional
+* ensure in `splice` only start parameter is required
 * `exclude` should exclude only matched items and not produce a set
-
 * `groupBy` to return [key, iterable] instead of iterable with key field
 ```ts
 groupBy<K, E>(
   keySelector: (element: T, index: number) => K,
   valueSelector: (element: T, index: number) => E): IterableQuery<[K, IterableQuery<E>]>;
 ```
-
 * `includes` extend with second parameter called `fromIndex` to be inline with JS
 * `indexOf` extend with second parameter called `fromIndex` to be inline with JS
 * `lastIndexOf` extend with second parameter called `fromIndex` to be inline with JS
+* (TBD) Consider `index()` instead of `at()`
+* (TBD) Consider `length()` instead of `count()`
 * (TBD) `min`, `max` and `sort` use comparisons. `sort` is not inline with JS sort, should accept a comparer function.
 Proposal to change signature of those methods to accept a comparer as in JS and rename current to `minBy`, `maxBy`, `sortBy`
 
-* ensure in `slice` both parameters are optional
-* ensure in `splice` only start parameter is required
 
+# Code review
 
+* `fill` iterator not inline with JS:
+```ts
+[1, 2, 3].fill(4, 1, 2); // returns [1, 4, 3]
+query([1, 2, 3]).fill(4, 1, 2); // returns [1, 4, 4]
+```
+End index if specified should not be included.
+Adjust unit tests.
 
+```ts
+// As a good practice consider using '.' at the end of sentences (errors, documentation etc.)
+throw new Error('Invalid start range, use positive index');
+```
 
-## Todo
+* `isIterable`
+  * A even better check is to ensure that `typeof item[Symbol.iterator] === 'function'`.
+  * Should also be covered with unit tests.
 
-* Example folder with examples
-* Create and test Browserify bundle 
-* Documentation
-* Publish to NPM
-* Performance tests (CPU, memory)
+* `Query.forEach`
+  * The implementation is perfectly correct, but reduce just doesn't feel right for this example.
+  At the same time, reduce and map lead to allocation and creation of two iterators.
+  I'd suggest that we use simple `for of` statement.
+* `Query.slice` & `Query.splice`
+  * end index should not be included
+  * are negative indexes supported? If yes, cover with tests, if not then throw an error and also cover with tests.
+* `Query.splice`
+  * Implementation not optimized, source will be iterated twice. 
+  This also leads to the idea we should cover with tests and ensure we iterate the source only once!
+  * Due to increasing complexity in splice, I'd suggest that we create an iterator function for it.
+* `Query.rightJoin`
+  * has an implementation issue, `joinSelector` is incorrectly used. Make sure to add a better test that covers this.
+  * remove commented out code
+
+* `numberGenerator` 
+  * is in file `generators.ts`, consider making them inline. What about name `numbers()` ?
+
+* `Query` unit tests
+  * `expect(source.wasIterated).to.be.false;` there should be a dedicated test where to use it.
+  I mean each method should be covered with a test like `Is a deferred method`.
+  Do not use it then in other tests as this lead to the situation that if an iterator is iterated all tests fail even if the implementation is correct.
+* `Good job!`

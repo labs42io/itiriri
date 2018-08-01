@@ -61,7 +61,7 @@ describe('Query (filter)', () => {
   });
 
   describe('When calling slice', () => {
-    it('Should return 3 elemens', () => {
+    it('Should return 3 elements', () => {
       const source = new SpyIterable(numberGenerator(1, 2));
       const q = query(source).slice(4, 6);
 

@@ -52,6 +52,23 @@ export interface IterableQuery<T> extends
   prepend(other: Iterable<T> | T): IterableQuery<T>;
 
   /**
+   * Returns a sequence filled from 0-th index to the end of the sequence with a static value.
+   * The end index is not included.
+   * @param value value to fill
+   * @returns Iterable<T>
+   */
+  fill(value: T): IterableQuery<T>;
+
+  /**
+   * Returns a sequence filled from a start index to the end of the sequence with a static value.
+   * The end index is not included.
+   * @param value value to fill
+   * @param start start index, defaults to 0
+   * @returns Iterable<T>
+   */
+  fill(value: T, start: number): IterableQuery<T>;
+
+  /**
    * Returns a sequence filled from a start index to an end index with a static value.
    * The end index is not included.
    * @param value value to fill
@@ -59,7 +76,5 @@ export interface IterableQuery<T> extends
    * @param end end index, defaults to sequence count
    * @returns Iterable<T>
    */
-  fill(value: T): IterableQuery<T>;
-  fill(value: T, start: number): IterableQuery<T>;
   fill(value: T, start: number, end: number): IterableQuery<T>;
 }

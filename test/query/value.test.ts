@@ -434,7 +434,7 @@ describe('Query (value)', () => {
       expect(result).to.be.deep.equal([10, 11, 12, 13]);
     });
 
-    it('Should return 3 transformed elemnts', () => {
+    it('Should return 3 transformed elements', () => {
       const q = query(numberGenerator(10, 10));
       const result = [];
       q.take(3).forEach((elem, idx) => result.push(elem + idx));
