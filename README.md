@@ -33,7 +33,11 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 
 
 ## Todo
-* Tests index.ts
+* Implement .toString
+* Implement .fill
+* Implement .slice
+* Implement .splice
+* Implement .rightJoin
 * Example folder with examples
 * Documentation
 * Publish to NPM
