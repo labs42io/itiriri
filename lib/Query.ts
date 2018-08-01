@@ -334,7 +334,11 @@ class Query<T> implements IterableQuery<T>{
   }
 
   toString(): string {
-    throw new Error('Method not implemented.');
+    return reduce(
+      this,
+      (s, e, i) => s + (i !== 0 ? ',' : '') + (e !== null && e !== undefined ? e.toString() : ''),
+      '',
+    );
   }
   // #endregion
 }

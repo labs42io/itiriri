@@ -105,4 +105,40 @@ describe('Query (cast)', () => {
       ]);
     });
   });
+
+  describe('When calling toString', () => {
+    it('Should return string of 3 elements', () => {
+      const source = new SpyIterable([4, 1, 2]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toString()).to.be.equal('4,1,2');
+    });
+    it('Should return empty string', () => {
+      const source = new SpyIterable([]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toString()).to.be.equal('');
+    });
+    it('Should return string of 5 elements', () => {
+      const source = new SpyIterable([-1, null, 4, 1, 2]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toString()).to.be.equal('-1,,4,1,2');
+    });
+    it('Should return string of 4 elements', () => {
+      const source = new SpyIterable([
+        { toString: () => 'a' },
+        { toString: () => 'aa' },
+        { toString: () => 'aaa' },
+        { toString: () => 'aaaa' },
+      ]);
+      const q = query(source);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toString()).to.be.equal('a,aa,aaa,aaaa');
+    });
+  });
 });
