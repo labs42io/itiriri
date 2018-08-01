@@ -33,9 +33,6 @@ foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
 
 ## Todo
 
-* Implement .fill
-* Implement .slice
-* Implement .splice
 * Example folder with examples
 * Create and test Browserify bundle 
 * Documentation
