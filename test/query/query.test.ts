@@ -47,6 +47,13 @@ describe('Query (query)', () => {
       expect(source2.wasIterated).to.be.false;
       expect(q2.toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 0, 2, 4, 6, 8]);
     });
+    it('Should return 2 elements', () => {
+      const source = new SpyIterable(numberGenerator(0, 2));
+      const q = query(source).take(1).concat(5);
+
+      expect(source.wasIterated).to.be.false;
+      expect(q.toArray()).to.be.deep.equal([0, 5]);
+    });
   });
 
   describe('When calling prepend', () => {

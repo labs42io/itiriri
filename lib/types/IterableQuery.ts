@@ -41,7 +41,7 @@ export interface IterableQuery<T> extends
    * @param  {Iterable<T>} other
    * @returns Iterable<T>
    */
-  concat(other: Iterable<T>): IterableQuery<T>;
+  concat(other: T | Iterable<T>): IterableQuery<T>;
 
   /**
    * Returns a sequence with given elements at the beggining.

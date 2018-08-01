@@ -33,6 +33,7 @@ import { IterableQueryGroup } from './types/IterableTransformation';
 import { iterator } from './utils/iterator';
 import { iterable } from './utils/iterable';
 import { fill } from './iterators/fill';
+import { isIterable } from './utils/isIterable';
 
 export function query<T>(source: Iterable<T>): IterableQuery<T> {
   return new Query(source);
@@ -65,8 +66,10 @@ class Query<T> implements IterableQuery<T>{
     reduce(map(this, (elem, idx) => action(elem, idx)), x => x);
   }
 
-  concat(other: Iterable<T>): IterableQuery<T> {
-    return new Query(concat(this, other));
+  concat(other: T | Iterable<T>): IterableQuery<T> {
+    return isIterable(other) ?
+      new Query(concat(this, other)) :
+      new Query(concat(this, [other]));
   }
 
   prepend(other: Iterable<T>): IterableQuery<T> {
