@@ -68,15 +68,16 @@ for (const e of result) {
 // outputs: 514229, 267914296, 7778742049
 ```
 Step by step:
-1. `result` is assigned to a query. At this point `numbers` array is not iterated. `query` only creates instructions how to iterate it.
-1. `filter` method creates an iterator to pipe only numbers passing the predicate. `filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
+1. `result` is assigned to a query. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.  
+1. `filter` method creates an iterator to pipe only numbers passing the predicate.  
+`filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
 1. `take` pipes only first three elements as it is iterated and breaks.
 1. `for...of` instruction starts iteration and requests elements one at a time.
 
-Due to deferred execution, most of the functions which do need need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterators (like *Fibonacci* in the above example). These functions are also optimized to pass through elements and do not buffer them resulting in a more optimized memory usage.  
+Due to deferred execution, most of the functions that don't need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterables (like *Fibonacci* in the above example). These functions are also optimized to pass elements through and do not buffer them resulting in a more optimized memory usage.  
 
 
-Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive finite iterators.
+Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive a finite iterable.
 
 ## Running Tests
 ```javascript
@@ -1407,10 +1408,7 @@ query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
 
 [!] `union` is a deferred method and is executed only when the result sequence is iterated.
 
-### `values` <sup>[*deferred*](#deferred-execution)<sup>
-
-
-
+### `values`
 Returns a sequence of values for each index in the source sequence.
 
 > Syntax
