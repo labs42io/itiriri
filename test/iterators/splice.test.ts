@@ -28,7 +28,7 @@ describe('iterators/splice', () => {
     });
   });
 
-  describe('When called zero delete count', () => {
+  describe('When called with zero delete count', () => {
     it('Should return array of 3 elements', () => {
       const source = [2];
       const iter = splice(source, 0, 0, [4, 4]);
@@ -50,6 +50,13 @@ describe('iterators/splice', () => {
       const iter = splice(source, 2, 1, [-1, -1, -1]);
 
       expect(toArray(iter)).to.be.deep.equal([1, 3, -1, -1, -1]);
+    });
+
+    it('Should return array of 4 elements', () => {
+      const source = [4, 5, 6, 3];
+      const iter = splice(source, 2, 10, [1, 2]);
+
+      expect(toArray(iter)).to.be.deep.equal([4, 5, 1, 2]);
     });
   });
 });
