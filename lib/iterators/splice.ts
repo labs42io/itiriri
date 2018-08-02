@@ -1,7 +1,4 @@
-import { take } from './take';
-import { skip } from './skip';
 import { iterable } from '../utils/iterable';
-import { iterator } from '../utils/iterator';
 
 export function splice<TElement>(
   source: Iterable<TElement>,
