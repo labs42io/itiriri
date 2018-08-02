@@ -58,5 +58,12 @@ describe('iterators/splice', () => {
 
       expect(toArray(iter)).to.be.deep.equal([4, 5, 1, 2]);
     });
+
+    it('Should return array of 5 elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const iter = splice(source, 1, 1, [0]);
+
+      expect(toArray(iter)).to.be.deep.equal([1, 0, 3, 4, 5]);
+    });
   });
 });

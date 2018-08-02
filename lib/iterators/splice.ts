@@ -17,22 +17,21 @@ export function splice<TElement>(
     throw new Error('Delete count can not be negative.');
   }
 
-
   return iterable(function* () {
     let index = 0;
     let toDelete = deleteCount;
 
     for (const element of source) {
-      // if we are before start just yield
       if (index++ < start) {
         yield element;
         continue;
       }
 
-      // start ignoring toDelete amount of elements
       if (toDelete-- === 0) {
         yield* items;
-      } else {
+      }
+
+      if (toDelete >= 0) {
         continue;
       }
 
