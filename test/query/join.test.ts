@@ -106,14 +106,14 @@ describe('Query (join)', () => {
         (right, left) =>
           (left ? left.items : 'God knows') + ' ' +
           (left ? left.category : 'who') + ' produce ' +
-          right.profit + '$ profit!'
+          right.profit + '$ profit!',
       );
 
       expect(q.toArray()).to.be.deep.equal([
         '10 Books produce 100$ profit!',
         '20 Cars produce 200000$ profit!',
         '20 Guns produce 3000$ profit!',
-        'God knows who produce -100000$ profit!'
+        'God knows who produce -100000$ profit!',
       ]);
     });
   });
