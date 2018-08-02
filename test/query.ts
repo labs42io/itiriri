@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { query } from '../lib/Query';
 import { SpyIterable } from './helpers/SpyIterable';
 import { numbers as numberGenerator } from './helpers/generators';
+import { toArray } from '../lib/reducers/toArray';
 
 describe('Query', () => {
   describe('When calling constructor', () => {
@@ -53,6 +54,22 @@ describe('Query', () => {
       const q = query(source).skip(10).take(1);
 
       expect(q.at(0)).to.be.equal(21);
+    });
+  });
+
+  describe('When calling take + sort', () => {
+    it('Should defer both methods', () => {
+      const source = new SpyIterable(numberGenerator());
+      query(source).take(1000000000).sort();
+
+      expect(source.wasIterated).to.be.false;
+    });
+
+    it('Should return 5 elements', () => {
+      const source = numberGenerator(10, -1);
+      const q = query(source).take(5).sort();
+
+      expect(toArray(q)).to.be.deep.equal([6, 7, 8, 9, 10]);
     });
   });
 });
