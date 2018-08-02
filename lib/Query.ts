@@ -35,6 +35,7 @@ import { iterable } from './utils/iterable';
 import { fill } from './iterators/fill';
 import { slice } from './iterators/slice';
 import { isIterable } from './utils/isIterable';
+import { splice } from './iterators/splice';
 
 export function query<T>(source: Iterable<T>): IterableQuery<T> {
   return new Query(source);
@@ -208,9 +209,7 @@ class Query<T> implements IterableQuery<T>{
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {
-    return new Query(take(this, start))
-      .concat([...items])
-      .concat(skip(this, start + deleteCount));
+    return new Query(splice(this, start, deleteCount, items));
   }
   // #endregion
 
