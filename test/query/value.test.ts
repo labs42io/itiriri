@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { numberGenerator } from '../helpers/generators';
+import { numbers as numberGenerator } from '../helpers/generators';
 import { SpyIterable } from '../helpers/SpyIterable';
 import { query } from '../../lib/Query';
 
