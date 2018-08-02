@@ -29,6 +29,15 @@ describe('iterators/slice', () => {
     });
   });
 
+  describe('When start is undefined and end is provided', () => {
+    it('Should return array of 3 elements', () => {
+      const source = [4, 5, 3, 2, 5, 4, 3];
+      const iter = slice(source, undefined, 4);
+
+      expect(toArray(iter)).to.be.deep.equal([4, 5, 3, 2]);
+    });
+  });
+
   describe('When end is negative', () => {
     it('Should throw exception', () => {
       const source = [];
