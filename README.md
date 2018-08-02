@@ -1,65 +1,90 @@
-# ArrayQuery: A powerfull iterator library
+# ArrayQuery [DRAFT]
 
 [![Build Status](https://travis-ci.org/labs42io/array-query.svg?branch=dev)](https://travis-ci.org/labs42io/array-query)
 [![Coverage Status](https://coveralls.io/repos/github/labs42io/array-query/badge.svg?branch=dev)](https://coveralls.io/github/labs42io/array-query?branch=dev)
 
-## Basic Examples
+A library built for ES6 iterable protocol.
 
-```js
-var foo = ArrayQuery.query([4,1,3,2]);
-
-foo.first(); // 4
-foo.last(); // 2
-
-foo.sort().toArray(); // [1,2,3,4]
-foo.sortDesc().toArray(); // [4,3,2,1]
-
-foo.take(2); // [4,1]
-foo.take(-3); // [1,3,2]
-
-foo.skip(3); // [2]
-foo.skip(-1); // [4,1,3]
+```ts
+// TODO: an examples that best describes what this lib does
 ```
 
-## Sexy Examples
-
-```js
-var foo = ArrayQuery.query([6,1,5,4,2,3]);
-
-foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
-// todo add more (fibonaci, primes, random)
-
-```
-
-___
-[DRAFT]
-___
-
-Description with simple example...
+*array-query* provides simillar functions as the natives for arrays:
+*filter*, *slice*, *map*, *reduce*, *every*, *some* etc. and more.
+The functions are optimized for ES6 iterators and can be chained to write simple but powerfull queries over iterators.
 
 
 ## Installation
-___
 
+Using npm:
 ```javascript
-$ npm install ??? --save
+$ npm install 'array-query' --save
 ```
 
-* Requirements
+Importing:
+```javascript
+import { query } from 'array-query';
+```
 
-## ES6 iterables and deferred execution
+### Support
+The **array-query** library can be used with any ES6 compatible runtime.
 
-## Examples
-* Point to samples from repository
-* Running examples
+## ES6 iterators
+An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)). 
 
-## Tests
+Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with *array-query*. More over, any generator is an iterable.
+
+```ts
+// TODO: An example using a generator
+```
+
+## Deferred execution 
+JavaScript's array methods like *filter*, *slice* and others that return an array create a shallow copy for the result and are executed once called.
+
+*array-query* functions that return iterables are not executed unless chained with a function that reduces a value or tranforms to a built-in type.
+
+Let's see what happens in the below example.
+```ts
+import { query } from 'array-query';
+
+function* fibonacci() {
+  let [a, b] = [0, 1];
+
+  while (true) {
+    yield a;
+    [a, b] = [b, a + b];
+  }
+}
+
+// Finding first 3 Fibonacci numbers that contain 42
+const result = query(fibonacci())
+  .filter(x => x.toString().indexOf('42') !== -1)
+  .take(3);
+
+for (const e of result) {
+  console.log(e);
+}
+
+// outputs: 514229, 267914296, 7778742049
+```
+Step by step:
+1. `result` is assigned to a query. At this point `numbers` array is not iterated. `query` only creates instructions how to iterate it.
+1. `filter` method creates an iterator to pipe only numbers passing the predicate. `filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
+1. `take` pipes only first three elements as it is iterated and breaks.
+1. `for...of` instruction starts iteration and requests elements one at a time.
+
+Due to deferred execution, most of the functions which do need need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterators (like *Fibonacci* in the above example). These functions are also optimized to pass through elements and do not buffer them resulting in a more optimized memory usage.  
+
+
+Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive finite iterators.
+
+## Running Tests
 ```javascript
 $ npm install
 $ npm test
 ```
 
-### API Documentation
+## API documentation
 
 * [at](#at)
 * [average](#average)
@@ -112,8 +137,6 @@ $ npm test
 * [toString](#tostring)
 * [union](#union)
 * [values](#values)
-
-___
 
 ### `at`
 Returns the element at a specified index.
@@ -1400,3 +1423,19 @@ query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 ```
 
 [!] `values` is a deferred method and is executed only when the result sequence is iterated.
+
+## Keywords
+[iterator](https://www.npmjs.com/search?q=keywords:query)
+[iterable](https://www.npmjs.com/search?q=keywords:query)
+[query](https://www.npmjs.com/search?q=keywords:query)
+[filter](https://www.npmjs.com/search?q=keywords:query)
+[map](https://www.npmjs.com/search?q=keywords:query)
+[collections](https://www.npmjs.com/search?q=keywords:query)
+[deferred](https://www.npmjs.com/search?q=keywords:query)
+
+
+iterable 
+query 
+filter 
+map 
+deferred

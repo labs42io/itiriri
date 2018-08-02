@@ -72,3 +72,42 @@ throw new Error('Invalid start range, use positive index');
   I mean each method should be covered with a test like `Is a deferred method`.
   Do not use it then in other tests as this lead to the situation that if an iterator is iterated all tests fail even if the implementation is correct.
 * `Good job!`
+
+
+
+
+
+
+
+
+
+
+
+
+## Basic Examples
+
+```js
+var foo = ArrayQuery.query([4,1,3,2]);
+
+foo.first(); // 4
+foo.last(); // 2
+
+foo.sort().toArray(); // [1,2,3,4]
+foo.sortDesc().toArray(); // [4,3,2,1]
+
+foo.take(2); // [4,1]
+foo.take(-3); // [1,3,2]
+
+foo.skip(3); // [2]
+foo.skip(-1); // [4,1,3]
+```
+
+## Sexy Examples
+
+```js
+var foo = ArrayQuery.query([6,1,5,4,2,3]);
+
+foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
+// todo add more (fibonaci, primes, random)
+
+```
