@@ -63,7 +63,7 @@ describe('iterators/fill', () => {
       const source = [1, 3, 4, 2, 1];
       const iter = fill(source, 0, 1, 3);
 
-      expect(toArray(iter)).to.be.deep.equal([1, 0, 0, 0, 1]);
+      expect(toArray(iter)).to.be.deep.equal([1, 0, 0, 2, 1]);
     });
   });
 });

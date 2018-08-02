@@ -84,7 +84,7 @@ describe('Query (query)', () => {
       const q = query(source).fill(10, 1, 3).take(5);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.toArray()).to.be.deep.equal([0, 10, 10, 10, 4]);
+      expect(q.toArray()).to.be.deep.equal([0, 10, 10, 3, 4]);
     });
 
     it('Should return 4 elements', () => {
@@ -92,7 +92,7 @@ describe('Query (query)', () => {
       const q = query(source).fill(11, 1, 1).take(4);
 
       expect(source.wasIterated).to.be.false;
-      expect(q.toArray()).to.be.deep.equal([0, 11, 2, 3]);
+      expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3]);
     });
 
     it('Should return same elements', () => {

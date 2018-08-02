@@ -12,15 +12,15 @@ export function fill<T, TElement>(
 
   if (end === undefined) {
     if (start < 0) {
-      throw new Error('Invalid start range, use positive index');
+      throw new Error('Invalid start range, use positive index.');
     }
 
     return map(source, (elem, idx) => idx >= start ? value : elem);
   }
 
   if (end < 0) {
-    throw new Error('Invalid start range, use positive index');
+    throw new Error('Invalid end range, use positive index.');
   }
 
-  return map(source, (elem, idx) => idx >= start && idx <= end ? value : elem);
+  return map(source, (elem, idx) => idx >= start && idx < end ? value : elem);
 }
