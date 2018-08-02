@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
-import { SpyIterable } from '../helpers/SpyIterable';
 import { query } from '../../lib/Query';
 
 describe('Query (value)', () => {
