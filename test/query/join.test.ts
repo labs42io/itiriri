@@ -86,7 +86,7 @@ describe('Query (join)', () => {
       ]);
     });
 
-    it('Should return array of 5 elements', () => {
+    it('Should return array of 4 elements', () => {
       const source1 = [
         { category: 'Books', items: 10 },
         { category: 'Cars', items: 20 },
