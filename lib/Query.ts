@@ -300,7 +300,6 @@ class Query<T> implements IterableQuery<T>{
     );
 
     return new Query(iterator);
-    // throw new Error('Method not implemented.');
   }
 
   groupJoin<TKey, TRight, TResult>(

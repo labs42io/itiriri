@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { query } from '../../lib/Query';
 import { SpyIterable } from '../helpers/SpyIterable';
+import { toArray } from '../../lib/reducers/toArray';
 
 describe('Query (join)', () => {
   describe('When calling join', () => {
@@ -82,6 +83,37 @@ describe('Query (join)', () => {
         { e2: 4, e1: 4 },
         { e2: 5, e1: 5 },
         { e2: undefined, e1: -2 },
+      ]);
+    });
+
+    it('Should return array of 5 elements', () => {
+      const source1 = [
+        { category: 'Books', items: 10 },
+        { category: 'Cars', items: 20 },
+        { category: 'Guns', items: 20 },
+        { category: 'Phones', items: 10 },
+      ];
+      const source2 = [
+        { category: 'Books', profit: 100 },
+        { category: 'Cars', profit: 200000 },
+        { category: 'Guns', profit: 3000 },
+        { category: 'Rockets', profit: -100000 },
+      ];
+      const q = query(source1).rightJoin(
+        source2,
+        x => x.category,
+        x => x.category,
+        (right, left) =>
+          (left ? left.items : 'God knows') + ' ' +
+          (left ? left.category : 'who') + ' produce ' +
+          right.profit + '$ profit!'
+      );
+
+      expect(q.toArray()).to.be.deep.equal([
+        '10 Books produce 100$ profit!',
+        '20 Cars produce 200000$ profit!',
+        '20 Guns produce 3000$ profit!',
+        'God knows who produce -100000$ profit!'
       ]);
     });
   });
