@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { SpyIterable } from '../helpers/SpyIterable';
 import { query } from '../../lib/Query';
 
 describe('Query (predicate)', () => {

@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { query } from '../../lib/Query';
-import { SpyIterable } from '../helpers/SpyIterable';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('Query (cast)', () => {
