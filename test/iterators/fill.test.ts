@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { concat } from '../../lib/iterators/concat';
 import { iterator } from '../../lib/utils/iterator';
 import { fill } from '../../lib/iterators/fill';
 import { toArray } from '../../lib/reducers/toArray';
@@ -49,7 +48,7 @@ describe('iterators/fill', () => {
     });
   });
 
-  describe('When called without start only', () => {
+  describe('When called with start only', () => {
     it('Should return array of 4 elements', () => {
       const source = [1, 3, 4, 2];
       const iter = fill(source, 0, 1);
@@ -58,7 +57,7 @@ describe('iterators/fill', () => {
     });
   });
 
-  describe('When called without start and end', () => {
+  describe('When called with start and end', () => {
     it('Should return array of 5 elements', () => {
       const source = [1, 3, 4, 2, 1];
       const iter = fill(source, 0, 1, 3);

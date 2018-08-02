@@ -34,7 +34,7 @@ export interface IterableFilter<T> extends Iterable<T> {
    * @param end zero-based index before which to end extraction (not including)
    * @returns Iterable<T>
    */
-  slice(start: number, end: number): IterableQuery<T>;
+  slice(start?: number, end?: number): IterableQuery<T>;
 
   /**
    * Returns a sequence that skips elements and/or adds new elements.

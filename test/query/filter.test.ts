@@ -66,7 +66,7 @@ describe('Query (filter)', () => {
       const source = numberGenerator(1, 2);
       const q = query(source).slice(4, 6);
 
-      expect(q.toArray()).to.be.deep.equal([9, 11, 13]);
+      expect(q.toArray()).to.be.deep.equal([9, 11]);
     });
 
     it('Should return empty source', () => {
@@ -76,11 +76,11 @@ describe('Query (filter)', () => {
       expect(q.toArray()).to.be.deep.equal([]);
     });
 
-    it('Should return one element', () => {
+    it('Should return no elements', () => {
       const source = numberGenerator(10, 2);
       const q = query(source).slice(0, 0);
 
-      expect(q.toArray()).to.be.deep.equal([10]);
+      expect(q.toArray()).to.be.deep.equal([]);
     });
   });
 

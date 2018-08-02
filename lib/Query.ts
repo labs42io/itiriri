@@ -33,6 +33,7 @@ import { IterableQueryGroup } from './types/IterableTransformation';
 import { iterator } from './utils/iterator';
 import { iterable } from './utils/iterable';
 import { fill } from './iterators/fill';
+import { slice } from './iterators/slice';
 import { isIterable } from './utils/isIterable';
 
 export function query<T>(source: Iterable<T>): IterableQuery<T> {
@@ -202,8 +203,8 @@ class Query<T> implements IterableQuery<T>{
     return new Query(skip(this, count));
   }
 
-  slice(start: number, end: number): IterableQuery<T> {
-    return new Query(skip(take(this, end + 1), start));
+  slice(start?: number, end?: number): IterableQuery<T> {
+    return new Query(slice(this, start, end));
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {
