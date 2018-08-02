@@ -3,15 +3,15 @@
 [![Build Status](https://travis-ci.org/labs42io/array-query.svg?branch=dev)](https://travis-ci.org/labs42io/array-query)
 [![Coverage Status](https://coveralls.io/repos/github/labs42io/array-query/badge.svg?branch=dev)](https://coveralls.io/github/labs42io/array-query?branch=dev)
 
-A library built for ES6 iterable protocol.
+A library built for ES6 [iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) protocol.
 
 ```ts
-// TODO: an examples that best describes what this lib does
+// TODO: a simple example that best describes what this lib does
 ```
 
-*array-query* provides simillar functions as the natives for arrays:
+*array-query* provides similar functions as the natives for arrays:
 *filter*, *slice*, *map*, *reduce*, *every*, *some* etc. and more.
-The functions are optimized for ES6 iterators and can be chained to write simple but powerfull queries over iterators.
+The functions are optimized for ES6 iterators and can be chained to write simple but powerful queries over iterators.
 
 
 ## Installation
@@ -29,7 +29,7 @@ import { query } from 'array-query';
 ### Support
 The **array-query** library can be used with any ES6 compatible runtime.
 
-## ES6 iterators
+## Iterators
 An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)). 
 
 Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with *array-query*. More over, any generator is an iterable.
@@ -41,7 +41,7 @@ Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and 
 ## Deferred execution 
 JavaScript's array methods like *filter*, *slice* and others that return an array create a shallow copy for the result and are executed once called.
 
-*array-query* functions that return iterables are not executed unless chained with a function that reduces a value or tranforms to a built-in type.
+*array-query* functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type.
 
 Let's see what happens in the below example.
 ```ts
@@ -84,7 +84,7 @@ $ npm install
 $ npm test
 ```
 
-## API documentation
+## Complete list of methods
 
 * [at](#at)
 * [average](#average)
@@ -498,7 +498,7 @@ query([1, 2, 3]).forEach(elem => console.log(elem));
 ```
 
 ### `groupBy`
-Groups elements by a given key, optionaly aplying a transformation over each element.
+Groups elements by a given key, optionally applying a transformation over each element.
 
 > Syntax
 ```ts
@@ -567,7 +567,7 @@ const categories = [
   {id: 2, name: 'Agile'},
 ];
 
-query(catgories).groupJoin(
+query(categories).groupJoin(
   books,
   category => category.id,
   book => book.categoryId,
@@ -650,7 +650,7 @@ query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
 [!] `intersect` is a deferred method and is executed only when the result sequence is iterated.
 
 ### `join`
-Returns a sequence of correlated elements tranformation that match a given key.
+Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
 ```ts
@@ -684,7 +684,7 @@ query([{countryId: 1, code: '+1'}, {countryId: 2, code: '+44'}]])
     [{ id: 1, country: 'US' }, {id: 3, country: 'MD'}], 
     left => left.countryId,
     right => right.id,
-    (left, right) => ({contry: right.country, code: left.code}))
+    (left, right) => ({country: right.country, code: left.code}))
   .toArray(); 
 // returns [{country: 'US', code: '+1'}]
 ```
@@ -749,7 +749,7 @@ query(['a', 'b', 'c']).lastIndexOf('x'); // returns -1
 ```
 
 ### `leftJoin`
-Returns a sequence of correlated elements tranformation that match a given key.
+Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
 ```ts
@@ -866,7 +866,7 @@ query([7, 3, 11, 5]).min(elem => 1 / elem); // returns 11
 ```
 
 ### `prepend`
- Returns a sequence with given elements at the beggining.
+ Returns a sequence with given elements at the beginning.
 
 > Syntax
 ```ts
@@ -874,7 +874,7 @@ prepend(other: Iterable<T>): IterableQuery<T>;
 ```
 
 > Parameters
-* `other` - *(required)* the sequence to be added at the beggining
+* `other` - *(required)* the sequence to be added at the beginning
 
 #### Example
 ```ts
@@ -967,7 +967,7 @@ query([1, 2, 3]).reverse().toArray(); // returns [3, 2, 1]
 [!] `reverse` is a deferred method and is executed only when the result sequence is iterated.
 
 ### `rightJoin`
-Returns a sequence of correlated elements tranformation that match a given key.
+Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
 ```ts
@@ -1036,7 +1036,7 @@ query([1, 2, 3, 4, 5]).shuffle().toArray();
 [!] `shuffle` is a deferred method and is executed only when the result sequence is iterated.
 
 ### `skip`
-Skips the specified number of elements from the beggining of sequence and returns the remaining ones.
+Skips the specified number of elements from the beginning of sequence and returns the remaining ones.
 
 > Syntax
 ```ts
@@ -1407,7 +1407,10 @@ query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
 
 [!] `union` is a deferred method and is executed only when the result sequence is iterated.
 
-### `values`
+### `values` <sup>[*deferred*](#deferred-execution)<sup>
+
+
+
 Returns a sequence of values for each index in the source sequence.
 
 > Syntax
@@ -1424,18 +1427,14 @@ query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 
 [!] `values` is a deferred method and is executed only when the result sequence is iterated.
 
+## License
+[MIT](LICENSE)
+
 ## Keywords
-[iterator](https://www.npmjs.com/search?q=keywords:query)
-[iterable](https://www.npmjs.com/search?q=keywords:query)
+[iterator](https://www.npmjs.com/search?q=keywords:iterator)
+[iterable](https://www.npmjs.com/search?q=keywords:iterable)
 [query](https://www.npmjs.com/search?q=keywords:query)
-[filter](https://www.npmjs.com/search?q=keywords:query)
-[map](https://www.npmjs.com/search?q=keywords:query)
-[collections](https://www.npmjs.com/search?q=keywords:query)
-[deferred](https://www.npmjs.com/search?q=keywords:query)
-
-
-iterable 
-query 
-filter 
-map 
-deferred
+[filter](https://www.npmjs.com/search?q=keywords:filter)
+[map](https://www.npmjs.com/search?q=keywords:map)
+[collections](https://www.npmjs.com/search?q=keywords:collections)
+[deferred](https://www.npmjs.com/search?q=keywords:deferred)
