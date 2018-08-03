@@ -65,6 +65,13 @@ describe('Query (value)', () => {
 
       expect(q.lastIndexOf(0)).to.be.equal(4);
     });
+
+    it('Should retrun -1', () => {
+      const source = [1, 1, 2, 3, 4, 1, 4];
+      const q = query(source);
+
+      expect(q.lastIndexOf(2, 3)).to.be.equal(-1);
+    });
   });
 
   describe('When calling findIndex', () => {

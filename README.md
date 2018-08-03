@@ -655,11 +655,12 @@ Returns the first (zero-based) index at which a given element can be found.
 > Syntax
 
 ```ts
-indexOf(element: T): number;
+indexOf(element: T, fromIndex: number = 0): number;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
+* `fromIndex` - *(optional)* starting index
 
 When an element is not found, returns -1.  
 `indexOf` uses triple equals `===` to compare elements.
@@ -794,11 +795,12 @@ Returns the last index at which a given element can be found.
 > Syntax
 
 ```ts
-lastIndexOf(element: T): number;
+lastIndexOf(element: T, fromIndex: number = 0): number;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
+* `fromIndex` - *(optional)* starting index
 
 When an element is not found, returns -1.  
 `lastIndexOf` uses triple equals `===` to compare elements.

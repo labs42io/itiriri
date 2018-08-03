@@ -104,8 +104,8 @@ class Query<T> implements IterableQuery<T>{
     return indexOf(this, predicate);
   }
 
-  lastIndexOf(element: T): number {
-    return lastIndexOf(this, elem => elem === element);
+  lastIndexOf(element: T, fromIndex: number = 0): number {
+    return lastIndexOf(this, (elem, idx) => idx >= fromIndex && elem === element);
   }
 
   findLastIndex(predicate: (element: T, index: number) => boolean): number {

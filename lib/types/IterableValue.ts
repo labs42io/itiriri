@@ -32,9 +32,10 @@ export interface IterableValue<T> extends Iterable<T> {
    * Returns the last index at which a given element can be found.
    * If not present, returns -1.
    * @param  {T} element element to search
+   * @param fromIndex the start index
    * @returns number
    */
-  lastIndexOf(element: T): number;
+  lastIndexOf(element: T, fromIndex?: number): number;
 
   /**
    * Finds the last index at which a given element satisfies the specified predicate.
