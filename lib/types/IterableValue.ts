@@ -15,10 +15,18 @@ export interface IterableValue<T> extends Iterable<T> {
    * Returns the first index at which a given element can be found.
    * If not present, returns -1.
    * @param  {T} element element to search
-   * @param fromIndex the start index
    * @returns number
    */
-  indexOf(element: T, fromIndex?: number): number;
+  indexOf(element: T): number;
+
+  /**
+ * Returns the first index at which a given element can be found.
+ * If not present, returns -1.
+ * @param  {T} element element to search
+ * @param fromIndex the start index
+ * @returns number
+ */
+  indexOf(element: T, fromIndex: number): number;
 
   /**
    * Finds the first index at which a given element satisfies the specified predicate.
@@ -29,13 +37,21 @@ export interface IterableValue<T> extends Iterable<T> {
   findIndex(predicate: (element: T, index: number) => boolean): number;
 
   /**
+ * Returns the last index at which a given element can be found.
+ * If not present, returns -1.
+ * @param  {T} element element to search
+ * @returns number
+ */
+  lastIndexOf(element: T): number;
+
+  /**
    * Returns the last index at which a given element can be found.
    * If not present, returns -1.
    * @param  {T} element element to search
    * @param fromIndex the start index
    * @returns number
    */
-  lastIndexOf(element: T, fromIndex?: number): number;
+  lastIndexOf(element: T, fromIndex: number): number;
 
   /**
    * Finds the last index at which a given element satisfies the specified predicate.
