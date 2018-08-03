@@ -1,6 +1,7 @@
 import { concat } from './iterators/concat';
 import { distinct } from './iterators/distinct';
 import { exclude } from './iterators/exclude';
+import { fill } from './iterators/fill';
 import { filter } from './iterators/filter';
 import { flat } from './iterators/flat';
 import { groupJoin } from './iterators/groupJoin';
@@ -11,7 +12,9 @@ import { map } from './iterators/map';
 import { reverse } from './iterators/reverse';
 import { shuffle } from './iterators/shuffle';
 import { skip } from './iterators/skip';
+import { slice } from './iterators/slice';
 import { sort } from './iterators/sort';
+import { splice } from './iterators/splice';
 import { take } from './iterators/take';
 import { at } from './reducers/at';
 import { average } from './reducers/average';
@@ -30,13 +33,14 @@ import { toMap } from './reducers/toMap';
 import { toSet } from './reducers/toSet';
 import { IterableQuery } from './types/IterableQuery';
 import { IterableQueryGroup } from './types/IterableTransformation';
-import { iterator } from './utils/iterator';
-import { iterable } from './utils/iterable';
-import { fill } from './iterators/fill';
-import { slice } from './iterators/slice';
 import { isIterable } from './utils/isIterable';
-import { splice } from './iterators/splice';
+import { iterable } from './utils/iterable';
+import { iterator } from './utils/iterator';
 
+/**
+ * Creates a queryable iterable.
+ * @param source can be an array or any other iterable.
+ */
 export function query<T>(source: Iterable<T>): IterableQuery<T> {
   return new Query(source);
 }

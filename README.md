@@ -6,44 +6,69 @@
 A library built for ES6 [iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) protocol.
 
 ```ts
-// TODO: a simple example that best describes what this lib does
+function* numbers() {
+  let n = 1;
+
+  while (true) {
+    yield n++;
+  }
+}
+
+const s = query(numbers()).map(n => 1 / (n * n)).take(1000).sum();
+console.log(Math.sqrt(6 * s));
+// 3.1406380562059946
 ```
 
 *array-query* provides similar functions as the natives for arrays:
 *filter*, *slice*, *map*, *reduce*, *every*, *some* etc. and more.
-The functions are optimized for ES6 iterators and can be chained to write simple but powerful queries over iterators.
-
+The functions are optimized for ES6 iterators and can be chained to write simple but powerful queries over iterables.
 
 ## Installation
 
 Using npm:
+
 ```javascript
 $ npm install 'array-query' --save
 ```
 
 Importing:
+
 ```javascript
 import { query } from 'array-query';
 ```
 
 ### Support
+
 The **array-query** library can be used with any ES6 compatible runtime.
 
 ## Iterators
-An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)). 
+
+An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)).
 
 Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with *array-query*. More over, any generator is an iterable.
 
 ```ts
-// TODO: An example using a generator
+import { query } from 'array-query';
+
+function* values() {
+  yield 2;
+  yield 0;
+  yield 4;
+  yield 8;
+}
+
+const s = query(values()).map(n => n / 2).reverse();
+console.log(s.toString()); // 4,2,0,1
 ```
 
-## Deferred execution 
+## Deferred execution
+
 JavaScript's array methods like *filter*, *slice* and others that return an array create a shallow copy for the result and are executed once called.
 
 *array-query* functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type.
 
 Let's see what happens in the below example.
+
 ```ts
 import { query } from 'array-query';
 
@@ -67,19 +92,23 @@ for (const e of result) {
 
 // outputs: 514229, 267914296, 7778742049
 ```
+
 Step by step:
+
 1. `result` is assigned to a query. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.  
-1. `filter` method creates an iterator to pipe only numbers passing the predicate.  
-`filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
+
+1. `filter` method creates an iterator to pipe only numbers passing the predicate. `filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
+
 1. `take` pipes only first three elements as it is iterated and breaks.
+
 1. `for...of` instruction starts iteration and requests elements one at a time.
 
 Due to deferred execution, most of the functions that don't need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterables (like *Fibonacci* in the above example). These functions are also optimized to pass elements through and do not buffer them resulting in a more optimized memory usage.  
 
-
 Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive a finite iterable.
 
 ## Running Tests
+
 ```javascript
 $ npm install
 $ npm test
@@ -140,81 +169,96 @@ $ npm test
 * [values](#values)
 
 ### `at`
+
 Returns the element at a specified index.
 
 > Syntax
+
 ```ts
 at(index: number): T;
 ```
 
 > Parameters
-  * `index` - *(required)* zero based index at which to get the element
+* `index` - *(required)* zero based index at which to get the element
 
 For a negative index returns the element from the end of the sequence.  
 If index is out of the range, returns `undefined` .
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query(['a', 'b', 'c', 'd']).at(2)  // returns 'c'
-query(['a', 'b', 'c', 'd']).at(-1) // returns 'd' 
-query(['a', 'b', 'c', 'd']).at(10) // returns undefined 
+query(['a', 'b', 'c', 'd']).at(-1) // returns 'd'
+query(['a', 'b', 'c', 'd']).at(10) // returns undefined
 ```
 
 ### `average`
+
 Returns the average value.
 
 > Syntax
+
 ```ts
 average(): number;
 average(selector: (element: T, index: number) => number): number;
 ```
 
 > Parameters
-  * `selector` - *(optional)* a value transformer function to apply to each element
+* `selector` - *(optional)* a value transformer function to apply to each element
 
 For a sequence with no elements returns `undefined`.
-#### Example
+
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([41, 42, 43]).average()  // returns 42
-query([{value: 1}, {value: 2}]).average(elem => elem.value) // returns 1.5 
-query([]).average() // returns undefined 
+query([{value: 1}, {value: 2}]).average(elem => elem.value) // returns 1.5
+query([]).average() // returns undefined
 ```
 
 ### `concat`
+
 Concatenates the sequence with another one.
 
 > Syntax
+
 ```ts
 concat(other: Iterable<T>): IterableQuery<T>;
 ```
+
 > Parameters
 * `other` - *(required)* sequence to concatenate
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3]).concat([4, 5]).toArray()  // returns [1, 2, 3, 4, 5]
 ```
 
-[!] `concat` is a deferred method and is executed only when the result sequence is iterated.
+`concat` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `count`
+
 Returns the number of elements in a sequence.
 
 > Syntax
+
 ```ts
 count(): number;
 count(predicate: (element: T, index: number) => boolean): number;
 ```
+
 > Parameters
 * `predicate` - *(optional)* a function to count only the elements that match the predicate
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -223,9 +267,11 @@ query([1, 2, 3, 4, 5]).count(elem => elem > 2);  // returns 3
 ```
 
 ### `distinct`
+
 Returns a sequence of unique elements.
 
 > Syntax
+
 ```ts
 distinct(): IterableQuery<T>;
 distinct<S>(selector: (element: T) => S): IterableQuery<T>;
@@ -234,7 +280,8 @@ distinct<S>(selector: (element: T) => S): IterableQuery<T>;
 > Parameters
 * `selector` - *(optional)* a value transformer function to be used for comparisons
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -244,16 +291,20 @@ query([{value: 1}, {value: 2}, {value: 1}])
   .toArray(); // returns [{value: 1}, {value: 2}]
 ```
 
-[!] `distinct` is a deferred method and is executed only when the result sequence is iterated.
+`distinct` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `entries`
+
 Returns a sequence of key/value pair for each element and its index.
 
 > Syntax
+
 ```ts
 entries(): IterableQuery<[number, T]>;
 ```
-#### Example
+
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -261,12 +312,14 @@ query(['Alice', 'Bob', 'David']).entries().toArray();
 // returns [[0, 'Alice'], [1, 'Bob'], [2, 'David']]
 ```
 
-[!] `entries` is a deferred method and is executed only when the result sequence is iterated.
+`entries` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `every`
+
 Tests whether all the elements pass the predicate.
 
 > Syntax
+
 ```ts
 every(predicate: (element: T, index: number) => boolean): boolean;
 ```
@@ -274,7 +327,8 @@ every(predicate: (element: T, index: number) => boolean): boolean;
 > Parameters
 * `predicate` - *(required)* function to test for each element
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -283,9 +337,11 @@ query([7, 23, 3]).every(elem => elem % 3 === 0); // returns false
 ```
 
 ### `exclude`
-Returns a sequence of unique elements not contained in a given sequence.
+
+Returns a sequence of elements not contained in a given sequence.
 
 > Syntax
+
 ```ts
 exclude<S>(others: Iterable<T>): IterableQuery<T>;
 exclude<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
@@ -295,23 +351,26 @@ exclude<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 * `others` - *(required)* a sequence of elements to be excluded
 * `selector` - *(optional)* a value transformer function to be used for comparisons
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query([2, 0, 1, 8, 2]).exclude([0, 1]).toArray(); // returns [2, 8]
+query([2, 0, 1, 8, 2]).exclude([0, 1]).toArray(); // returns [2, 8, 2]
 query([{id: 1}, {id: 2}])
   .exclude([{id: 2}, elem => elem.id])
   .toArray(); // returns [{id: 1}]
 ```
 
-[!] `exclude` is a deferred method and is executed only when the result sequence is iterated.
+`exclude` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `fill`
+
 Returns a sequence filled from a start index to an end index with a static value.
 The end index is not included.
 
 > Syntax
+
 ```ts
 fill(value: T): IterableQuery<T>;
 fill(value: T, start: number): IterableQuery<T>;
@@ -323,7 +382,8 @@ fill(value: T, start: number, end: number): IterableQuery<T>;
 * `start` - *(optional)* start index, defaults to 0
 * `end`   - *(optional)* end index, defaults to sequence length
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -332,32 +392,38 @@ query([1, 2, 3, 4, 5]).fill([7, 3]).toArray(); // returns [1, 2, 3, 7, 7]
 query([1, 2, 3, 4, 5]).fill([7, 1, 3]).toArray(); // returns [1, 7, 7, 4, 5]
 ```
 
-[!] `fill` is a deferred method and is executed only when the result sequence is iterated.
+`fill` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `filter`
+
 Returns a sequence of elements that pass the predicate.
 
 > Syntax
+
 ```ts
 filter(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 ```
+
 > Parameters
 * `predicate` - *(required)* function to test for each element
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3, 4, 5]).filter(elem => elem < 3).toArray(); // returns [1, 2]
-query([1, 2, 3]).fill(elem > 10).toArray(); // returns []
+query([1, 2, 3]).filter(elem > 10).toArray(); // returns []
 ```
 
-[!] `filter` is a deferred method and is executed only when the result sequence is iterated.
+`filter` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `find`
+
 Finds the first element that satisfies the specified predicate.
 
 > Syntax
+
 ```ts
 find(predicate: (element: T, index: number) => boolean): T;
 ```
@@ -367,7 +433,8 @@ find(predicate: (element: T, index: number) => boolean): T;
 
 If no element satisfies the predicate, returns `undefined`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -376,9 +443,11 @@ query([1, 2, 3]).find(elem > 10); // returns undefined
 ```
 
 ### `findIndex`
+
 Finds the first index at which a given element satisfies the specified predicate.
 
 > Syntax
+
 ```ts
 findIndex(predicate: (element: T, index: number) => boolean): number;
 ```
@@ -388,7 +457,8 @@ findIndex(predicate: (element: T, index: number) => boolean): number;
 
 If no element satisfies the predicate, returns `-1`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -397,9 +467,11 @@ query([1, 2, 3]).findIndex(elem > 10); // returns -1
 ```
 
 ### `findLast`
+
 Finds the last element that satisfies the specified predicate.
 
 > Syntax
+
 ```ts
 findLast(predicate: (element: T, index: number) => boolean): T;
 ```
@@ -409,7 +481,8 @@ findLast(predicate: (element: T, index: number) => boolean): T;
 
 If no element satisfies the predicate, returns `undefined`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -418,9 +491,11 @@ query([1, 2, 3]).findLast(elem > 10); // returns undefined
 ```
 
 ### `findLastIndex`
+
 Finds the last index at which a given element satisfies the specified predicate.
 
 > Syntax
+
 ```ts
 findLastIndex(predicate: (element: T, index: number) => boolean): number;
 ```
@@ -430,7 +505,8 @@ findLastIndex(predicate: (element: T, index: number) => boolean): number;
 
 If not present, returns -1.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -439,16 +515,19 @@ query([1, 2, 3]).findLastIndex(elem > 10); // returns -1
 ```
 
 ### `first`
+
 Returns the first element in a sequence.
 
 > Syntax
+
 ```ts
 first(): T;
 ```
 
 For an empty sequence returns `undefined`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -457,9 +536,11 @@ query([]).first(); // returns undefined
 ```
 
 ### `flat`
+
 Returns a sequence with all sub-sequences concatenated.
 
 > Syntax
+
 ```ts
 flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S>;
 ```
@@ -467,20 +548,23 @@ flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S>;
 > Parameters
 * `selector` - *(required)* a transformation function to map each element to a sequence
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query([{value: [1, 2], {values: [7, 9]}]).flat(elem => elem.value).toArray(); 
+query([{value: [1, 2], {values: [7, 9]}]).flat(elem => elem.value).toArray();
 // returns [1, 2, 7, 9]
 ```
 
-[!] `flat` is a deferred method and is executed only when the result sequence is iterated.
+`flat` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `forEach`
+
 Runs through every element and applies a given function.
 
 > Syntax
+
 ```ts
 forEach(action: (element: T, index: number) => void): void;
 ```
@@ -488,20 +572,23 @@ forEach(action: (element: T, index: number) => void): void;
 > Parameters
 * `action` - *(required)* function to apply on each element
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query([1, 2, 3]).forEach(elem => console.log(elem)); 
+query([1, 2, 3]).forEach(elem => console.log(elem));
 // 1
 // 2
 // 3
 ```
 
 ### `groupBy`
+
 Groups elements by a given key, optionally applying a transformation over each element.
 
 > Syntax
+
 ```ts
 groupBy<K, E>(
   keySelector: (element: T, index: number) => K,
@@ -512,7 +599,8 @@ groupBy<K, E>(
 * `keySelector` - *(required)* function that provides group's key
 * `valueSelector` - *(optional)* function to transform values
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -522,17 +610,19 @@ const students = [
   {name: 'David', gender: 'male'},
 ];
 
-query(students).groupBy(elem => elem.gender, elem => elem.name).toArray(); 
+query(students).groupBy(elem => elem.gender, elem => elem.name).toArray();
 // [['female', [Alice]], ['male', ['Bob', 'David']]]
 ```
 
-[!] `groupBy` is a deferred method and is executed only when the result sequence is iterated.
+`groupBy` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `groupJoin`
-Returns a sequence of correlated elements where each element from the current sequence 
+
+Returns a sequence of correlated elements where each element from the current sequence
 is matched with zero or more elements from the other sequence.
 
 > Syntax
+
 ```ts
 groupJoin<TKey, TRight, TResult>(
     other: Iterable<TRight>,
@@ -553,7 +643,8 @@ elements from the joined sequence.
 When an element from the source sequence doesn't match with any of the elements from the joined sequence,
 the `joinSelector` function will be called with an empty array.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -573,19 +664,21 @@ query(categories).groupJoin(
   category => category.id,
   book => book.categoryId,
   (category, books) => ({ category: category.name, books: books.map(b => b.title) })
-).toArray(); 
+).toArray();
 // [
-//   {category: 'CS', books: ['Clean code', 'Code complete']}, 
+//   {category: 'CS', books: ['Clean code', 'Code complete']},
 //   {category: 'Agile'}, books: ['Scrum']
 // ]
 ```
 
-[!] `groupJoin` is a deferred method and is executed only when the result sequence is iterated.
+`groupJoin` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `includes`
+
 Determines whether the sequence includes a certain element.
 
 > Syntax
+
 ```ts
 includes(element: T): boolean;
 ```
@@ -595,7 +688,8 @@ includes(element: T): boolean;
 
 `includes` uses triple equals `===` to compare elements.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -604,9 +698,11 @@ query([1, 2, 3]).includes(0); // returns false
 ```
 
 ### `indexOf`
+
 Returns the first (zero-based) index at which a given element can be found.
 
 > Syntax
+
 ```ts
 indexOf(element: T): number;
 ```
@@ -617,7 +713,8 @@ indexOf(element: T): number;
 When an element is not found, returns -1.  
 `indexOf` uses triple equals `===` to compare elements.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -626,9 +723,11 @@ query(['a', 'b', 'c']).indexOf('x'); // returns -1
 ```
 
 ### `intersect`
+
 Returns a set intersection with a given sequence.
 
 > Syntax
+
 ```ts
 intersect(others: Iterable<T>): IterableQuery<T>;
 intersect<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
@@ -638,7 +737,8 @@ intersect<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 * `other` - *(required)* the sequence to intersect with
 * `selector` - *(optional)* a value transformer function to be used for comparisons
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -648,12 +748,14 @@ query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
   .toArray(); // returns [{id: 1, name: 'Alice'}]
 ```
 
-[!] `intersect` is a deferred method and is executed only when the result sequence is iterated.
+`intersect` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `join`
+
 Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
+
 ```ts
 join<TKey, TRight, TResult>(
     other: Iterable<TRight>,
@@ -671,55 +773,62 @@ join<TKey, TRight, TResult>(
 
 The `join` method works as an sql inner join.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3])
   .join([2, 3, 4], n => n, n => n, (a, b) => `${a}-${b}`)
-  .toArray(); 
+  .toArray();
 // returns ['2-2', '3-3']
 
 query([{countryId: 1, code: '+1'}, {countryId: 2, code: '+44'}]])
   .join(
-    [{ id: 1, country: 'US' }, {id: 3, country: 'MD'}], 
+    [{ id: 1, country: 'US' }, {id: 3, country: 'MD'}],
     left => left.countryId,
     right => right.id,
     (left, right) => ({country: right.country, code: left.code}))
-  .toArray(); 
+  .toArray();
 // returns [{country: 'US', code: '+1'}]
 ```
 
-[!] `join` is a deferred method and is executed only when the result sequence is iterated.
+`join` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `keys`
+
 Returns a sequence of keys for each index in the source sequence.
 
 > Syntax
+
 ```ts
 keys(): IterableQuery<number>;
 ```
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query(['a', 'b', 'c']).keys().toArray(); // returns [0, 1, 2]
 ```
 
-[!] `keys` is a deferred method and is executed only when the result sequence is iterated.
+`keys` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `last`
+
 Returns the last element in a sequence.
 
 > Syntax
+
 ```ts
 last(): T;
 ```
 
 For an empty sequence returns `undefined`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -728,9 +837,11 @@ query([]).last(); // returns undefined
 ```
 
 ### `lastIndexOf`
+
 Returns the last index at which a given element can be found.
 
 > Syntax
+
 ```ts
 lastIndexOf(element: T): number;
 ```
@@ -741,7 +852,8 @@ lastIndexOf(element: T): number;
 When an element is not found, returns -1.  
 `lastIndexOf` uses triple equals `===` to compare elements.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -750,9 +862,11 @@ query(['a', 'b', 'c']).lastIndexOf('x'); // returns -1
 ```
 
 ### `leftJoin`
+
 Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
+
 ```ts
 leftJoin<TKey, TRight, TResult>(
     other: Iterable<TRight>,
@@ -769,37 +883,40 @@ leftJoin<TKey, TRight, TResult>(
 * `joinSelector` - *(required)* a transformation function to apply on each matched tuple
 
 The `leftJoin` method works as an sql left join.
-When an element from the left sequence doesn't match with any of the elements from the right sequence, 
+When an element from the left sequence doesn't match with any of the elements from the right sequence,
 the `joinSelector` function is called with an `undefined` right value.  
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3])
   .leftJoin([2, 3, 4, 2], n => n, n => n, (a, b) => `${a}-${b || '#'}`)
-  .toArray(); 
+  .toArray();
 // returns ['1-#', '2-2', '2-2', '3-3']
 
 query([{book: 'History', owner: 3}, {book: 'Math', owner: 2}, {book: 'Art'}]])
   .leftJoin(
-    [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}], 
+    [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}],
     left => left.owner,
     right => right.id,
     (left, right) => ({book: left.book, owner: right && right.owner || '--'}))
-  .toArray(); 
+  .toArray();
 // returns [
-//   {book: 'History', owner: 'Eve'}, 
-//   {book: 'Math', owner: 'Bob'}, 
+//   {book: 'History', owner: 'Eve'},
+//   {book: 'Math', owner: 'Bob'},
 //   {book: 'Art', owner: '--'}]
 ```
 
-[!] `leftJoin` is a deferred method and is executed only when the result sequence is iterated.
+`leftJoin` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `map`
+
 Returns a sequence of transformed values.
 
 > Syntax
+
 ```ts
 map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 ```
@@ -807,19 +924,22 @@ map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 > Parameters
 * `selector` - *(required)* a value transformer function to apply to each element
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3]).map(elem => elem * 10).toArray(); // returns [10, 20, 30]
 ```
 
-[!] `map` is a deferred method and is executed only when the result sequence is iterated.
+`map` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `max`
+
 Returns the maximum element in a sequence.
 
 > Syntax
+
 ```ts
 max(): number;
 max(selector: (element: T, index: number) => number): number;
@@ -831,8 +951,8 @@ max(selector: (element: T, index: number) => number): number;
 If sequence is empty, returns `undefined`.  
 `max` uses triple equals `===` to compare elements.
 
+> Example
 
-#### Example
 ```ts
 import { query } from 'array-query';
 
@@ -842,9 +962,11 @@ query([7, 3, 11, 5]).max(elem => 1 / elem); // returns 3
 ```
 
 ### `min`
+
 Returns the minimum element in a sequence.
 
 > Syntax
+
 ```ts
 min(): number;
 min(selector: (element: T, index: number) => number): number;
@@ -856,8 +978,8 @@ min(selector: (element: T, index: number) => number): number;
 If sequence is empty, returns `undefined`.  
 `min` uses triple equals `===` to compare elements.
 
+> Example
 
-#### Example
 ```ts
 import { query } from 'array-query';
 
@@ -867,9 +989,11 @@ query([7, 3, 11, 5]).min(elem => 1 / elem); // returns 11
 ```
 
 ### `prepend`
+
  Returns a sequence with given elements at the beginning.
 
 > Syntax
+
 ```ts
 prepend(other: Iterable<T>): IterableQuery<T>;
 ```
@@ -877,19 +1001,22 @@ prepend(other: Iterable<T>): IterableQuery<T>;
 > Parameters
 * `other` - *(required)* the sequence to be added at the beginning
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3]).prepend([9, 10]).toArray(); // returns [1, 2, 3, 9, 10]
 ```
 
-[!] `prepend` is a deferred method and is executed only when the result sequence is iterated.
+`prepend` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `reduce`
+
 Applies a function against an accumulator and each element *(from left to right)* to reduce it to a single value.
 
 > Syntax
+
 ```ts
 reduce(
     callback: (accumulator: T, current: T, index: number) => T,
@@ -908,9 +1035,10 @@ reduce<S>(
   * `currentIndex` the index of the current element being processed;
 * `initialValue` - *(optional)* value to use as the first argument to the first call of the `callback`
 
-Calling `reduce` on an empty array without an initial value throws an error.
+Calling `reduce` on an empty sequence without an initial value throws an error.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -919,9 +1047,11 @@ query([ 1, 2, 3 ]).reduce((acc, elem) => acc + elem, 10); // returns 16
 ```
 
 ### `reduceRight`
+
 Applies a function against an accumulator and each element *(from right to left)* to reduce it to a single value.
 
 > Syntax
+
 ```ts
 reduceRight(
     callback: (accumulator: T, current: T, index: number) => T,
@@ -940,9 +1070,10 @@ reduceRight<S>(
   * `currentIndex` the index of the current element being processed;
 * `initialValue` - *(optional)* value to use as the first argument to the first call of the `callback`
 
-Calling `reduceRight` on an empty array without an initial value throws an error.
+Calling `reduceRight` on an empty sequence without an initial value throws an error.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -951,26 +1082,31 @@ query([ 1, 2, 3]).reduceRight((acc, elem) => acc.concat(elem), []); // returns [
 ```
 
 ### `reverse`
+
 Returns a sequence of elements in a reversed order.
 
 > Syntax
+
 ```ts
 reverse(): IterableQuery<T>;
 ```
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3]).reverse().toArray(); // returns [3, 2, 1]
 ```
 
-[!] `reverse` is a deferred method and is executed only when the result sequence is iterated.
+`reverse` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `rightJoin`
+
 Returns a sequence of correlated elements transformation that match a given key.
 
 > Syntax
+
 ```ts
 rightJoin<TKey, TRight, TResult>(
     other: Iterable<TRight>,
@@ -987,59 +1123,65 @@ rightJoin<TKey, TRight, TResult>(
 * `joinSelector` - *(required)* a transformation function to apply on each matched tuple
 
 The `rightJoin` method works as an sql right join.
-When an element from the right sequence doesn't match with any of the elements from the left sequence, 
+When an element from the right sequence doesn't match with any of the elements from the left sequence,
 the `joinSelector` function is called with an `undefined` left value.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3])
   .rightJoin([2, 3, 4, 2], n => n, n => n, (a, b) => `${a || '#'}-${b}`)
-  .toArray(); 
+  .toArray();
 // returns ['2-2', '3-3', '#-4', '2-2']
 
 query([{book: 'History', owner: 3}, {book: 'Math', owner: 2}]])
   .rightJoin(
-    [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}], 
+    [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}],
     right => right.id,
     left => left.owner,
     (right, left) => ({student: right.name, book: left && left.book || '--'}))
-  .toArray(); 
+  .toArray();
 // returns [
-//   {student: 'Alice', book: '--'}, 
-//   {student: 'Bob', book: 'Math'}, 
+//   {student: 'Alice', book: '--'},
+//   {student: 'Bob', book: 'Math'},
 //   {student: 'Eve', book: 'History'}]
 ```
 
-[!] `rightJoin` is a deferred method and is executed only when the result sequence is iterated.
+`rightJoin` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `shuffle`
+
 Returns the sequence of elements in a random order.
 
 > Syntax
+
 ```ts
 shuffle(): IterableQuery<T>;
 ```
 
-This method is implemented using [Fisher–Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) 
+This method is implemented using [Fisher–Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
 algorithm for generating the random permutation. `Math.rand()` is used to generate random numbers.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query([1, 2, 3, 4, 5]).shuffle().toArray(); 
+query([1, 2, 3, 4, 5]).shuffle().toArray();
 // returns a random permutation of the same elements
 // like: [2, 5, 3, 1, 4]
 ```
 
-[!] `shuffle` is a deferred method and is executed only when the result sequence is iterated.
+`shuffle` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `skip`
+
 Skips the specified number of elements from the beginning of sequence and returns the remaining ones.
 
 > Syntax
+
 ```ts
 skip(count: number): IterableQuery<T>;
 ```
@@ -1050,7 +1192,8 @@ skip(count: number): IterableQuery<T>;
 When *count* is greater than actual number of elements, results in an empty sequence.  
 Accepts also a negative count, in which case skips the elements from the end of the sequence.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1059,34 +1202,40 @@ query([1, 2, 3, 4, 5]).skip(10).toArray(); // []
 query([1, 2, 3, 4, 5]).skip(-2).toArray(); // [1, 2, 3]
 ```
 
-[!] `skip` is a deferred method and is executed only when the result sequence is iterated.
+`skip` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `slice`
+
 Returns a sequence that represents the range of elements from start to end.
 
 > Syntax
+
 ```ts
 slice(start: number, end: number): IterableQuery<T>;
 ```
+
 > Parameters
 * `start` - *(required)* zero-based index at which to begin extraction
 * `end` - *(required)* zero-based index before which to end extraction.
 
 The `end` index is not included in the result.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3]
 ```
 
-[!] `slice` is a deferred method and is executed only when the result sequence is iterated.
+`slice` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `some`
+
 Tests whether at least one element passes the predicate.
 
 > Syntax
+
 ```ts
 some(predicate: (element: T, index: number) => boolean): boolean;
 ```
@@ -1094,7 +1243,8 @@ some(predicate: (element: T, index: number) => boolean): boolean;
 > Parameters
 * `predicate` - *(required)* function to test for each element
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1103,9 +1253,11 @@ query([1, 2, 3, 42, 5]).some(elem => elem < 0); // returns false
 ```
 
 ### `sort`
+
 Returns a sequence of sorted elements.
 
 > Syntax
+
 ```ts
 sort(): IterableQuery<T>;
 sort<S>(selector: (element: T) => S): IterableQuery<T>;
@@ -1116,7 +1268,8 @@ sort<S>(selector: (element: T) => S): IterableQuery<T>;
 
 This method fallbacks to native JavaScript array sort.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1125,19 +1278,21 @@ query([
   {score: 1, value: 'a'},
   {score: 0, value: 'b'},
   {score: 2, value: 'c'}])
-  .sort(elem => elem.score); 
+  .sort(elem => elem.score);
 // returns [
 //  {score: 0, value: 'b'},
 //  {score: 1, value: 'a'},
 //  {score: 2, value: 'c'}]
 ```
 
-[!] `sort` is a deferred method and is executed only when the result sequence is iterated.
+`sort` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `sortDesc`
+
 Returns a sequence of sorted elements in a descending order.
 
 > Syntax
+
 ```ts
 sort(): IterableQuery<T>;
 sortDesc<S>(selector: (element: T) => S): IterableQuery<T>;
@@ -1148,7 +1303,8 @@ sortDesc<S>(selector: (element: T) => S): IterableQuery<T>;
 
 This method fallbacks to native JavaScript array sort.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1157,18 +1313,21 @@ query([
   {score: 1, value: 'a'},
   {score: 0, value: 'b'},
   {score: 2, value: 'c'}])
-  .sortDesc(elem => elem.score); 
+  .sortDesc(elem => elem.score);
 // returns [
 //  {score: 2, value: 'c'},
 //  {score: 1, value: 'a'},
 //  {score: 0, value: 'b'}]
 ```
-[!] `sortDesc` is a deferred method and is executed only when the result sequence is iterated.
+
+`sortDesc` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `splice`
+
 Returns a sequence that skips elements and/or adds new elements.
 
 > Syntax
+
 ```ts
 splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T>;
 ```
@@ -1178,25 +1337,28 @@ splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T>;
 * `deleteCount` - *(optional)* an integer indicating the number of original elements to skip
 * `items` - *(optional)* elements to add to the sequence
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query(['angel', 'clown', 'mandarin', 'sturgeon'])
-  .splice(2, 0, 'drum').toArray(); 
+  .splice(2, 0, 'drum').toArray();
 // returns ['angel', 'clown', 'drum', 'mandarin', 'sturgeon']
 
 query(['angel', 'clown', 'drum', 'mandarin', 'sturgeon'])
-  .splice(3, 1).toArray(); 
+  .splice(3, 1).toArray();
 // returns ['angel', 'clown', 'drum', 'sturgeon']
 ```
 
-[!] `splice` is a deferred method and is executed only when the result sequence is iterated.
+`splice` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `sum`
+
 Returns the sum of all elements.
 
 > Syntax
+
 ```ts
 sum(): number;
 sum(selector: (element: T, index: number) => number): number;
@@ -1207,7 +1369,8 @@ sum(selector: (element: T, index: number) => number): number;
 
 Optionally, a function can be provided to apply a transformation and map each element to a value.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1216,9 +1379,11 @@ query([{value: 1}, {value: 2}]).sum(elem => elem.value); // returns 3
 ```
 
 ### `take`
+
 Returns a specified number of elements from the beginning of sequence.
 
 > Syntax
+
 ```ts
 take(count: number): IterableQuery<T>;
 ```
@@ -1228,7 +1393,8 @@ take(count: number): IterableQuery<T>;
 
 If a negative count is specified, returns elements from the end of the sequence.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1237,12 +1403,14 @@ query([1, 2, 3]).take(-2); // returns [2, 3]
 query([1, 2, 3]).take(10); // returns [1, 2, 3]
 ```
 
-[!] `take` is a deferred method and is executed only when the result sequence is iterated.
+`take` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `toArray`
+
 Creates an array copy of the sequence.
 
 > Syntax
+
 ```ts
 toArray(): T[];
 toArray<S>(selector: (element: T, index: number) => S): S[];
@@ -1251,10 +1419,11 @@ toArray<S>(selector: (element: T, index: number) => S): S[];
 > Parameters
 * `selector` - *(optional)* a value transformer function to apply to each element
 
-When providing a selector function, creates an array of values 
+When providing a selector function, creates an array of values
 returned by applying the function on each element.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1263,9 +1432,11 @@ query([{value: 1}, {value: 2}]).toArray(elem => elem.value); // returns [1, 2]
 ```
 
 ### `toGroups`
+
 Creates a map of element groups by a given key.
 
 > Syntax
+
 ```ts
 toGroups<M>(
   keySelector: (element: T, index: number) => M): Map<M, T[]>;
@@ -1280,19 +1451,20 @@ toGroups<M, N>(
 * `valueSelector` - *(optional)* a transformer function to apply to each element
 
 Method `toGroups` creates a JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-of *key-value* pairs where each key is the result from `keySelector` and value is an array of elements 
+of *key-value* pairs where each key is the result from `keySelector` and value is an array of elements
 (or the result of applying `valueSelector` on each element) from the original sequence for which the key is the same.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query([1, 7, 14, 4, 9]).toGroups(elem => elem % 2 === 0); 
+query([1, 7, 14, 4, 9]).toGroups(elem => elem % 2 === 0);
 // returns Map {0 => [14, 4], 1 => [1, 7, 9]}
 
 query([
-    {name: 'Alice', gender: 'female'}, 
-    {name: 'Bob', gender: 'male'}, 
+    {name: 'Alice', gender: 'female'},
+    {name: 'Bob', gender: 'male'},
     {name: 'David', gender: 'male'}
   ])
   .toGroups(elem => elem.gender, elem => elem.name);
@@ -1300,9 +1472,11 @@ query([
 ```
 
 ### `toMap`
+
 Creates a map of elements by a given key.
 
 > Syntax
+
 ```ts
 toMap<M>(
     keySelector: (element: T, index: number) => M): Map<M, T>;
@@ -1322,24 +1496,27 @@ of *key-value* pairs where each key is the result from `keySelector` and value i
 
 If the sequence contains two elements with the same key, method `toMap` throws an error.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
-query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0)); 
+query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0));
 // returns Map {97 => 'a', 98 => 'b', 99 => 'c'}
 
-query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0), elem => elem.toUpperCase()); 
+query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0), elem => elem.toUpperCase());
 // returns Map {97 => 'A', 98 => 'B', 99 => 'C'}
 
-query([1, 1]).toMap(elem => elem); 
+query([1, 1]).toMap(elem => elem);
 // throws an Error
 ```
 
 ### `toSet`
+
 Creates a set of elements.
 
 > Syntax
+
 ```ts
 toSet(): Set<T>;
 toSet<S>(selector: (element: T, index: number) => S): Set<S>;
@@ -1351,25 +1528,30 @@ toSet<S>(selector: (element: T, index: number) => S): Set<S>;
 Method `toSet` returns a JavaScript [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
 of the original elements in the sequence, or their transformation when a `selector` is provided.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3, 1, 3]).toSet(); // returns Set {1, 2, 3}
-query([{value: 1}, {value: 2}, {value: 1}]).toSet(); // returns Set {1, 2}
+query([{value: 1}, {value: 2}, {value: 1}])
+  .toSet(elem => elem.value); // returns Set {1, 2}
 ```
 
 ### `toString`
+
 Returns a string representing the specified sequence and its elements.
 
 > Syntax
+
 ```ts
 toString(): string;
 ```
 
 Method `toString` calls `.toString()` function on each element and joins the result by `,`.
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1379,9 +1561,11 @@ query([{value: 1}, {value: 2}]).toString(); // returns [object Object],[object O
 ```
 
 ### `union`
+
 Returns a set union with a given sequence.
 
 > Syntax
+
 ```ts
 union(other: Iterable<T>): IterableQuery<T>;
 union<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
@@ -1392,6 +1576,7 @@ union<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 * `selector` - *(optional)* a value transformer function to be used for comparisons
 
 Example
+
 ```ts
 import { query } from 'array-query';
 
@@ -1399,36 +1584,41 @@ query([1, 2, 3]]).union([2, 3, 4]).toArray(); // returns [1, 2, 3, 4]
 
 query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
   .union([{id: 3, name: 'David'}, {id: 1, name: 'Alice'}], elem => elem.id)
-  .toArray(); 
+  .toArray();
 // returns [
 //  {id: 1, name: 'Alice'},
 //  {id: 2, name: 'Bob'},
 //  {id: 3, name: 'David'}]
 ```
 
-[!] `union` is a deferred method and is executed only when the result sequence is iterated.
+`union` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `values`
+
 Returns a sequence of values for each index in the source sequence.
 
 > Syntax
+
 ```ts
 values(): IterableQuery<T>;
 ```
 
-#### Example
+> Example
+
 ```ts
 import { query } from 'array-query';
 
 query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 ```
 
-[!] `values` is a deferred method and is executed only when the result sequence is iterated.
+`values` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ## License
+
 [MIT](LICENSE)
 
 ## Keywords
+
 [iterator](https://www.npmjs.com/search?q=keywords:iterator)
 [iterable](https://www.npmjs.com/search?q=keywords:iterable)
 [query](https://www.npmjs.com/search?q=keywords:query)
