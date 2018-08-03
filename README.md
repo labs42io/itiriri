@@ -116,10 +116,8 @@ $ npm test
 
 ## Complete list of methods
 
-* [nth](#nth)
 * [average](#average)
 * [concat](#concat)
-* [length](#length)
 * [distinct](#distinct)
 * [entries](#entries)
 * [every](#every)
@@ -143,9 +141,11 @@ $ npm test
 * [last](#last)
 * [lastIndexOf](#lastindexof)
 * [leftJoin](#leftjoin)
+* [length](#length)
 * [map](#map)
 * [max](#max)
 * [min](#min)
+* [nth](#nth)
 * [prepend](#prepend)
 * [reduce](#reduce)
 * [reduceRight](#reduceright)
@@ -167,32 +167,6 @@ $ npm test
 * [toString](#tostring)
 * [union](#union)
 * [values](#values)
-
-### `nth`
-
-Returns the element at a specified index.
-
-> Syntax
-
-```ts
-nth(index: number): T;
-```
-
-> Parameters
-* `index` - *(required)* zero based index at which to get the element
-
-For a negative index returns the element from the end of the sequence.  
-If index is out of the range, returns `undefined` .
-
-> Example
-
-```ts
-import { query } from 'array-query';
-
-query(['a', 'b', 'c', 'd']).nth(2)  // returns 'c'
-query(['a', 'b', 'c', 'd']).nth(-1) // returns 'd'
-query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
-```
 
 ### `average`
 
@@ -242,29 +216,6 @@ query([1, 2, 3]).concat([4, 5]).toArray()  // returns [1, 2, 3, 4, 5]
 ```
 
 `concat` *is a deferred method and is executed only when the result sequence is iterated.*
-
-### `length`
-
-Returns the number of elements in a sequence.
-
-> Syntax
-
-```ts
-length(): number;
-length(predicate: (element: T, index: number) => boolean): number;
-```
-
-> Parameters
-* `predicate` - *(optional)* a function to count only the elements that match the predicate
-
-> Example
-
-```ts
-import { query } from 'array-query';
-
-query([1, 2, 3, 4, 5]).length();  // returns 5
-query([1, 2, 3, 4, 5]).length(elem => elem > 2);  // returns 3
-```
 
 ### `distinct`
 
@@ -911,6 +862,29 @@ query([{book: 'History', owner: 3}, {book: 'Math', owner: 2}, {book: 'Art'}]])
 
 `leftJoin` *is a deferred method and is executed only when the result sequence is iterated.*
 
+### `length`
+
+Returns the number of elements in a sequence.
+
+> Syntax
+
+```ts
+length(): number;
+length(predicate: (element: T, index: number) => boolean): number;
+```
+
+> Parameters
+* `predicate` - *(optional)* a function to count only the elements that match the predicate
+
+> Example
+
+```ts
+import { query } from 'array-query';
+
+query([1, 2, 3, 4, 5]).length();  // returns 5
+query([1, 2, 3, 4, 5]).length(elem => elem > 2);  // returns 3
+```
+
 ### `map`
 
 Returns a sequence of transformed values.
@@ -986,6 +960,32 @@ import { query } from 'array-query';
 query([1, 2, 3]).min(); // returns 1
 query([]).min(); // returns undefined
 query([7, 3, 11, 5]).min(elem => 1 / elem); // returns 11
+```
+
+### `nth`
+
+Returns the element at a specified index.
+
+> Syntax
+
+```ts
+nth(index: number): T;
+```
+
+> Parameters
+* `index` - *(required)* zero based index at which to get the element
+
+For a negative index returns the element from the end of the sequence.  
+If index is out of the range, returns `undefined` .
+
+> Example
+
+```ts
+import { query } from 'array-query';
+
+query(['a', 'b', 'c', 'd']).nth(2)  // returns 'c'
+query(['a', 'b', 'c', 'd']).nth(-1) // returns 'd'
+query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
 ```
 
 ### `prepend`
