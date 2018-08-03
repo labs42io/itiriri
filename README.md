@@ -541,9 +541,12 @@ Groups elements by a given key, optionally applying a transformation over each e
 > Syntax
 
 ```ts
+groupBy<K>(
+  keySelector: (element: T, index: number) => K): IterableQuery<[K, IterableQuery<T>]>;
+
 groupBy<K, E>(
   keySelector: (element: T, index: number) => K,
-  valueSelector?: (element: T, index: number) => E): IterableQuery<IterableQueryGroup<K, E>>;
+  valueSelector: (element: T, index: number) => E): IterableQuery<[K, IterableQuery<E>]>;
 ```
 
 > Parameters
@@ -562,7 +565,7 @@ const students = [
 ];
 
 query(students).groupBy(elem => elem.gender, elem => elem.name).toArray();
-// [['female', [Alice]], ['male', ['Bob', 'David']]]
+// [['female', ['Alice']], ['male', ['Bob', 'David']]]
 ```
 
 `groupBy` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -631,12 +634,13 @@ Determines whether the sequence includes a certain element.
 > Syntax
 
 ```ts
-includes(element: T, fromIndex?: number = 0): boolean;
+includes(element: T): boolean;
+includes(element: T, fromIndex: number): boolean;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
-* `fromIndex` - *(optional)* starting index
+* `fromIndex` - *(optional)* starting index, defaults to `0`
 
 `includes` uses triple equals `===` to compare elements.
 
@@ -656,12 +660,13 @@ Returns the first (zero-based) index at which a given element can be found.
 > Syntax
 
 ```ts
-indexOf(element: T, fromIndex?: number = 0): number;
+indexOf(element: T): number;
+indexOf(element: T, fromIndex: number): number;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
-* `fromIndex` - *(optional)* starting index
+* `fromIndex` - *(optional)* starting index, defaults to `0`
 
 When an element is not found, returns -1.  
 `indexOf` uses triple equals `===` to compare elements.
@@ -796,12 +801,13 @@ Returns the last index at which a given element can be found.
 > Syntax
 
 ```ts
-lastIndexOf(element: T, fromIndex?: number = 0): number;
+lastIndexOf(element: T): number;
+lastIndexOf(element: T, fromIndex: number): number;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
-* `fromIndex` - *(optional)* starting index
+* `fromIndex` - *(optional)* starting index, defaults to `0`
 
 When an element is not found, returns -1.  
 `lastIndexOf` uses triple equals `===` to compare elements.
@@ -919,14 +925,16 @@ Returns the maximum element in a sequence.
 
 ```ts
 max(): number;
-max(selector: (element: T, index: number) => number): number;
+max(compareFn: (a: T, b: T) => number): T;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value provider function to apply to each element to get its value for comparison
+* `compareFn` - *(optional)* a comparer function that compares two elements from a sequence and returns:
+  * `-1` when `a` is less than `b`
+  * `1` when `a` is greater `b`
+  * `0` when `a` equals to `b`
 
 If sequence is empty, returns `undefined`.  
-`max` uses triple equals `===` to compare elements.
 
 > Example
 
@@ -935,7 +943,7 @@ import { query } from 'array-query';
 
 query([1, 2, 3]).max(); // returns 3
 query([]).max(); // returns undefined
-query([7, 3, 11, 5]).max(elem => 1 / elem); // returns 3
+query([7, 3, 11, 5]).max((a, b) => (1 / a) - (1 / b)); // returns 3
 ```
 
 ### `min`
@@ -946,14 +954,16 @@ Returns the minimum element in a sequence.
 
 ```ts
 min(): number;
-min(selector: (element: T, index: number) => number): number;
+min(compareFn: (a: T, b: T) => number): T;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value provider function to apply to each element to get its value for comparison
+* `compareFn` - *(optional)* a comparer function that compares two elements from a sequence and returns:
+  * `-1` when `a` is less than `b`
+  * `1` when `a` is greater `b`
+  * `0` when `a` equals to `b`
 
 If sequence is empty, returns `undefined`.  
-`min` uses triple equals `===` to compare elements.
 
 > Example
 
@@ -962,7 +972,7 @@ import { query } from 'array-query';
 
 query([1, 2, 3]).min(); // returns 1
 query([]).min(); // returns undefined
-query([7, 3, 11, 5]).min(elem => 1 / elem); // returns 11
+query([7, 3, 11, 5]).min((a, b) => (1 / a) - (1 / b)); // returns 11
 ```
 
 ### `nth`
@@ -1263,11 +1273,14 @@ Returns a sequence of sorted elements.
 
 ```ts
 sort(): IterableQuery<T>;
-sort<S>(selector: (element: T) => S): IterableQuery<T>;
+sort(compareFn: (a: T, b: T) => number): IterableQuery<T>;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value provider function to apply to each element to get its value for comparison
+* `compareFn` - *(optional)* a comparer function that compares two elements from a sequence and returns:
+  * `-1` when `a` is less than `b`
+  * `1` when `a` is greater `b`
+  * `0` when `a` equals to `b`
 
 This method fallbacks to native JavaScript array sort.
 
@@ -1281,7 +1294,7 @@ query([
   {score: 1, value: 'a'},
   {score: 0, value: 'b'},
   {score: 2, value: 'c'}])
-  .sort(elem => elem.score);
+  .sort((a, b)) => a.score - b.score);
 // returns [
 //  {score: 0, value: 'b'},
 //  {score: 1, value: 'a'},

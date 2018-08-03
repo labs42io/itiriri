@@ -12,7 +12,8 @@ export interface IterablePermutation<T> extends Iterable<T> {
 
   /**
    * Returns a sequence of sorted elements compared by a given comparer.
-   * @param  {(element1:T, element2:T)=>number} compareFn comparer function
+   * @param  {(element1:T,element2:T)=>number} compareFn comparer function that returns -1 
+   * for element1<element2, 1 for element1>element2, 0 for equal values
    * @returns Iterable<T>
    */
   sort(compareFn: (element1: T, element2: T) => number): IterableQuery<T>;
