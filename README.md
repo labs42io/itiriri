@@ -631,11 +631,12 @@ Determines whether the sequence includes a certain element.
 > Syntax
 
 ```ts
-includes(element: T, fromIndex: number = 0): boolean;
+includes(element: T, fromIndex?: number = 0): boolean;
 ```
 
 > Parameters
 * `element` - *(required)* the element to search for
+* `fromIndex` - *(optional)* starting index
 
 `includes` uses triple equals `===` to compare elements.
 
@@ -795,7 +796,7 @@ Returns the last index at which a given element can be found.
 > Syntax
 
 ```ts
-lastIndexOf(element: T, fromIndex: number = 0): number;
+lastIndexOf(element: T, fromIndex?: number = 0): number;
 ```
 
 > Parameters
