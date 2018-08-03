@@ -16,6 +16,13 @@ describe('Query (predicate)', () => {
 
       expect(q.includes(0)).to.be.false;
     });
+
+    it('Should return false when using fromIndex', () => {
+      const source = [1, 2, 3, 4];
+      const q = query(source);
+
+      expect(q.includes(1, 1)).to.be.false;
+    });
   });
 
   describe('When calling every', () => {

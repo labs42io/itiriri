@@ -18,7 +18,8 @@ export interface IterablePredicate<T> extends Iterable<T> {
 
   /**
    * Determines whether the sequence includes a certain element.
-   * @param  {T} element element to search
+   * @param element element to search
+   * @param fromIndex the start index
    */
-  includes(element: T): boolean;
+  includes(element: T, fromIndex?: number): boolean;
 }

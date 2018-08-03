@@ -8,7 +8,6 @@
 
 ### Proposal and to be discussed
 
-* `includes` extend with second parameter called `fromIndex` to be inline with JS
 * `indexOf` extend with second parameter called `fromIndex` to be inline with JS
 * `lastIndexOf` extend with second parameter called `fromIndex` to be inline with JS
 * `min`, `max` and `sort` use comparisons. `sort` is not inline with JS sort, should accept a comparer function.

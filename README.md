@@ -680,7 +680,7 @@ Determines whether the sequence includes a certain element.
 > Syntax
 
 ```ts
-includes(element: T): boolean;
+includes(element: T, fromIndex: number = 0): boolean;
 ```
 
 > Parameters

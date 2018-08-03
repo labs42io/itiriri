@@ -172,8 +172,8 @@ class Query<T> implements IterableQuery<T>{
     return indexOf(this, predicate) !== -1;
   }
 
-  includes(element: T): boolean {
-    return this.some(x => x === element);
+  includes(element: T, fromIndex: number = 0): boolean {
+    return this.some((elem, idx) => idx >= fromIndex && elem === element);
   }
   // #endregion
 

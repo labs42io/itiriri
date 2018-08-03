@@ -35,13 +35,6 @@ describe('Query', () => {
   });
 
   describe('When calling skip + take', () => {
-    it('Should defer both methods', () => {
-      const source = new SpyIterable(numberGenerator());
-      query(source).skip(100).take(10000);
-
-      expect(source.wasIterated).to.be.false;
-    });
-
     it('Should return 4 elemens', () => {
       const source = numberGenerator(1, 2);
       const q = query(source).skip(2).take(4);
@@ -58,13 +51,6 @@ describe('Query', () => {
   });
 
   describe('When calling take + sort', () => {
-    it('Should defer both methods', () => {
-      const source = new SpyIterable(numberGenerator());
-      query(source).take(1000000000).sort();
-
-      expect(source.wasIterated).to.be.false;
-    });
-
     it('Should return 5 elements', () => {
       const source = numberGenerator(10, -1);
       const q = query(source).take(5).sort();
