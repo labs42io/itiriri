@@ -12,7 +12,7 @@ describe('Query (permutation)', () => {
       expect(source.wasIterated).to.be.false;
     });
 
-    it('Should return array of 7 elements', () => {
+    it.only('Should return array of 7 elements', () => {
       const source = [0, -4, 4, 30, 4, -10, 10];
       const q = query(source).sort();
 

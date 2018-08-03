@@ -176,8 +176,11 @@ class Query<T> implements IterableQuery<T>{
   // #endregion
 
   // #region IterablePermutation implementation
-  sort(compareFn: (element1: T, element2: T) => number = defaultCompareFn<T>()): IterableQuery<T> {
-    return new Query((function* (source) { yield* source.toArray().sort(compareFn); })(this));
+  sort(compareFn?: (element1: T, element2: T) => number): IterableQuery<T> {
+    const source = this.source;
+    return new Query(iterable(function* () {
+      yield* toArray(source).sort(compareFn);
+    }));
   }
 
   shuffle(): IterableQuery<T> {
@@ -352,12 +355,4 @@ function element<T>() {
 
 function alwaysTrue<T>() {
   return (e: any) => true;
-}
-
-function defaultCompareFn<T>() {
-  return (e1: T, e2: T) => {
-    if (e1 > e2) return 1;
-    if (e1 < e2) return -1;
-    return 0;
-  };
 }
