@@ -137,17 +137,17 @@ export interface IterableValue<T> extends Iterable<T> {
   /**
    * Returns the maximum value.
    * If sequence is empty, returns undefined.
-   * @returns number
+   * @returns T
    */
-  max(): number;
+  max(): T;
 
   /**
-   * Returns the maximum value from a sequence of transformed values.
+   * Returns the maximum value from a sequence using a compare function.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element transformation
-   * @returns number
+   * @param  {(element1:T,element2:T)=>number} selector compare function
+   * @returns T
    */
-  max(selector: (element: T, index: number) => number): number;
+  max(selector: (element1: T, element2: T) => number): T;
 
   /**
    * Returns the sum of all elements.

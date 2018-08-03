@@ -326,7 +326,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.max(x => x.val)).to.be.equal(1010);
+      expect(q.max((e1, e2) => e1.val - e2.val)).to.be.equal(source[0]);
     });
   });
 
@@ -343,17 +343,6 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.sum()).to.be.undefined;
-    });
-
-    it('Should return 20', () => {
-      const source = [
-        { val: 0, tag: 'a' },
-        { val: 20, tag: 'b' },
-        { val: 0, tag: 'c' },
-      ];
-      const q = query(source);
-
-      expect(q.max(x => x.val)).to.be.equal(20);
     });
   });
 
