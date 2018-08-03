@@ -134,11 +134,11 @@ class Query<T> implements IterableQuery<T>{
     return average(map(this, selector));
   }
 
-  min(compareFn: (element1: T, element2: T) => number = (e1: T, e2: T) => e1 < e2 ? 1 : -1): T {
+  min(compareFn: (element1: T, element2: T) => number = comparer<T>()): T {
     return min(this, compareFn);
   }
 
-  max(compareFn: (element1: T, element2: T) => number = (e1: T, e2: T) => e1 > e2 ? 1 : -1): T {
+  max(compareFn: (element1: T, element2: T) => number = comparer<T>()): T {
     return max(this, compareFn);
   }
 
@@ -177,7 +177,7 @@ class Query<T> implements IterableQuery<T>{
 
   // #region IterablePermutation implementation
   sort(
-    compareFn: (element1: T, element2: T) => number = (e1: T, e2: T) => e1 > e2 ? 1 : -1,
+    compareFn: (element1: T, element2: T) => number = comparer<T>(),
   ): IterableQuery<T> {
     return new Query((function* (source) { yield* source.toArray().sort(compareFn); })(this));
   }
@@ -354,4 +354,8 @@ function element<T>() {
 
 function alwaysTrue<T>() {
   return (e: any) => true;
+}
+
+function comparer<T>() {
+  return (a: T, b: T) => a === b ? 0 : (a > b ? 1 : -1);
 }

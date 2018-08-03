@@ -1,6 +1,6 @@
 export function max<T>(
   source: Iterable<T>,
-  compareFn: (element1: T, element2: T) => number = (e1: T, e2: T) => e1 > e2 ? 1 : -1,
+  compareFn: (element1: T, element2: T) => number,
 ): T {
   let result = undefined;
 

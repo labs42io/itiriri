@@ -299,7 +299,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.min((e1, e2) => e2.val - e1.val)).to.be.equal(source[0]);
+      expect(q.min((e1, e2) => e1.val - e2.val)).to.be.equal(source[0]);
     });
   });
 
