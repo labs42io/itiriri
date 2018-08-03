@@ -262,8 +262,8 @@ length(predicate: (element: T, index: number) => boolean): number;
 ```ts
 import { query } from 'array-query';
 
-query([1, 2, 3, 4, 5]).count();  // returns 5
-query([1, 2, 3, 4, 5]).count(elem => elem > 2);  // returns 3
+query([1, 2, 3, 4, 5]).length();  // returns 5
+query([1, 2, 3, 4, 5]).length(elem => elem > 2);  // returns 3
 ```
 
 ### `distinct`
