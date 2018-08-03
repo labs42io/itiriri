@@ -656,7 +656,7 @@ Returns the first (zero-based) index at which a given element can be found.
 > Syntax
 
 ```ts
-indexOf(element: T, fromIndex: number = 0): number;
+indexOf(element: T, fromIndex?: number = 0): number;
 ```
 
 > Parameters
