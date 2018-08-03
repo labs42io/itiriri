@@ -119,7 +119,7 @@ $ npm test
 * [at](#at)
 * [average](#average)
 * [concat](#concat)
-* [count](#count)
+* [length](#length)
 * [distinct](#distinct)
 * [entries](#entries)
 * [every](#every)
@@ -243,15 +243,15 @@ query([1, 2, 3]).concat([4, 5]).toArray()  // returns [1, 2, 3, 4, 5]
 
 `concat` *is a deferred method and is executed only when the result sequence is iterated.*
 
-### `count`
+### `length`
 
 Returns the number of elements in a sequence.
 
 > Syntax
 
 ```ts
-count(): number;
-count(predicate: (element: T, index: number) => boolean): number;
+length(): number;
+length(predicate: (element: T, index: number) => boolean): number;
 ```
 
 > Parameters
