@@ -34,6 +34,38 @@ export class Gulpfile {
   }
 
   /**
+   * Runs unit-tests.
+   */
+  @Task()
+  unit() {
+    return gulp.src('./build/compiled/test/**/*.js')
+      .pipe(mocha());
+  }
+
+  /**
+   * Compiles the code and runs tests.
+   */
+  @SequenceTask()
+  test() {
+    return ['clean', 'compile', 'unit'];
+  }
+
+  /**
+   * Runs the tslint.
+   */
+  @Task()
+  tslint() {
+    return gulp.src(['./lib/**/*.ts', './test/**/*.ts', './examples/**/*.ts'])
+      .pipe(tslint({ formatter: 'stylish' }))
+      .pipe(tslint.report({
+        emitError: true,
+        summarizeFailureOutput: true,
+        sort: true,
+        bell: true,
+      }));
+  }
+
+  /**
    * Copies all sources to the package directory.
    */
   @MergedTask()
@@ -74,21 +106,21 @@ export class Gulpfile {
   @Task()
   packagePreparePackageFile() {
     return gulp.src('./package.json')
+      .pipe(replace('\"private\": true,', '\"private\": false,'))
       .pipe(gulp.dest('./build/package'));
   }
 
   /**
-   * This task will replace all typescript code blocks in the README 
-   * (since npm does not support typescript syntax  highlighting) 
+   * This task will replace all typescript code blocks in the README
+   * (since npm does not support typescript syntax highlighting)
    * and copy this README file into the package folder.
    */
   @Task()
   packageReadmeFile() {
     return gulp.src('./readme.md')
-      .pipe(replace(/```typescript([\s\S]*?)```/g, '```javascript$1```'))
+      .pipe(replace(/```ts([\s\S]*?)```/g, '```javascript$1```'))
       .pipe(gulp.dest('./build/package'));
   }
-
 
   /**
    * Creates a package that can be published to npm.
@@ -118,48 +150,16 @@ export class Gulpfile {
    */
   @SequenceTask()
   publish() {
-    return ['test', 'package', 'npmPublish'];
-  }
-
-  /**
-   * Runs unit-tests.
-   */
-  @Task()
-  unit() {
-    return gulp.src('./build/compiled/test/**/*.js')
-      .pipe(mocha());
-  }
-
-  /**
-   * Runs the tslint.
-   */
-  @Task()
-  tslint() {
-    return gulp.src(['./lib/**/*.ts', './test/**/*.ts', './examples/**/*.ts'])
-      .pipe(tslint({ formatter: 'stylish' }))
-      .pipe(tslint.report({
-        emitError: true,
-        summarizeFailureOutput: true,
-        sort: true,
-        bell: true,
-      }));
-  }
-
-  /**
-   * Compiles the code and runs tests.
-   */
-  @SequenceTask()
-  test() {
-    return ['clean', 'compile', 'unit'];
+    return ['test', 'tslint', 'package', 'npmPublish'];
   }
 
   @Task('browserify', ['clean', 'compile'])
   browserify() {
     return browserify({
-      standalone: 'ArrayQuery'
+      standalone: 'ArrayQuery',
     }).add('./build/compiled/lib/index.js')
       .bundle()
-      .on('error', function (error) { console.error(error.toString()); })
+      .on('error', e => console.error(e))
       .pipe(source('bundle.min.js'))
       .pipe(buffer())
       .pipe(uglify())
