@@ -46,7 +46,7 @@ console.log(`DistinctBy: ${q.distinct(x => x % 2 === 0 ? 0 : 1).toArray().join('
 console.log(`ForEach: ${q.map(x => ({ x })).forEach(x => x.x *= 10)}`);
 console.log(`GroupBy: ${q.groupBy(x => x < 5 ? 0 : 1)
   .toArray()
-  .map(x => `(${x.key})[${x.toArray().join(', ')}]`).join(', ')}`);
+  .map(x => `(${x[0]})[${x[1].toArray().join(', ')}]`).join(', ')}`);
 console.log(`Concat: ${q.concat(query([11, 12])).toArray().join(', ')}`);
 console.log(`ToMap: ${q.toMap(x => x, x => x)}`);
 

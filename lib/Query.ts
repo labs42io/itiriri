@@ -229,9 +229,9 @@ class Query<T> implements IterableQuery<T>{
   groupBy<K, S>(
     keySelector: (element: T, index: number) => K,
     valueSelector: (element: T, index: number) => S = x => <any>x,
-  ): IterableQuery<IterableQueryGroup<K, T | S>> {
+  ): IterableQuery<[K, IterableQuery<S>]> {
     const groups = iterable(() => toGroups(this, keySelector, valueSelector));
-    const result = map(groups, elem => new Group(elem[0], elem[1]));
+    const result = map(groups, elem => <[K, IterableQuery<S>]>[elem[0], new Query(elem[1])]);
 
     return new Query(result);
   }

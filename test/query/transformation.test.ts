@@ -46,8 +46,8 @@ describe('Query (transformation)', () => {
       const q = query(source).groupBy(x => x > 0);
 
       expect(q.toArray()).to.be.deep.equal([
-        { source: [0, -4, -1], key: false },
-        { source: [4], key: true },
+        [false, { source: [0, -4, -1] }],
+        [true, { source: [4] }],
       ]);
     });
 
@@ -63,9 +63,9 @@ describe('Query (transformation)', () => {
       const q = query(source).groupBy(x => x.val % 3);
 
       expect(q.toArray()).to.be.deep.equal([
-        { source: [{ val: 1, tag: 'a' }, { val: 4, tag: 'd' }], key: 1 },
-        { source: [{ val: 2, tag: 'b' }, { val: 5, tag: 'e' }], key: 2 },
-        { source: [{ val: 3, tag: 'c' }, { val: 6, tag: 'f' }], key: 0 },
+        [1, { source: [{ val: 1, tag: 'a' }, { val: 4, tag: 'd' }] }],
+        [2, { source: [{ val: 2, tag: 'b' }, { val: 5, tag: 'e' }] }],
+        [0, { source: [{ val: 3, tag: 'c' }, { val: 6, tag: 'f' }] }],
       ]);
     });
 
@@ -74,8 +74,8 @@ describe('Query (transformation)', () => {
       const q = query(source).groupBy((elem, idx) => idx % 2);
 
       expect(q.toArray()).to.be.deep.equal([
-        { source: [0, 4], key: 0 },
-        { source: [4, 1], key: 1 },
+        [0, { source: [0, 4] }],
+        [1, { source: [4, 1] }],
       ]);
     });
   });

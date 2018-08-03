@@ -24,7 +24,7 @@ export interface IterableTransformation<T> extends Iterable<T> {
    * @returns Iterable<T>
    */
   groupBy<K>(
-    keySelector: (element: T, index: number) => K): IterableQuery<IterableQueryGroup<K, T>>;
+    keySelector: (element: T, index: number) => K): IterableQuery<[K, IterableQuery<T>]>;
 
   /**
    * Groups elements by a given key and applies a transformation over the elements.
@@ -34,7 +34,7 @@ export interface IterableTransformation<T> extends Iterable<T> {
    */
   groupBy<K, E>(
     keySelector: (element: T, index: number) => K,
-    valueSelector: (element: T, index: number) => E): IterableQuery<IterableQueryGroup<K, E>>;
+    valueSelector: (element: T, index: number) => E): IterableQuery<[K, IterableQuery<E>]>;
 }
 
 /**
