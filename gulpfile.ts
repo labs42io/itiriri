@@ -156,7 +156,7 @@ export class Gulpfile {
   @Task('browserify', ['clean', 'compile'])
   browserify() {
     return browserify({
-      standalone: 'ArrayQuery',
+      standalone: 'itiriri',
     }).add('./build/compiled/lib/index.js')
       .bundle()
       .on('error', e => console.error(e))

@@ -6,10 +6,6 @@
 * Finish documentation
 * Publish to NPM
 
-### Proposal and to be discussed
-
-* `min`, `max` and `sort` use comparisons. `sort` is not inline with JS sort, should accept a comparer function.
-
 ## Next versions
 
 * Implement `takeWhile` and `skipWhile` like functions
@@ -24,13 +20,3 @@
   * Comparison with popular JS libraries
 * Create ES5 `...-es5` separate package from current one
 * Async iterables, create a separate `...-async` package
-
-## Sexy Examples
-
-```js
-var foo = ArrayQuery.query([6,1,5,4,2,3]);
-
-foo.map((elem, idx) => elem*2).sort().take(2).toArray(); // [2,4]
-// todo add more (fibonacci, primes, random)
-
-```
