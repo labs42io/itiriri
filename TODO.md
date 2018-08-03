@@ -8,6 +8,7 @@
 
 ### Proposal and to be discussed
 
+* `at() -> nth()`
 * `exclude` should exclude only matched items and not produce a set
 * `groupBy` to return [key, iterable] instead of iterable with key field
 

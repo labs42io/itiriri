@@ -86,7 +86,7 @@ describe('iterators/exclude', () => {
         const iterator = exclude(left, right, x => x.p);
         const result = toArray(iterator);
 
-        expect(result).to.deep.equal([elem1]);
+        expect(result).to.deep.equal([elem1, { p: 1 }]);
       });
     });
 
@@ -97,7 +97,7 @@ describe('iterators/exclude', () => {
         const iterator = exclude(left, right, x => x);
         const result = toArray(iterator);
 
-        expect(result).to.deep.equal([1]);
+        expect(result).to.deep.equal([1, 1]);
       });
     });
   });

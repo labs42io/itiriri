@@ -14,7 +14,6 @@ export function exclude<TElement, TKey>(
       const key = keySelector(element);
 
       if (!exclusionSet.has(key)) {
-        exclusionSet.add(key);
         yield element;
       }
     }

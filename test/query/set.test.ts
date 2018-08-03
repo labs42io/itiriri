@@ -47,15 +47,15 @@ describe('Query (set)', () => {
       expect(source2.wasIterated).to.be.false;
     });
 
-    it('Should return array of 1 elements', () => {
+    it('Should return array of 2 elements', () => {
       const source1 = [0, 4, 4, 0];
       const source2 = [0, 5];
       const q = query(source1).exclude(source2, x => x);
 
-      expect(q.toArray()).to.be.deep.equal([4]);
+      expect(q.toArray()).to.be.deep.equal([4, 4]);
     });
 
-    it('Should return array of 2 elements', () => {
+    it('Should return array of 3 elements', () => {
       const source1 = [
         { val: 1, tag: 'a' },
         { val: 2, tag: 'b' },
@@ -69,6 +69,7 @@ describe('Query (set)', () => {
 
       expect(q.toArray()).to.be.deep.equal([
         { val: 2, tag: 'b' },
+        { val: 5, tag: 'b' },
         { val: 6, tag: 'c' },
       ]);
     });
