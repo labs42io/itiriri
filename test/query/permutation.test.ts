@@ -13,10 +13,10 @@ describe('Query (permutation)', () => {
     });
 
     it('Should return array of 6 elements', () => {
-      const source = [0, -4, 4, 30, -10, 10];
+      const source = [0, -4, 4, 30, 4, 10];
       const q = query(source).sort();
 
-      expect(q.toArray()).to.be.deep.equal([-10, -4, 0, 4, 10, 30]);
+      expect(q.toArray()).to.be.deep.equal([-4, 0, 4, 4, 10, 30]);
     });
 
     it('Should return array of 3 objects', () => {
