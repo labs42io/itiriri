@@ -5,6 +5,13 @@
 * Publish to NPM
 
 ### Next release
+* Implement `takeWhile` and `skipWhile`
+* Implement `crossJoin`
+* `join` -> `innerjoin` and make current `join` inline with JS array implementation
+* `join`, `leftJoin`, `rightJoin`, `groupJoin` that accept a comparer function
+* [Proposal] Implement `pages` method like `page(source: Iterable<T>, size: number):Iterable<T[size]>`
+* [proposal] Implement `window` method like `window(source: Iterable<T>, size: number):Iterable<T[size]>`
+
 * Performance tests (CPU, memory)
   * Comparison with JS native array
   * Comparison with popular JS libraries
