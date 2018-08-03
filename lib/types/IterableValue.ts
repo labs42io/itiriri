@@ -47,14 +47,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * Returns the number of elements.
    * @returns number
    */
-  count(): number;
+  length(): number;
 
   /**
    * Returns the number of elements matching the specified predicate.
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns number
    */
-  count(predicate: (element: T, index: number) => boolean): number;
+  length(predicate: (element: T, index: number) => boolean): number;
 
   /**
    * Returns the first element.

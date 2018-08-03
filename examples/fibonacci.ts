@@ -37,6 +37,6 @@ console.log(`Top 5 that contain 42: ${top5Has42}`);
 // Group first 100 in odd/even
 const group = topN(100)
   .groupBy(x => x % 2 === 0)
-  .map(x => `${x[0] ? 'Evens' : 'Odds'} group has ${x[1].count()} elements`);
+  .map(x => `${x[0] ? 'Evens' : 'Odds'} group has ${x[1].length()} elements`);
 
 console.log(group.toString());

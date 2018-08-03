@@ -16,7 +16,7 @@ describe('Query', () => {
         'skip', 'slice', 'splice', 'join', 'leftJoin', 'rightJoin', 'groupJoin',
         'sort', 'sortDesc', 'shuffle', 'reverse', 'every', 'some', 'includes',
         'distinct', 'exclude', 'intersect', 'union', 'map', 'flat', 'groupBy',
-        'at', 'indexOf', 'findIndex', 'lastIndexOf', 'findLastIndex', 'count',
+        'at', 'indexOf', 'findIndex', 'lastIndexOf', 'findLastIndex', 'length',
         'first', 'find', 'last', 'findLast', 'average', 'min',
         'max', 'sum', 'reduce', 'reduceRight',
       ];

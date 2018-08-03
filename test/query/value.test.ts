@@ -125,21 +125,21 @@ describe('Query (value)', () => {
       const source = [1, 3, 4, 33, 2, 4];
       const q = query(source);
 
-      expect(q.count()).to.be.equal(6);
+      expect(q.length()).to.be.equal(6);
     });
 
     it('Should return 1', () => {
       const source = [1, 3, 4, 33, 2, 4];
       const q = query(source);
 
-      expect(q.count(x => x > 10)).to.be.equal(1);
+      expect(q.length(x => x > 10)).to.be.equal(1);
     });
 
     it('Should return 3', () => {
       const source = [1, 3, 4, 33, 2, 4];
       const q = query(source);
 
-      expect(q.count((elem, idx) => idx > 2)).to.be.equal(3);
+      expect(q.length((elem, idx) => idx > 2)).to.be.equal(3);
     });
   });
 

@@ -6,8 +6,8 @@ import { IterableQuery } from './lib/types/IterableQuery';
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const q: IterableQuery<number> = query(arr);
 
-console.log(`Count: ${q.count()}`);
-console.log(`Count > 5: ${q.count(x => x > 5)}`);
+console.log(`Length: ${q.length()}`);
+console.log(`Length > 5: ${q.length(x => x > 5)}`);
 
 console.log(`Average: ${q.average()}`);
 console.log(`Minimum: ${q.min()}`);

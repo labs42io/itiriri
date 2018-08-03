@@ -18,7 +18,7 @@ import { splice } from './iterators/splice';
 import { take } from './iterators/take';
 import { at } from './reducers/at';
 import { average } from './reducers/average';
-import { count } from './reducers/count';
+import { length } from './reducers/length';
 import { first } from './reducers/first';
 import { indexOf } from './reducers/indexOf';
 import { last } from './reducers/last';
@@ -112,8 +112,8 @@ class Query<T> implements IterableQuery<T>{
     return lastIndexOf(this, predicate);
   }
 
-  count(predicate: (element: T, index: number) => boolean = alwaysTrue()): number {
-    return count(filter(this, predicate));
+  length(predicate: (element: T, index: number) => boolean = alwaysTrue()): number {
+    return length(filter(this, predicate));
   }
 
   first(): T {
@@ -350,15 +350,6 @@ class Query<T> implements IterableQuery<T>{
     return this.toArray().toString();
   }
   // #endregion
-}
-
-class Group<K, E> extends Query<E> implements IterableQueryGroup<K, E> {
-  readonly key: K;
-
-  constructor(key: K, source: Iterable<E>) {
-    super(source);
-    this.key = key;
-  }
 }
 
 function element<T>() {
