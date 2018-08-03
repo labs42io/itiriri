@@ -28,7 +28,6 @@ console.log(`Some > 5: ${q.some(x => x > 5)}`);
 console.log(`Some > 10: ${q.every(x => x > 10)}`);
 
 console.log(`Sort: ${q.sort().toArray().join(', ')}`);
-console.log(`SortDesc: ${q.sortDesc().toArray().join(', ')}`);
 console.log(`Reverse: ${q.reverse().toArray().join(', ')}`);
 
 console.log(`Filter > 5: ${q.filter(x => x > 5).toArray().join(', ')}`);

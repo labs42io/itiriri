@@ -13,7 +13,6 @@ import { reverse } from './iterators/reverse';
 import { shuffle } from './iterators/shuffle';
 import { skip } from './iterators/skip';
 import { slice } from './iterators/slice';
-import { sort } from './iterators/sort';
 import { splice } from './iterators/splice';
 import { take } from './iterators/take';
 import { nth } from './reducers/nth';
@@ -32,7 +31,6 @@ import { toGroups } from './reducers/toGroups';
 import { toMap } from './reducers/toMap';
 import { toSet } from './reducers/toSet';
 import { IterableQuery } from './types/IterableQuery';
-import { IterableQueryGroup } from './types/IterableTransformation';
 import { isIterable } from './utils/isIterable';
 import { iterable } from './utils/iterable';
 import { iterator } from './utils/iterator';
@@ -178,12 +176,8 @@ class Query<T> implements IterableQuery<T>{
   // #endregion
 
   // #region IterablePermutation implementation
-  sort<S>(selector: (element: T, index: number) => S = element<S>()): IterableQuery<T> {
-    return new Query(sort(this, selector));
-  }
-
-  sortDesc<S>(selector: (element: T, index: number) => S = element<S>()): IterableQuery<T> {
-    return new Query(sort(this, selector, true));
+  sort(compareFn: (element1: T, element2: T) => number = defaultCompareFn<T>()): IterableQuery<T> {
+    return new Query((function* (source) { yield* source.toArray().sort(compareFn); })(this));
   }
 
   shuffle(): IterableQuery<T> {
@@ -358,4 +352,12 @@ function element<T>() {
 
 function alwaysTrue<T>() {
   return (e: any) => true;
+}
+
+function defaultCompareFn<T>() {
+  return (e1: T, e2: T) => {
+    if (e1 > e2) return 1;
+    if (e1 < e2) return -1;
+    return 0;
+  };
 }
