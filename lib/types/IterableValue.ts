@@ -122,17 +122,17 @@ export interface IterableValue<T> extends Iterable<T> {
   /**
    * Returns the minimum value.
    * If sequence is empty, returns undefined.
-   * @returns number
+   * @returns T
    */
-  min(): number;
+  min(): T;
 
   /**
-   * Returns the minimum value from a sequence of transformed values.
+   * Returns the minimum value from a sequence using a compare function.
    * If sequence is empty, returns undefined.
-   * @param  {(element:T,index:number)=>number} selector element transformation
-   * @returns number
+   * @param  {(element1:T,element2:T)=>number} compareFn compartion function
+   * @returns T
    */
-  min(selector: (element: T, index: number) => number): number;
+  min(compareFn: (element1: T, element2: T) => number): T;
 
   /**
    * Returns the maximum value.
