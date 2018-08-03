@@ -16,7 +16,7 @@ describe('Query', () => {
         'skip', 'slice', 'splice', 'join', 'leftJoin', 'rightJoin', 'groupJoin',
         'sort', 'sortDesc', 'shuffle', 'reverse', 'every', 'some', 'includes',
         'distinct', 'exclude', 'intersect', 'union', 'map', 'flat', 'groupBy',
-        'at', 'indexOf', 'findIndex', 'lastIndexOf', 'findLastIndex', 'length',
+        'nth', 'indexOf', 'findIndex', 'lastIndexOf', 'findLastIndex', 'length',
         'first', 'find', 'last', 'findLast', 'average', 'min',
         'max', 'sum', 'reduce', 'reduceRight',
       ];
@@ -53,7 +53,7 @@ describe('Query', () => {
       const source = numberGenerator(1, 2);
       const q = query(source).skip(10).take(1);
 
-      expect(q.at(0)).to.be.equal(21);
+      expect(q.nth(0)).to.be.equal(21);
     });
   });
 

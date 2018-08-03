@@ -8,21 +8,9 @@
 
 ### Proposal and to be discussed
 
-* `at() -> nth()`
-* `exclude` should exclude only matched items and not produce a set
-* `groupBy` to return [key, iterable] instead of iterable with key field
-
-```ts
-groupBy<K, E>(
-  keySelector: (element: T, index: number) => K,
-  valueSelector: (element: T, index: number) => E): IterableQuery<[K, IterableQuery<E>]>;
-```
-
 * `includes` extend with second parameter called `fromIndex` to be inline with JS
 * `indexOf` extend with second parameter called `fromIndex` to be inline with JS
 * `lastIndexOf` extend with second parameter called `fromIndex` to be inline with JS
-
-* Consider `length()` instead of `count()`
 * `min`, `max` and `sort` use comparisons. `sort` is not inline with JS sort, should accept a comparer function.
 
 ## Next versions

@@ -8,7 +8,7 @@ describe('Query (value)', () => {
       const source = numberGenerator();
       const q = query(source);
 
-      expect(q.at(3)).to.be.equal(3);
+      expect(q.nth(3)).to.be.equal(3);
     });
   });
 
@@ -17,7 +17,7 @@ describe('Query (value)', () => {
       const source = numberGenerator();
       const q = query(source).take(100);
 
-      expect(q.at(-1)).to.be.equal(99);
+      expect(q.nth(-1)).to.be.equal(99);
     });
   });
 

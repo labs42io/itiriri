@@ -19,8 +19,8 @@ console.log(`First > 5: ${q.find(x => x > 5)}`);
 console.log(`Last: ${q.last()}`);
 console.log(`Last < 5: ${q.findLast(x => x < 5)}`);
 
-console.log(`At(0): ${q.at(0)}`);
-console.log(`At(100): ${q.at(100)}`);
+console.log(`Nth(0): ${q.nth(0)}`);
+console.log(`Nth(100): ${q.nth(100)}`);
 
 console.log(`Every > 0: ${q.every(x => x > 0)}`);
 console.log(`Every > 5: ${q.every(x => x > 5)}`);

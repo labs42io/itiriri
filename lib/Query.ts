@@ -16,7 +16,7 @@ import { slice } from './iterators/slice';
 import { sort } from './iterators/sort';
 import { splice } from './iterators/splice';
 import { take } from './iterators/take';
-import { at } from './reducers/at';
+import { nth } from './reducers/nth';
 import { average } from './reducers/average';
 import { length } from './reducers/length';
 import { first } from './reducers/first';
@@ -92,8 +92,8 @@ class Query<T> implements IterableQuery<T>{
   // #endregion
 
   // #region IterableValue implementation
-  at(index: number): T {
-    return at(this, index);
+  nth(index: number): T {
+    return nth(this, index);
   }
 
   indexOf(element: T): number {

@@ -116,7 +116,7 @@ $ npm test
 
 ## Complete list of methods
 
-* [at](#at)
+* [nth](#nth)
 * [average](#average)
 * [concat](#concat)
 * [length](#length)
@@ -168,14 +168,14 @@ $ npm test
 * [union](#union)
 * [values](#values)
 
-### `at`
+### `nth`
 
 Returns the element at a specified index.
 
 > Syntax
 
 ```ts
-at(index: number): T;
+nth(index: number): T;
 ```
 
 > Parameters
@@ -189,9 +189,9 @@ If index is out of the range, returns `undefined` .
 ```ts
 import { query } from 'array-query';
 
-query(['a', 'b', 'c', 'd']).at(2)  // returns 'c'
-query(['a', 'b', 'c', 'd']).at(-1) // returns 'd'
-query(['a', 'b', 'c', 'd']).at(10) // returns undefined
+query(['a', 'b', 'c', 'd']).nth(2)  // returns 'c'
+query(['a', 'b', 'c', 'd']).nth(-1) // returns 'd'
+query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
 ```
 
 ### `average`

@@ -9,7 +9,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {number} index element's index
    * @returns T
    */
-  at(index: number): T;
+  nth(index: number): T;
 
   /**
    * Returns the first index at which a given element can be found.

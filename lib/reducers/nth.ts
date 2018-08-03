@@ -1,4 +1,4 @@
-export function at<TElement>(source: Iterable<TElement>, index: number): TElement {
+export function nth<TElement>(source: Iterable<TElement>, index: number): TElement {
   return index >= 0 ?
     fromFront(source, index) :
     fromBack(source, -index);

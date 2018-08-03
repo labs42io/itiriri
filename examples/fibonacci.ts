@@ -11,7 +11,7 @@ function* fibonacci() {
 }
 
 // Get 42nd Fibonacci number
-const f42 = query(fibonacci()).at(42);
+const f42 = query(fibonacci()).nth(42);
 console.log(`Fibonacci[42]: ${f42}`);
 
 // Calculating sum of first 10
