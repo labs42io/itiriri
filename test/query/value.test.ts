@@ -35,6 +35,13 @@ describe('Query (value)', () => {
 
       expect(q.indexOf(12)).to.be.equal(4);
     });
+
+    it('Should return 2nd element index', () => {
+      const source = [2, 2, 2, 3, 4];
+      const q = query(source);
+
+      expect(q.indexOf(2, 1)).to.be.equal(1);
+    });
   });
 
   describe('When calling lastIndexOf', () => {

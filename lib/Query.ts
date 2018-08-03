@@ -96,8 +96,8 @@ class Query<T> implements IterableQuery<T>{
     return nth(this, index);
   }
 
-  indexOf(element: T): number {
-    return indexOf(this, elem => elem === element);
+  indexOf(element: T, fromIndex: number = 0): number {
+    return indexOf(this, (elem, idx) => idx >= fromIndex && elem === element);
   }
 
   findIndex(predicate: (element: T, index: number) => boolean): number {
