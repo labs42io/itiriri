@@ -1,9 +1,9 @@
-import { execute } from './execute';
-
 export function last<TElement>(source: Iterable<TElement>): TElement {
   let value = undefined;
 
-  execute(source, (elem, idx) => value = elem);
+  for (const element of source) {
+    value = element;
+  }
 
   return value;
 }

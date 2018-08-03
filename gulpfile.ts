@@ -8,6 +8,10 @@ import * as mocha from 'gulp-mocha';
 import * as ts from 'gulp-typescript';
 import * as sourcemaps from 'gulp-sourcemaps';
 const tslint = require('gulp-tslint');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
+const source = require('vinyl-source-stream');
+const uglify = require('gulp-uglify');
 
 @Gulpclass()
 export class Gulpfile {
@@ -27,6 +31,38 @@ export class Gulpfile {
   compile() {
     return gulp.src('./package.json', { read: false })
       .pipe(shell(['tsc']));
+  }
+
+  /**
+   * Runs unit-tests.
+   */
+  @Task()
+  unit() {
+    return gulp.src('./build/compiled/test/**/*.js')
+      .pipe(mocha());
+  }
+
+  /**
+   * Compiles the code and runs tests.
+   */
+  @SequenceTask()
+  test() {
+    return ['clean', 'compile', 'unit'];
+  }
+
+  /**
+   * Runs the tslint.
+   */
+  @Task()
+  tslint() {
+    return gulp.src(['./lib/**/*.ts', './test/**/*.ts', './examples/**/*.ts'])
+      .pipe(tslint({ formatter: 'stylish' }))
+      .pipe(tslint.report({
+        emitError: true,
+        summarizeFailureOutput: true,
+        sort: true,
+        bell: true,
+      }));
   }
 
   /**
@@ -70,21 +106,21 @@ export class Gulpfile {
   @Task()
   packagePreparePackageFile() {
     return gulp.src('./package.json')
+      .pipe(replace('\"private\": true,', '\"private\": false,'))
       .pipe(gulp.dest('./build/package'));
   }
 
   /**
-   * This task will replace all typescript code blocks in the README 
-   * (since npm does not support typescript syntax  highlighting) 
+   * This task will replace all typescript code blocks in the README
+   * (since npm does not support typescript syntax highlighting)
    * and copy this README file into the package folder.
    */
   @Task()
   packageReadmeFile() {
     return gulp.src('./readme.md')
-      .pipe(replace(/```typescript([\s\S]*?)```/g, '```javascript$1```'))
+      .pipe(replace(/```ts([\s\S]*?)```/g, '```javascript$1```'))
       .pipe(gulp.dest('./build/package'));
   }
-
 
   /**
    * Creates a package that can be published to npm.
@@ -114,38 +150,19 @@ export class Gulpfile {
    */
   @SequenceTask()
   publish() {
-    return ['test', 'package', 'npmPublish'];
+    return ['test', 'tslint', 'package', 'npmPublish'];
   }
 
-  /**
-   * Runs unit-tests.
-   */
-  @Task()
-  unit() {
-    return gulp.src('./build/compiled/test/**/*.js')
-      .pipe(mocha());
-  }
-
-  /**
-   * Runs the tslint.
-   */
-  @Task()
-  tslint() {
-    return gulp.src(['./lib/**/*.ts', './test/**/*.ts', './examples/**/*.ts'])
-      .pipe(tslint({ formatter: 'stylish' }))
-      .pipe(tslint.report({
-        emitError: true,
-        summarizeFailureOutput: true,
-        sort: true,
-        bell: true,
-      }));
-  }
-
-  /**
-   * Compiles the code and runs tests.
-   */
-  @SequenceTask()
-  test() {
-    return ['clean', 'compile', 'tslint', 'unit'];
+  @Task('browserify', ['clean', 'compile'])
+  browserify() {
+    return browserify({
+      standalone: 'itiriri',
+    }).add('./build/compiled/lib/index.js')
+      .bundle()
+      .on('error', e => console.error(e))
+      .pipe(source('bundle.min.js'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(gulp.dest('./dist'));
   }
 }

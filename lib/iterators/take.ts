@@ -1,36 +1,36 @@
-import { execute } from '../reducers/execute';
-import { fromArray } from './fromArray';
-import { fromGenerator } from './fromGenerator';
-import { until } from './until';
+import { iterable } from '../utils/iterable';
 
 export function take<TElement>(
   source: Iterable<TElement>,
   count: number,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, count));
+  return count >= 0 ?
+    iterable(() => takeFirst(source, count)) :
+    iterable(() => takeLast(source, -count));
 }
 
-function generator<TElement>(
-  source: Iterable<TElement>,
-  count: number,
-): Iterable<TElement> {
-  if (count >= 0) {
-    return until(source, (elem, idx) => idx >= count);
+function* takeFirst<TElement>(source: Iterable<TElement>, count: number) {
+  let n = count;
+
+  for (const element of source) {
+    if (n-- === 0) return;
+
+    yield element;
   }
-
-  return takeLast(source, -count);
 }
 
-function takeLast<TElement>(source: Iterable<TElement>, count: number) {
+function* takeLast<TElement>(source: Iterable<TElement>, count: number) {
   const result: TElement[] = [];
 
-  execute(source, (elem, idx) => {
+  for (const element of source) {
     if (result.length === count) {
-      result.unshift();
+      result.shift();
     }
 
-    result.push(elem);
-  });
+    result.push(element);
+  }
 
-  return fromArray(result);
+  for (const element of result) {
+    yield element;
+  }
 }

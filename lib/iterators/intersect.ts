@@ -1,6 +1,5 @@
 import { toSet } from '../reducers/toSet';
-import { filter } from './filter';
-import { fromGenerator } from './fromGenerator';
+import { iterable } from '../utils/iterable';
 import { map } from './map';
 
 export function intersect<TElement, TKey>(
@@ -8,30 +7,17 @@ export function intersect<TElement, TKey>(
   others: Iterable<TElement>,
   selector: (element: TElement) => TKey,
 ): Iterable<TElement> {
-  return fromGenerator(() => generator(source, others, selector));
-}
+  return iterable(function* () {
+    const includedSet = new Set<TKey>();
+    const othersSet = toSet(map(others, selector));
 
-function generator<TElement, TKey>(
-  source: Iterable<TElement>,
-  others: Iterable<TElement>,
-  selector: (element: TElement) => TKey,
-): Iterable<TElement> {
+    for (const element of source) {
+      const key = selector(element);
 
-  const includedSet = new Set<TKey>();
-  const othersSet = toSet(map(others, selector));
-
-  return filter(source, (elem) => {
-    const key = selector(elem);
-
-    if (includedSet.has(key)) {
-      return false;
+      if (!includedSet.has(key) && othersSet.has(key)) {
+        includedSet.add(key);
+        yield element;
+      }
     }
-
-    if (othersSet.has(key)) {
-      includedSet.add(key);
-      return true;
-    }
-
-    return false;
   });
 }

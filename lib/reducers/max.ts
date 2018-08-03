@@ -1,15 +1,14 @@
-import { execute } from './execute';
+export function max<T>(
+  source: Iterable<T>,
+  compareFn: (element1: T, element2: T) => number,
+): T {
+  let result = undefined;
 
-export function max(source: Iterable<number>) {
-  let m = Number.MIN_VALUE;
-
-  const hasItems = execute(source, (elem) => {
-    if (elem > m) m = elem;
-  });
-
-  if (!hasItems) {
-    throw new Error('Sequence contains no elements.');
+  for (const element of source) {
+    if (result === undefined || compareFn(element, result) > 0) {
+      result = element;
+    }
   }
 
-  return m;
+  return result;
 }
