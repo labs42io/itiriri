@@ -36,6 +36,13 @@ export interface IterableFilter<T> extends Iterable<T> {
   skip(count: number): IterableQuery<T>;
 
   /**
+   * Skip first elements that pass the predicate and returns the remaining ones.
+   * @param  {(element:T,index:number)=>boolean} predicate element predicate
+   * @returns Iterable<T>
+   */
+  skipWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
+
+  /**
    * Returns a sequence that represents the range of elements from start to end.
    * @param start zero-based index at which to start extraction
    * @param end zero-based index before which to end extraction (not including)
