@@ -15,15 +15,16 @@ import { skip } from './iterators/skip';
 import { slice } from './iterators/slice';
 import { splice } from './iterators/splice';
 import { take } from './iterators/take';
-import { nth } from './reducers/nth';
+import { takeWhile } from './iterators/takeWhile';
 import { average } from './reducers/average';
-import { length } from './reducers/length';
 import { first } from './reducers/first';
 import { indexOf } from './reducers/indexOf';
 import { last } from './reducers/last';
 import { lastIndexOf } from './reducers/lastIndexOf';
+import { length } from './reducers/length';
 import { max } from './reducers/max';
 import { min } from './reducers/min';
+import { nth } from './reducers/nth';
 import { reduce } from './reducers/reduce';
 import { sum } from './reducers/sum';
 import { toArray } from './reducers/toArray';
@@ -198,6 +199,10 @@ class Query<T> implements IterableQuery<T>{
 
   take(count: number): IterableQuery<T> {
     return new Query(take(this, count));
+  }
+
+  takeWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
+    return new Query(takeWhile(this, predicate));
   }
 
   skip(count: number): IterableQuery<T> {

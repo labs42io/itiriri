@@ -20,6 +20,13 @@ export interface IterableFilter<T> extends Iterable<T> {
   take(count: number): IterableQuery<T>;
 
   /**
+   * Returns first elements that pass the predicate.
+   * @param  {(element:T,index:number)=>boolean} predicate element predicate
+   * @returns Iterable<T>
+  */
+  takeWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
+
+  /**
    * Skips the specified number of elements from the beggining of sequence
    * and returns the remaining ones.
    * If a negative count is specified, skips elements from the end of the sequence.
