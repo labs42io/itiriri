@@ -1421,6 +1421,32 @@ query([1, 2, 3]).take(10); // returns [1, 2, 3]
 
 `take` *is a deferred method and is executed only when the result sequence is iterated.*
 
+### `takeWhile`
+
+Returns elements while they satisfy the predicate.
+
+> Syntax
+
+```ts
+takeWhile<T>(predicate: (elemenet: T, index: number) => boolean): IterableQuery<T>;
+```
+
+> Parameters
+* `predicate` - *(required)* function to test for each element
+
+> Example
+
+```ts
+import { query } from 'itiriri';
+
+query([1, 2, 3]).takeWhile(() => true); // returns [1, 2, 3]
+query([1, 2, 3]).takeWhile(() => false); // returns []
+query([1, 2, 3]).takeWhile(e => e < 3); // returns [1, 2]
+query([1, 2, 3]).takeWhile(e => e % 2 === 0); // returns []
+```
+
+`takeWhile` *is a deferred method and is executed only when the result sequence is iterated.*
+
 ### `toArray`
 
 Creates an array copy of the sequence.
