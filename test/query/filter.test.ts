@@ -106,4 +106,34 @@ describe('Query (filter)', () => {
       expect(q.toArray()).to.be.deep.equal([-1, -2, -3]);
     });
   });
+
+  describe('When calling takeWhile', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      query(source).takeWhile(() => true);
+
+      expect(source.wasIterated).to.be.false;
+    });
+
+    it('Should return all elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = query(source).takeWhile(() => true);
+
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('Should return no elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = query(source).takeWhile(() => false);
+
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should return first elements that satisfy condition', () => {
+      const source = [2, 4, 6, 7, 8, 3, 10];
+      const q = query(source).takeWhile(e => e % 2 === 0);
+
+      expect(q.toArray()).to.be.deep.equal([2, 4, 6]);
+    });
+  });
 });
