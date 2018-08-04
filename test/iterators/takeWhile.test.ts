@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { toArray } from '../../lib/reducers/toArray';
 import { takeWhile } from '../../lib/iterators/takeWhile';
 
-describe.only('iterators/takeWhile', () => {
+describe('iterators/takeWhile', () => {
   describe(`When don't have searched elements`, () => {
     it('Should return empty source', () => {
       const source = [1, 2];
