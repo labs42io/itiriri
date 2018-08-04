@@ -153,6 +153,7 @@ $ npm test
 * [rightJoin](#rightjoin)
 * [shuffle](#shuffle)
 * [skip](#skip)
+* [skipWhile](#skipWhile)
 * [slice](#slice)
 * [some](#some)
 * [sort](#sort)
@@ -160,6 +161,7 @@ $ npm test
 * [splice](#splice)
 * [sum](#sum)
 * [take](#take)
+* [takeWhile](#takeWhile)
 * [toArray](#toarray)
 * [toGroups](#togroups)
 * [toMap](#tomap)
@@ -1216,6 +1218,32 @@ query([1, 2, 3, 4, 5]).skip(-2).toArray(); // [1, 2, 3]
 ```
 
 `skip` *is a deferred method and is executed only when the result sequence is iterated.*
+
+### `skipWhile`
+
+Skip elements while they satisfy the predicate.
+
+> Syntax
+
+```ts
+skipWhile<T>(predicate: (elemenet: T, index: number) => boolean): IterableQuery<T>;
+```
+
+> Parameters
+* `predicate` - *(required)* function to test for each element
+
+> Example
+
+```ts
+import { query } from 'itiriri';
+
+query([1, 2, 3]).skipWhile(() => true); // returns []
+query([1, 2, 3]).skipWhile(() => false); // returns [1, 2, 3]
+query([1, 2, 3]).skipWhile(e => e < 3); // returns [3]
+query([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [1, 2, 3]
+```
+
+`skipWhile` *is a deferred method and is executed only when the result sequence is iterated.*
 
 ### `slice`
 
