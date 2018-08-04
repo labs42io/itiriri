@@ -12,6 +12,7 @@ import { map } from './iterators/map';
 import { reverse } from './iterators/reverse';
 import { shuffle } from './iterators/shuffle';
 import { skip } from './iterators/skip';
+import { skipWhile } from './iterators/skipWhile';
 import { slice } from './iterators/slice';
 import { splice } from './iterators/splice';
 import { take } from './iterators/take';
@@ -207,6 +208,10 @@ class Query<T> implements IterableQuery<T>{
 
   skip(count: number): IterableQuery<T> {
     return new Query(skip(this, count));
+  }
+
+  skipWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
+    return new Query(skipWhile(this, predicate));
   }
 
   slice(start?: number, end?: number): IterableQuery<T> {
