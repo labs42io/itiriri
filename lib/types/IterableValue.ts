@@ -129,7 +129,7 @@ export interface IterableValue<T> extends Iterable<T> {
   /**
    * Returns the minimum value from a sequence using a comparer function.
    * If sequence is empty, returns undefined.
-   * @param  {(element1:T,element2:T)=>number} compareFn comparer function that returns -1 
+   * @param  {(element1:T,element2:T)=>number} compareFn comparer function that returns -1
    * for element1<element2, 1 for element1>element2, 0 for equal values
    * @returns T
    */
@@ -145,7 +145,7 @@ export interface IterableValue<T> extends Iterable<T> {
   /**
    * Returns the maximum value from a sequence using a compare function.
    * If sequence is empty, returns undefined.
-  * @param  {(element1:T,element2:T)=>number} compareFn comparer function that returns -1 
+  * @param  {(element1:T,element2:T)=>number} compareFn comparer function that returns -1
    * for element1<element2, 1 for element1>element2, 0 for equal values
    * @returns T
    */
