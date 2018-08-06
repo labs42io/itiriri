@@ -1,3 +1,9 @@
 export function toArray<TElement>(source: Iterable<TElement>): TElement[] {
-  return Array.from(source);
+  const a = [];
+
+  for (const e of source) {
+    a.push(e);
+  }
+
+  return a;
 }
