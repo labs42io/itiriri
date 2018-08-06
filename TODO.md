@@ -8,7 +8,6 @@
 
 ## Next versions
 
-* Implement `takeWhile` and `skipWhile` like functions
 * Implement `crossJoin`
 * [Proposal]`join`, `leftJoin`, `rightJoin`, `groupJoin` that accept a comparer function
 * [Proposal] `join` -> `innerjoin` and make current `join` inline with JS array implementation
