@@ -5,11 +5,10 @@ export function skip<TElement>(
   source: Iterable<TElement>,
   count: number,
 ): Iterable<TElement> {
-  return iterable(() => {
-    return count >= 0 ?
-      filter(source, (elem, idx) => idx >= count) :
-      skipLast(source, -count);
-  });
+  return count >= 0 ?
+    filter(source, (elem, idx) => idx >= count) :
+    iterable(() => skipLast(source, -count));
+
 }
 
 function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
