@@ -18,11 +18,12 @@
   "keywords": [
     "iterator",
     "iterable",
-    "query",
     "filter",
     "map",
+    "query",
     "collections",
-    "deferred"
+    "deferred",
+    "lazy"
   ],
   "author": {
     "name": "Labs42",

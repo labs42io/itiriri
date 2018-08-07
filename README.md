@@ -107,6 +107,9 @@ Due to deferred execution, most of the functions that don't need entire sequence
 
 Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive a finite iterable.
 
+## Benchmarks
+
+
 ## Running Tests
 
 ```javascript
@@ -157,7 +160,6 @@ $ npm test
 * [slice](#slice)
 * [some](#some)
 * [sort](#sort)
-* [sortDesc](#sortdesc)
 * [splice](#splice)
 * [sum](#sum)
 * [take](#take)
@@ -1331,41 +1333,6 @@ query([
 
 `sort` *is a deferred method and is executed only when the result sequence is iterated.*
 
-### `sortDesc`
-
-Returns a sequence of sorted elements in a descending order.
-
-> Syntax
-
-```ts
-sort(): IterableQuery<T>;
-sortDesc<S>(selector: (element: T) => S): IterableQuery<T>;
-```
-
-> Parameters
-* `selector` - *(optional)* a value provider function to apply to each element to get its value for comparison
-
-This method fallbacks to native JavaScript array sort.
-
-> Example
-
-```ts
-import { query } from 'itiriri';
-
-query([7, 9, 0, 4, 12]).sortDesc().toArray(); // returns [12, 9, 7, 4, 0]
-query([
-  {score: 1, value: 'a'},
-  {score: 0, value: 'b'},
-  {score: 2, value: 'c'}])
-  .sortDesc(elem => elem.score);
-// returns [
-//  {score: 2, value: 'c'},
-//  {score: 1, value: 'a'},
-//  {score: 0, value: 'b'}]
-```
-
-`sortDesc` *is a deferred method and is executed only when the result sequence is iterated.*
-
 ### `splice`
 
 Returns a sequence that skips elements and/or adds new elements.
@@ -1691,8 +1658,9 @@ query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 
 [iterator](https://www.npmjs.com/search?q=keywords:iterator)
 [iterable](https://www.npmjs.com/search?q=keywords:iterable)
-[query](https://www.npmjs.com/search?q=keywords:query)
 [filter](https://www.npmjs.com/search?q=keywords:filter)
 [map](https://www.npmjs.com/search?q=keywords:map)
+[query](https://www.npmjs.com/search?q=keywords:query)
 [collections](https://www.npmjs.com/search?q=keywords:collections)
 [deferred](https://www.npmjs.com/search?q=keywords:deferred)
+[lazy](https://www.npmjs.com/search?q=keywords:lazy)
