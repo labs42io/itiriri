@@ -1,22 +1,22 @@
 import { Suite, Event } from 'benchmark';
 import { query } from '../lib';
 
-const hugeArr: number[] = [];
+const input: number[] = [];
 
 for (let i = 0; i < 100000; i++) {
-  hugeArr.push(Math.random());
+  input.push(Math.random());
 }
 
-const suite = new Suite();
+const suite = new Suite('Find index of an element within filtered result.');
 
 suite.add('itiriri', () => {
-  query(hugeArr)
+  query(input)
     .filter(x => x < 0.5)
     .findIndex(x => x.toString().startsWith('0.42'));
 });
 
 suite.add('Array', (deferred: any) => {
-  hugeArr
+  input
     .filter(x => x < 0.5)
     .findIndex(x => x.toString().startsWith('0.42'));
 });

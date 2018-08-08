@@ -2,13 +2,16 @@ import { Suite, Event } from 'benchmark';
 import { query } from '../lib';
 
 const sizes = [1000000];
-const inputs: string[][] = [];
+const inputs: { name: string, value: number }[][] = [];
 
 sizes.forEach((size, idx) => {
   inputs[idx] = [];
 
   for (let i = 0; i < size; i++) {
-    inputs[idx].push('https://www.npmjs.com/package/itiriri?' + i);
+    inputs[idx].push({
+      name: `itiriri-${i}`,
+      value: Math.floor(Math.random() * 100),
+    });
   }
 });
 
@@ -19,15 +22,17 @@ sizes.forEach((size, idx) => {
 
   suite.add(`itiriri ${size}`, () => {
     query(arr)
-      .filter(x => x.endsWith('999'))
-      .map(x => x.toUpperCase())
+      .filter(x => x.value > 40)
+      .filter(x => x.value < 60)
+      .map(x => x.name.toUpperCase())
       .toArray();
   });
 
   suite.add(`Array ${size}`, () => {
     arr
-      .filter(x => x.endsWith('999'))
-      .map(x => x.toUpperCase());
+      .filter(x => x.value > 40)
+      .filter(x => x.value < 60)
+      .map(x => x.name.toUpperCase());
   });
 });
 
