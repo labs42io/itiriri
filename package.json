@@ -33,9 +33,7 @@
     "Dumitru Deveatii <dimadeveatii@gmail.com>",
     "Vlad Negura <vlad-negura@mail.ru>"
   ],
-  "dependencies": {
-    "v8-profiler": "^5.7.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/benchmark": "^1.0.30",
     "@types/chai": "4.1.2",
