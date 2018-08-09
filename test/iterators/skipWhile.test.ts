@@ -53,4 +53,30 @@ describe('iterators/skipWhile', () => {
       expect(toArray(iterator)).to.deep.equal([]);
     });
   });
+
+  describe('When take elements by index', () => {
+    it('Should return 3 elements', () => {
+      const source = [1, 2, 3, 4, 5, 5, 5];
+      const iterator = skipWhile(source, (e, idx) => idx <= 3);
+
+      expect(toArray(iterator)).to.deep.equal([5, 5, 5]);
+    });
+  });
+
+  describe('When take elements by object property', () => {
+    it('Should return 2 elements', () => {
+      const source = [
+        { val: 1 },
+        { val: 10 },
+        { val: -1 },
+        { val: -2 },
+      ];
+      const iterator = skipWhile(source, e => e.val > 0);
+
+      expect(toArray(iterator)).to.deep.equal([
+        { val: -1 },
+        { val: -2 },
+      ]);
+    });
+  });
 });
