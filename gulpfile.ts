@@ -117,7 +117,7 @@ export class Gulpfile {
    */
   @Task()
   packageReadmeFile() {
-    return gulp.src('./readme.md')
+    return gulp.src('./README.md')
       .pipe(replace(/```ts([\s\S]*?)```/g, '```javascript$1```'))
       .pipe(gulp.dest('./build/package'));
   }
