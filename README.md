@@ -1766,14 +1766,3 @@ query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 ## License
 
 [MIT](LICENSE)
-
-## Keywords
-
-[iterator](https://www.npmjs.com/search?q=keywords:iterator)
-[iterable](https://www.npmjs.com/search?q=keywords:iterable)
-[filter](https://www.npmjs.com/search?q=keywords:filter)
-[map](https://www.npmjs.com/search?q=keywords:map)
-[query](https://www.npmjs.com/search?q=keywords:query)
-[collections](https://www.npmjs.com/search?q=keywords:collections)
-[deferred](https://www.npmjs.com/search?q=keywords:deferred)
-[lazy](https://www.npmjs.com/search?q=keywords:lazy)
