@@ -1,11 +1,8 @@
-# Itiriri
+# itiriri
 
 [![Build Status](https://travis-ci.org/labs42io/itiriri.svg?branch=master)](https://travis-ci.org/labs42io/itiriri)
-
 [![Coverage Status](https://coveralls.io/repos/github/labs42io/itiriri/badge.svg?branch=master)](https://coveralls.io/github/labs42io/itiriri?branch=master)
-
 [![NPM Version](https://img.shields.io/npm/v/itiriri.svg)](https://npmjs.org/package/itiriri)
-
 [![license](https://img.shields.io/npm/l/itiriri.svg)](https://github.com/labs42io/itiriri/blob/master/LICENSE)
 
 A library built for ES6 [iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) protocol.
