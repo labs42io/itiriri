@@ -1,23 +1,33 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
 import { query } from '../../lib/Query';
+import { SpyIterable } from '../helpers/SpyIterable';
 
 describe('Query (value)', () => {
-  describe('When calling at with positive index', () => {
-    it('Should return first element', () => {
-      const source = numberGenerator();
-      const q = query(source);
+  describe('When calling nth', () => {
+    describe('When positive index', () => {
+      it('Should return first element', () => {
+        const source = numberGenerator();
+        const q = query(source);
 
-      expect(q.nth(3)).to.be.equal(3);
+        expect(q.nth(3)).to.be.equal(3);
+      });
     });
-  });
 
-  describe('When calling at with negative index', () => {
-    it('Should return last element', () => {
-      const source = numberGenerator();
-      const q = query(source).take(100);
+    describe('When negative index', () => {
+      it('Should return last element', () => {
+        const source = numberGenerator();
+        const q = query(source).take(100);
 
-      expect(q.nth(-1)).to.be.equal(99);
+        expect(q.nth(-1)).to.be.equal(99);
+      });
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).nth(0);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -41,6 +51,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.indexOf(2, 1)).to.be.equal(1);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).indexOf(0);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -72,6 +89,13 @@ describe('Query (value)', () => {
 
       expect(q.lastIndexOf(2, 3)).to.be.equal(-1);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).lastIndexOf(0);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling findIndex', () => {
@@ -101,6 +125,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.findIndex(x => x < 0)).to.be.equal(-1);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).findIndex(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -132,9 +163,16 @@ describe('Query (value)', () => {
 
       expect(q.findLastIndex(x => x < 0)).to.be.equal(-1);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).findLastIndex(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
-  describe('When calling count', () => {
+  describe('When calling length', () => {
     it('Should return 6', () => {
       const source = [1, 3, 4, 33, 2, 4];
       const q = query(source);
@@ -154,6 +192,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.length((elem, idx) => idx > 2)).to.be.equal(3);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).length();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -177,6 +222,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.first()).to.be.equal(3);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).first();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -208,6 +260,13 @@ describe('Query (value)', () => {
 
       expect(q.find((elem, idx) => idx === 10)).to.be.equal(33);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).find(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling last', () => {
@@ -223,6 +282,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.last()).to.be.undefined;
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).last();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -246,6 +312,13 @@ describe('Query (value)', () => {
       const q = query(source).take(10);
 
       expect(q.findLast(x => x === 3)).to.be.equal(3);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).findLast(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -274,6 +347,13 @@ describe('Query (value)', () => {
 
       expect(q.average(x => x.val)).to.be.equal(10);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).average();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling min', () => {
@@ -300,6 +380,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.min((e1, e2) => e1.val - e2.val)).to.be.equal(source[0]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).min();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -328,6 +415,13 @@ describe('Query (value)', () => {
 
       expect(q.max((e1, e2) => e1.val - e2.val)).to.be.equal(source[0]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).max();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling sum', () => {
@@ -343,6 +437,13 @@ describe('Query (value)', () => {
       const q = query(source);
 
       expect(q.sum()).to.be.undefined;
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).sum();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -382,6 +483,13 @@ describe('Query (value)', () => {
 
       expect(q.reduce((x, e, idx) => x + e.tag, '')).to.be.equal('abc');
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).reduce((a, b) => a + b, 0);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling reduceRight', () => {
@@ -420,6 +528,13 @@ describe('Query (value)', () => {
 
       expect(q.reduceRight((x, e, idx) => x + e.tag, '')).to.be.equal('cba');
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).reduceRight((a, b) => a + b, 0);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling forEach', () => {
@@ -439,6 +554,13 @@ describe('Query (value)', () => {
       expect(result).to.be.deep.equal([
         10, 21, 32,
       ]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).forEach((x) => { });
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

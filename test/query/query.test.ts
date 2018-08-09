@@ -9,7 +9,7 @@ describe('Query (query)', () => {
       const source = new SpyIterable(numberGenerator());
       query(source).entries();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return 4 key/value pairs', () => {
@@ -26,6 +26,13 @@ describe('Query (query)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([[0, 1], [1, 2], [2, 3]]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).entries().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling keys', () => {
@@ -33,7 +40,7 @@ describe('Query (query)', () => {
       const source = new SpyIterable(numberGenerator());
       query(source).keys();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return the keys', () => {
@@ -50,6 +57,13 @@ describe('Query (query)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 1, 2]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).keys().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling values', () => {
@@ -57,7 +71,7 @@ describe('Query (query)', () => {
       const source = new SpyIterable(numberGenerator());
       query(source).values();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return a new query with same values', () => {
@@ -76,6 +90,13 @@ describe('Query (query)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal(source);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).values().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling concat', () => {
@@ -84,8 +105,8 @@ describe('Query (query)', () => {
       const source2 = new SpyIterable(numberGenerator());
       query(source1).take(10).concat(query(source2).take(5));
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return 10 elements', () => {
@@ -111,6 +132,13 @@ describe('Query (query)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).concat([]).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling prepend', () => {
@@ -119,8 +147,8 @@ describe('Query (query)', () => {
       const source2 = new SpyIterable([]);
       query(source1).prepend(source2);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return 6 elemnts', () => {
@@ -146,6 +174,13 @@ describe('Query (query)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([4, 1, 2, 3]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).prepend([]).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling fill with positive indexes', () => {
@@ -153,7 +188,7 @@ describe('Query (query)', () => {
       const source = new SpyIterable([1, 2, 3]);
       query(source).fill(0, 1);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return 5 elements', () => {
@@ -197,6 +232,13 @@ describe('Query (query)', () => {
 
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([42, 42, 42]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).fill(1).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 

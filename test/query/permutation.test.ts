@@ -9,7 +9,7 @@ describe('Query (permutation)', () => {
       const source = new SpyIterable([1, 4, 2]);
       query(source).sort();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 6 elements', () => {
@@ -41,6 +41,13 @@ describe('Query (permutation)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).sort().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling reverse', () => {
@@ -48,7 +55,7 @@ describe('Query (permutation)', () => {
       const source = new SpyIterable([1, 4, 2]);
       query(source).reverse();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 6 elements', () => {
@@ -80,6 +87,13 @@ describe('Query (permutation)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([3, 2, 1]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).reverse().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling shuffle', () => {
@@ -87,7 +101,7 @@ describe('Query (permutation)', () => {
       const source = new SpyIterable([1, 4, 2]);
       query(source).shuffle();
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 6 elements', () => {
@@ -104,6 +118,13 @@ describe('Query (permutation)', () => {
 
       for (const e of q) { }
       expect(q.toArray().sort()).to.be.deep.equal([1, 2, 3]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).shuffle().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

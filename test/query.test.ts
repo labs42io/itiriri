@@ -12,8 +12,8 @@ describe('Query', () => {
 
       const methods = [
         'entries', 'keys', 'values', 'forEach', 'concat', 'prepend', 'fill',
-        'toArray', 'toMap', 'toGroups', 'toSet', 'toString', 'filter', 'take',
-        'skip', 'slice', 'splice', 'join', 'leftJoin', 'rightJoin', 'groupJoin',
+        'toArray', 'toMap', 'toGroups', 'toSet', 'toString', 'filter', 'take', 'takeWhile',
+        'skip', 'skipWhile', 'slice', 'splice', 'join', 'leftJoin', 'rightJoin', 'groupJoin',
         'sort', 'shuffle', 'reverse', 'every', 'some', 'includes',
         'distinct', 'exclude', 'intersect', 'union', 'map', 'flat', 'groupBy',
         'nth', 'indexOf', 'findIndex', 'lastIndexOf', 'findLastIndex', 'length',
@@ -30,7 +30,7 @@ describe('Query', () => {
       const source = new SpyIterable([1, 2]);
       query(source);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
   });
 

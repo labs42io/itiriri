@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { query } from '../../lib/Query';
 import { toArray } from '../../lib/reducers/toArray';
+import { SpyIterable } from '../helpers/SpyIterable';
 
 describe('Query (cast)', () => {
   describe('When calling toArray', () => {
@@ -16,6 +17,13 @@ describe('Query (cast)', () => {
       const q = query(source);
 
       expect(q.toArray(e => e * 10)).to.deep.equal([10, 20, 30]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -40,6 +48,13 @@ describe('Query (cast)', () => {
 
       expect(toArray(q)).to.deep.equal([[1, 1], [4, 4], [44, 4], [11, 1]]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).toMap(x => x, x => x);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling toSet', () => {
@@ -55,6 +70,13 @@ describe('Query (cast)', () => {
       const q = query(source).toSet();
 
       expect(toArray(q)).to.deep.equal([1, 4]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).toSet();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -93,6 +115,13 @@ describe('Query (cast)', () => {
         [3, [-1]],
       ]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).toMap(x => x);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling toString', () => {
@@ -127,6 +156,13 @@ describe('Query (cast)', () => {
       const q = query(source);
 
       expect(q.toString()).to.be.equal('a,aa,aaa,aaaa');
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).toString();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

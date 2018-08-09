@@ -8,7 +8,7 @@ describe('Query (set)', () => {
       const source = new SpyIterable([0, 1, 2, 2, 1]);
       query(source).distinct(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 2 elements', () => {
@@ -43,6 +43,13 @@ describe('Query (set)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).distinct().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling exclude', () => {
@@ -51,8 +58,8 @@ describe('Query (set)', () => {
       const source2 = new SpyIterable([0, 1]);
       query(source1).exclude(source2, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 2 elements', () => {
@@ -90,6 +97,13 @@ describe('Query (set)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([4, 4]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).exclude([]).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling intersect', () => {
@@ -98,8 +112,8 @@ describe('Query (set)', () => {
       const source2 = new SpyIterable([0, 1]);
       query(source1).intersect(source2, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 2 elements', () => {
@@ -133,6 +147,13 @@ describe('Query (set)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).intersect([]).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling union', () => {
@@ -141,8 +162,8 @@ describe('Query (set)', () => {
       const source2 = new SpyIterable([0, 1]);
       query(source1).union(source2, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 4 elements', () => {
@@ -177,6 +198,13 @@ describe('Query (set)', () => {
 
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).union([]).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

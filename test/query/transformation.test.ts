@@ -8,7 +8,7 @@ describe('Query (transformation)', () => {
       const source = new SpyIterable([]);
       query(source).map(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 3 elements', () => {
@@ -39,6 +39,13 @@ describe('Query (transformation)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([10, 20, 30]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).map(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling groupBy', () => {
@@ -46,7 +53,7 @@ describe('Query (transformation)', () => {
       const source = new SpyIterable([]);
       query(source).groupBy(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 2 groups', () => {
@@ -97,6 +104,13 @@ describe('Query (transformation)', () => {
         [1, { source: [4, 1] }],
       ]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).groupBy(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling flat', () => {
@@ -104,7 +118,7 @@ describe('Query (transformation)', () => {
       const source = new SpyIterable([]);
       query(source).flat(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 5 elements', () => {
@@ -128,6 +142,13 @@ describe('Query (transformation)', () => {
 
       for (const e of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).flat(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

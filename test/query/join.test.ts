@@ -9,8 +9,8 @@ describe('Query (join)', () => {
       const source2 = new SpyIterable([]);
       query(source1).join(source2, x => x, x => x, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 2 elements', () => {
@@ -45,6 +45,13 @@ describe('Query (join)', () => {
       for (const e of q) { }
       expect(q.toArray()).to.deep.equal([4, 5]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).join([], x => x, x => x, (a, b) => a + b).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling leftJoin', () => {
@@ -53,8 +60,8 @@ describe('Query (join)', () => {
       const source2 = new SpyIterable([]);
       query(source1).leftJoin(source2, x => x, x => x, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 4 elements', () => {
@@ -83,6 +90,13 @@ describe('Query (join)', () => {
         { e1: 1, e2: undefined },
       ]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).leftJoin([], x => x, x => x, (a, b) => a + b).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling rightJoin', () => {
@@ -91,8 +105,8 @@ describe('Query (join)', () => {
       const source2 = new SpyIterable([]);
       query(source1).rightJoin(source2, x => x, x => x, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 4 elements', () => {
@@ -152,6 +166,13 @@ describe('Query (join)', () => {
         { e2: undefined, e1: -2 },
       ]);
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).rightJoin([], x => x, x => x, (a, b) => a + b).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling groupJoin', () => {
@@ -160,8 +181,8 @@ describe('Query (join)', () => {
       const source2 = new SpyIterable([]);
       query(source1).groupJoin(source2, x => x, x => x, x => x);
 
-      expect(source1.wasIterated).to.be.false;
-      expect(source2.wasIterated).to.be.false;
+      expect(source1.iterated).to.be.false;
+      expect(source2.iterated).to.be.false;
     });
 
     it('Should return array of 1 elements', () => {
@@ -189,6 +210,13 @@ describe('Query (join)', () => {
         { e1: 5, e2: [5, 5, 5] },
         { e1: 1, e2: [1] },
       ]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).groupJoin([], x => x, x => x, (a, b) => a + b.length).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

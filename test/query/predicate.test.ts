@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { query } from '../../lib/Query';
+import { SpyIterable } from '../helpers/SpyIterable';
 
 describe('Query (predicate)', () => {
   describe('When calling includes', () => {
@@ -22,6 +23,13 @@ describe('Query (predicate)', () => {
       const q = query(source);
 
       expect(q.includes(1, 1)).to.be.false;
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).includes(1);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
@@ -61,6 +69,13 @@ describe('Query (predicate)', () => {
 
       expect(q.every((elem, idx) => idx < 10)).to.be.true;
     });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).every(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling some', () => {
@@ -98,6 +113,13 @@ describe('Query (predicate)', () => {
       const q = query(source);
 
       expect(q.some((elem, idx) => idx < 10)).to.be.true;
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      query(source).some(x => true);
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });
