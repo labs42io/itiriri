@@ -1,5 +1,4 @@
 import { query } from '../lib/Query';
-import { take } from '../lib/iterators/take';
 
 function* fibonacci() {
   let [a, b] = [0, 1];

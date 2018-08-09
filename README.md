@@ -21,19 +21,19 @@ console.log(Math.sqrt(6 * s));
 // 3.1406380562059946
 ```
 
-**itiriri** provides similar functions as the natives for arrays:
+**itiriri** provides similar functions as JavaScript arrays:
 *filter*, *slice*, *map*, *reduce*, *every*, *some* etc. and more.
-The functions are optimized for ES6 iterators and can be chained to write simple but powerful queries over iterables.
+The functions are optimized for ES6 iterators and can be chained to perform simple but powerful manipulations over iterables.
 
 ## Installation
 
-Using npm:
+### Using npm:
 
 ```javascript
 $ npm install 'itiriri' --save
 ```
 
-Importing:
+### Importing:
 
 ```javascript
 import { query } from 'itiriri';
@@ -43,31 +43,31 @@ import { query } from 'itiriri';
 
 The **itiriri** library can be used with any ES6 compatible runtime.
 
-## Iterators
+## Usage
 
-An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)).
-
-Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with **itiriri**. A generator is also an iterable.
+**itiriri** can be used with a build-it type like *array*, *Map*, *Set*, a *generator function* or a custom *iterable*.
 
 ```ts
 import { query } from 'itiriri';
 
-function* values() {
-  yield 2;
-  yield 0;
-  yield 4;
-  yield 8;
+const values = [2, 0, 4, 8];
+
+const s = query(values).map(n => n / 2).reverse();
+console.log(s.toString()); // prints: 4,2,0,1
+
+// prints: 4 2 0 1
+for (const n of s) {
+  console.log(n)
 }
 
-const s = query(values()).map(n => n / 2).reverse();
-console.log(s.toString()); // 4,2,0,1
+console.log(s.sum()); // prints: 7
 ```
 
 ## Deferred execution
 
 JavaScript's array methods like *filter*, *slice* and others that return an array create a shallow copy for the result and are executed once called.
 
-**itiriri** functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type.
+**itiriri** functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type. The iterable source is iterated only once.
 
 Let's see what happens in the below example.
 
@@ -127,10 +127,10 @@ are used to filter and map a result of 100 elements:
 
 ![map-filter-slice](https://raw.githubusercontent.com/labs42io/itiriri/dev/images/map-filter-slice.PNG)
 
-Using `array` methods, performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
+Using `array` methods performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
 Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.  
 
-There are examples in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
+More benchmarks can be found in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
 
 ## Running Tests
 
@@ -209,7 +209,7 @@ average(selector: (element: T, index: number) => number): number;
 * `selector` - *(optional)* a value transformer that accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
-  * returns a number
+  * returns a number that is used for average value calculation
 
 For a sequence with no elements returns `undefined`.
 
@@ -225,16 +225,17 @@ query([]).average() // returns undefined
 
 ### `concat`
 
-Concatenates the sequence with another one.
+Concatenates a sequence with another one.
 
 > Syntax
 
 ```ts
 concat(other: Iterable<T>): IterableQuery<T>;
+concat(other: T): IterableQuery<T>;
 ```
 
 > Parameters
-* `other` - *(required)* sequence to concatenate
+* `other` - *(required)* a sequence or a value to be concatenated
 
 > Example
 
@@ -395,6 +396,7 @@ filter(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 * `predicate` - *(required)* function to test for each element that accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
@@ -421,6 +423,7 @@ find(predicate: (element: T, index: number) => boolean): T;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `undefined`.
 
@@ -447,6 +450,7 @@ findIndex(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `-1`.
 
@@ -473,6 +477,7 @@ findLast(predicate: (element: T, index: number) => boolean): T;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `undefined`.
 
@@ -499,8 +504,9 @@ findLastIndex(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
-If not present, returns -1.
+If not present, returns `-1`.
 
 > Example
 
@@ -570,7 +576,7 @@ forEach(action: (element: T, index: number) => void): void;
 ```
 
 > Parameters
-* `action` - *(required)* function to apply on each element, accepts two arguments
+* `action` - *(required)* function to apply on each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
 
@@ -601,11 +607,11 @@ groupBy<K, E>(
 ```
 
 > Parameters
-* `keySelector` - *(required)* function that provides group's key, accepts two arguments
+* `keySelector` - *(required)* function that provides element's group key, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns the group key of current element
-* `valueSelector` - *(optional)* function to transform values, accepts two arguments
+* `valueSelector` - *(optional)* function to transform values, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns a transformation of current element
@@ -645,7 +651,7 @@ groupJoin<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+* `leftKeySelector` - *(required)* function that provides the key of each element from the source sequence, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns element's key
@@ -686,7 +692,7 @@ query(categories).groupJoin(
 ).toArray();
 // [
 //   {category: 'CS', books: ['Clean code', 'Code complete']},
-//   {category: 'Agile'}, books: ['Scrum']
+//   {category: 'Agile', books: ['Scrum']}
 // ]
 ```
 
@@ -733,7 +739,7 @@ indexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns -1.  
+When an element is not found, returns `-1`.  
 `indexOf` uses triple equals `===` to compare elements.
 
 > Example
@@ -760,6 +766,7 @@ intersect<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 * `other` - *(required)* the sequence to intersect with
 * `selector` - *(optional)* a value transformer function to be used for comparisons, accepts one argument:
   * `element` - the current element
+  * returns a value used for comparisons
 
 > Example
 
@@ -884,7 +891,7 @@ lastIndexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns -1.  
+When an element is not found, returns `-1`.  
 `lastIndexOf` uses triple equals `===` to compare elements.
 
 > Example
@@ -970,6 +977,7 @@ length(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(optional)* a function to count only the elements that match the predicate, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
@@ -994,6 +1002,7 @@ map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 * `selector` - *(required)* a value transformer function to apply to each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns a new value
 
 > Example
 
@@ -1097,10 +1106,11 @@ query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
 
 ```ts
 prepend(other: Iterable<T>): IterableQuery<T>;
+prepend(other: T): IterableQuery<T>;
 ```
 
 > Parameters
-* `other` - *(required)* the sequence to be added at the beginning
+* `other` - *(required)* the sequence or element to be added at the beginning
 
 > Example
 
@@ -1383,6 +1393,7 @@ some(predicate: (element: T, index: number) => boolean): boolean;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
@@ -1410,7 +1421,7 @@ sort(compareFn: (a: T, b: T) => number): IterableQuery<T>;
   * `1` when `a` is greater `b`
   * `0` when `a` equals to `b`
 
-This method fallbacks to native JavaScript array sort.
+This method fallbacks to native JavaScript array sort method.
 
 > Example
 
@@ -1477,6 +1488,7 @@ sum(selector: (element: T, index: number) => number): number;
 * `selector` - *(optional)* a value transformer function to apply to each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns a value to be used for sum calculation
 
 Optionally, a function can be provided to apply a transformation and map each element to a value.
 

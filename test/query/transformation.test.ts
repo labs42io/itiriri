@@ -31,6 +31,14 @@ describe('Query (transformation)', () => {
 
       expect(q.toArray()).to.be.deep.equal([]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).map(x => x * 10);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([10, 20, 30]);
+    });
   });
 
   describe('When calling groupBy', () => {
@@ -78,6 +86,17 @@ describe('Query (transformation)', () => {
         [1, { source: [4, 1] }],
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [0, 4, 4, 1];
+      const q = query(source).groupBy((elem, idx) => idx % 2);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([
+        [0, { source: [0, 4] }],
+        [1, { source: [4, 1] }],
+      ]);
+    });
   });
 
   describe('When calling flat', () => {
@@ -101,6 +120,14 @@ describe('Query (transformation)', () => {
       });
 
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [[1, 2], [3, 4]];
+      const q = query(source).flat(x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
     });
   });
 });

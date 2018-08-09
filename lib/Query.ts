@@ -181,9 +181,12 @@ class Query<T> implements IterableQuery<T>{
   sort(
     compareFn: (element1: T, element2: T) => number = comparer<T>(),
   ): IterableQuery<T> {
-    return new Query((function* (source) {
+    const source = this.source;
+    const sortable = iterable(function* () {
       yield* toArray(source).sort(compareFn);
-    })(this.source));
+    });
+
+    return new Query(sortable);
   }
 
   shuffle(): IterableQuery<T> {

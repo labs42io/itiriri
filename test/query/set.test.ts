@@ -35,6 +35,14 @@ describe('Query (set)', () => {
         { val: 6, tag: 'c' },
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [0, 4, 4, 0];
+      const q = query(source).distinct(x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([0, 4]);
+    });
   });
 
   describe('When calling exclude', () => {
@@ -73,6 +81,15 @@ describe('Query (set)', () => {
         { val: 6, tag: 'c' },
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 4, 0];
+      const source2 = [0, 5];
+      const q = query(source1).exclude(source2, x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([4, 4]);
+    });
   });
 
   describe('When calling intersect', () => {
@@ -106,6 +123,15 @@ describe('Query (set)', () => {
       const q = query(source1).intersect(source2, x => x.tag);
 
       expect(q.toArray()).to.be.deep.equal([{ val: 1, tag: 'a' }]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 4, 0, 1];
+      const source2 = [0, 5, 4];
+      const q = query(source1).intersect(source2, x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
   });
 
@@ -142,6 +168,15 @@ describe('Query (set)', () => {
         { val: 11, tag: 'b' },
         { val: 1111, tag: 'c' },
       ]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 4, 0, 1];
+      const source2 = [0, 5, 4];
+      const q = query(source1).union(source2, x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
     });
   });
 });

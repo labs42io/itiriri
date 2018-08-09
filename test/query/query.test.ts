@@ -18,6 +18,14 @@ describe('Query (query)', () => {
 
       expect(q.toArray()).to.be.deep.equal([[0, 0], [1, 2], [2, 4], [3, 6]]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).entries();
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([[0, 1], [1, 2], [2, 3]]);
+    });
   });
 
   describe('When calling keys', () => {
@@ -33,6 +41,14 @@ describe('Query (query)', () => {
       const q = query(source).take(10).keys();
 
       expect(q.toArray()).to.be.deep.equal([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).keys();
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([0, 1, 2]);
     });
   });
 
@@ -51,6 +67,14 @@ describe('Query (query)', () => {
 
       expect(q2).to.not.be.equal(q1);
       expect(q2.toArray()).to.be.deep.equal(q1.toArray());
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).values();
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal(source);
     });
   });
 
@@ -79,6 +103,14 @@ describe('Query (query)', () => {
 
       expect(q.toArray()).to.be.deep.equal([0, 5]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).concat(4);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
+    });
   });
 
   describe('When calling prepend', () => {
@@ -105,6 +137,14 @@ describe('Query (query)', () => {
       const q = query(source).prepend(2);
 
       expect(q.toArray()).to.be.deep.equal([2, 1]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).prepend(4);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([4, 1, 2, 3]);
     });
   });
 
@@ -149,6 +189,14 @@ describe('Query (query)', () => {
       const q = query(source).fill(0);
 
       expect(q.toArray()).to.be.deep.equal([0, 0, 0, 0]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).fill(42);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([42, 42, 42]);
     });
   });
 

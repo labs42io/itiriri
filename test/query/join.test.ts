@@ -36,6 +36,15 @@ describe('Query (join)', () => {
 
       expect(q.toArray()).to.deep.equal([3, 113, 3333]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 5, 1];
+      const source2 = [-1, 4, 5, -1];
+      const q = query(source1).join(source2, x => x, x => x, x => x);
+
+      for (const e of q) { }
+      expect(q.toArray()).to.deep.equal([4, 5]);
+    });
   });
 
   describe('When calling leftJoin', () => {
@@ -53,6 +62,20 @@ describe('Query (join)', () => {
       const source2 = [-1, 4, 5, -1];
       const q = query(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
+      expect(q.toArray()).to.deep.equal([
+        { e1: 0, e2: undefined },
+        { e1: 4, e2: 4 },
+        { e1: 5, e2: 5 },
+        { e1: 1, e2: undefined },
+      ]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 5, 1];
+      const source2 = [-1, 4, 5, -1];
+      const q = query(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+
+      for (const e of q) { }
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: undefined },
         { e1: 4, e2: 4 },
@@ -115,6 +138,20 @@ describe('Query (join)', () => {
         'God knows who produce -100000$ profit!',
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 5, 1];
+      const source2 = [-1, 4, 5, -2];
+      const q = query(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+
+      for (const e of q) { }
+      expect(q.toArray()).to.deep.equal([
+        { e2: undefined, e1: -1 },
+        { e2: 4, e1: 4 },
+        { e2: 5, e1: 5 },
+        { e2: undefined, e1: -2 },
+      ]);
+    });
   });
 
   describe('When calling groupJoin', () => {
@@ -132,6 +169,20 @@ describe('Query (join)', () => {
       const source2 = [-1, 5, 5, 5, 1];
       const q = query(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
+      expect(q.toArray()).to.deep.equal([
+        { e1: 0, e2: [] },
+        { e1: 4, e2: [] },
+        { e1: 5, e2: [5, 5, 5] },
+        { e1: 1, e2: [1] },
+      ]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source1 = [0, 4, 5, 1];
+      const source2 = [-1, 5, 5, 5, 1];
+      const q = query(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+
+      for (const e of q) { }
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: [] },
         { e1: 4, e2: [] },

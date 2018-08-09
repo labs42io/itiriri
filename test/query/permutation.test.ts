@@ -33,6 +33,14 @@ describe('Query (permutation)', () => {
         { val: 20, tag: 'b' },
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [2, 1, 3];
+      const q = query(source).sort();
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3]);
+    });
   });
 
   describe('When calling reverse', () => {
@@ -64,6 +72,14 @@ describe('Query (permutation)', () => {
         { val: 10, tag: 'a' },
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).reverse();
+
+      for (const e of q) { }
+      expect(q.toArray()).to.be.deep.equal([3, 2, 1]);
+    });
   });
 
   describe('When calling shuffle', () => {
@@ -80,6 +96,14 @@ describe('Query (permutation)', () => {
       const resultCheck = query(toArray(q)).sort().toArray();
 
       expect(resultCheck).to.be.deep.equal([-10, -4, 0, 4, 10, 30]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = query(source).shuffle();
+
+      for (const e of q) { }
+      expect(q.toArray().sort()).to.be.deep.equal([1, 2, 3]);
     });
   });
 });
