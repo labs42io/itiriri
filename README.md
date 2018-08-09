@@ -1,7 +1,12 @@
 # Itiriri
 
 [![Build Status](https://travis-ci.org/labs42io/itiriri.svg?branch=master)](https://travis-ci.org/labs42io/itiriri)
+
 [![Coverage Status](https://coveralls.io/repos/github/labs42io/itiriri/badge.svg?branch=master)](https://coveralls.io/github/labs42io/itiriri?branch=master)
+
+[![NPM Version](https://img.shields.io/npm/v/itiriri.svg)](https://npmjs.org/package/itiriri)
+
+[![license](https://img.shields.io/npm/l/itiriri.svg)](https://github.com/labs42io/itiriri/blob/master/LICENSE)
 
 A library built for ES6 [iteration](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) protocol.
 
@@ -45,7 +50,7 @@ The **itiriri** library can be used with any ES6 compatible runtime.
 
 An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)).
 
-Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with **itiriri**. More over, any generator is an iterable.
+Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with **itiriri**. A generator is also an iterable.
 
 ```ts
 import { query } from 'itiriri';
@@ -109,6 +114,26 @@ Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of
 
 ## Benchmarks
 
+Using `itiriri` is considerable faster than using array methods when processing large inputs.
+
+In [filter-map-slice](https://github.com/labs42io/itiriri/tree/master/benchmarks/filter-map-slice.ts) example arrays of different size
+are used to filter and map a result of 100 elements:
+
+|Array size (N) | `array`                            | `itiriri`                         |
+|---------------|------------------------------------|-----------------------------------|
+|1000           |111,611 ops/sec *±9.63% (86 runs)*  | 44,213 ops/sec *±1.92% (88 runs)* |
+|5000           |18,507 ops/sec *±0.67% (90 runs)*   | 42,103 ops/sec *±2.63% (84 runs)* |
+|10000          |8,655 ops/sec *±0.70% (91 runs)*    | 42,803 ops/sec *±2.20% (86 runs)* |
+|50000          |1,640 ops/sec *±0.79% (88 runs)*    | 43,446 ops/sec *±2.17% (88 runs)* |
+|100000         |848 ops/sec *±0.93% (87 runs)*      | 43,137 ops/sec *±2.15% (87 runs)* |
+|200000         |46.38 ops/sec *±0.74% (59 runs)*    | 42,445 ops/sec *±2.48% (90 runs)* |
+
+![map-filter-slice](images/map-filter-slice.png)
+
+Using `array` methods, performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
+Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.  
+
+There are examples in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
 
 ## Running Tests
 
@@ -184,7 +209,10 @@ average(selector: (element: T, index: number) => number): number;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value transformer function to apply to each element
+* `selector` - *(optional)* a value transformer that accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns a number
 
 For a sequence with no elements returns `undefined`.
 
@@ -233,7 +261,9 @@ distinct<S>(selector: (element: T) => S): IterableQuery<T>;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value transformer function to be used for comparisons
+* `selector` - *(optional)* a function to get element's value for comparison. Accepts one argument:
+  * `element` - current element
+  * returns a value to be used for comparison
 
 > Example
 
@@ -281,6 +311,9 @@ every(predicate: (element: T, index: number) => boolean): boolean;
 
 > Parameters
 * `predicate` - *(required)* function to test for each element
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
@@ -304,7 +337,9 @@ exclude<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
 > Parameters
 * `others` - *(required)* a sequence of elements to be excluded
-* `selector` - *(optional)* a value transformer function to be used for comparisons
+* `selector` - *(optional)* a function to get element's value for comparison, accepts one argument:
+  * `element` - current element
+  * returns a value to be used for comparison
 
 > Example
 
@@ -360,7 +395,9 @@ filter(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element that accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -384,7 +421,9 @@ find(predicate: (element: T, index: number) => boolean): T;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 If no element satisfies the predicate, returns `undefined`.
 
@@ -408,7 +447,9 @@ findIndex(predicate: (element: T, index: number) => boolean): number;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 If no element satisfies the predicate, returns `-1`.
 
@@ -432,7 +473,9 @@ findLast(predicate: (element: T, index: number) => boolean): T;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 If no element satisfies the predicate, returns `undefined`.
 
@@ -456,7 +499,9 @@ findLastIndex(predicate: (element: T, index: number) => boolean): number;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 If not present, returns -1.
 
@@ -501,7 +546,10 @@ flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S>;
 ```
 
 > Parameters
-* `selector` - *(required)* a transformation function to map each element to a sequence
+* `selector` - *(required)* a transformation function to map each element to a sequence, accepts two arguments
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns an iterable
 
 > Example
 
@@ -525,7 +573,9 @@ forEach(action: (element: T, index: number) => void): void;
 ```
 
 > Parameters
-* `action` - *(required)* function to apply on each element
+* `action` - *(required)* function to apply on each element, accepts two arguments
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -554,8 +604,14 @@ groupBy<K, E>(
 ```
 
 > Parameters
-* `keySelector` - *(required)* function that provides group's key
-* `valueSelector` - *(optional)* function to transform values
+* `keySelector` - *(required)* function that provides group's key, accepts two arguments
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns the group key of current element
+* `valueSelector` - *(optional)* function to transform values, accepts two arguments
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns a transformation of current element
 
 > Example
 
@@ -592,9 +648,17 @@ groupJoin<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence
-* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence
-* `joinSelector` - *(required)* a transformation function to apply on each joined element with group
+* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `joinSelector` - *(required)* a transformation function to apply on each joined element with group, accepts two arguments:
+  * `left` - element from the original source
+  * `right` - array of elements from the joined source that have the same key as left element's key
 
 The `joinSelector` function is called on each element from the source sequence and the array of matched
 elements from the joined sequence.  
@@ -697,7 +761,8 @@ intersect<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
 > Parameters
 * `other` - *(required)* the sequence to intersect with
-* `selector` - *(optional)* a value transformer function to be used for comparisons
+* `selector` - *(optional)* a value transformer function to be used for comparisons, accepts one argument:
+  * `element` - the current element
 
 > Example
 
@@ -729,9 +794,18 @@ join<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence
-* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence
-* `joinSelector` - *(required)* a transformation function to apply on each matched tuple
+* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `joinSelector` - *(required)* a transformation function to apply on each matched tuple, accepts two arguments:
+  * `left` - element from the source sequence
+  * `right` - element from the joined sequence
+  * returns a new result
 
 The `join` method works as an sql inner join.
 
@@ -842,9 +916,18 @@ leftJoin<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence
-* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence
-* `joinSelector` - *(required)* a transformation function to apply on each matched tuple
+* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `joinSelector` - *(required)* a transformation function to apply on each matched tuple, accepts two arguments:
+  * `left` - element from the source sequence
+  * `right` - element from the joined sequence, or `undefined` if no match was found
+  * returns element's key
 
 The `leftJoin` method works as an sql left join.
 When an element from the left sequence doesn't match with any of the elements from the right sequence,
@@ -887,7 +970,9 @@ length(predicate: (element: T, index: number) => boolean): number;
 ```
 
 > Parameters
-* `predicate` - *(optional)* a function to count only the elements that match the predicate
+* `predicate` - *(optional)* a function to count only the elements that match the predicate, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -909,7 +994,9 @@ map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 ```
 
 > Parameters
-* `selector` - *(required)* a value transformer function to apply to each element
+* `selector` - *(required)* a value transformer function to apply to each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -1135,13 +1222,22 @@ rightJoin<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence
-* `joinSelector` - *(required)* a transformation function to apply on each matched tuple
+* `rightKeySelector` - *(required)* function that provides the key of each element from joined sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+  * returns element's key
+* `joinSelector` - *(required)* a transformation function to apply on each matched tuple, accepts two arguments:
+  * `right` - element from the joined sequence
+  * `left` - element from the source sequence, or `undefined` if no match found
+  * returns new result
 
 The `rightJoin` method works as an sql right join.
 When an element from the right sequence doesn't match with any of the elements from the left sequence,
-the `joinSelector` function is called with an `undefined` left value.
+the `rightJoin` function is called with an `undefined` left value.
 
 > Example
 
@@ -1228,11 +1324,13 @@ Skip elements while they satisfy the predicate.
 > Syntax
 
 ```ts
-skipWhile<T>(predicate: (elemenet: T, index: number) => boolean): IterableQuery<T>;
+skipWhile<T>(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -1254,12 +1352,13 @@ Returns a sequence that represents the range of elements from start to end.
 > Syntax
 
 ```ts
+slice(start: number): IterableQuery<T>;
 slice(start: number, end: number): IterableQuery<T>;
 ```
 
 > Parameters
 * `start` - *(required)* zero-based index at which to begin extraction
-* `end` - *(required)* zero-based index before which to end extraction.
+* `end` - *(optional)* zero-based index before which to end extraction
 
 The `end` index is not included in the result.
 
@@ -1284,7 +1383,9 @@ some(predicate: (element: T, index: number) => boolean): boolean;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -1376,7 +1477,9 @@ sum(selector: (element: T, index: number) => number): number;
 ```
 
 > Parameters
-* `selector` - *(optional)* a value transformer function to apply to each element
+* `selector` - *(optional)* a value transformer function to apply to each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 Optionally, a function can be provided to apply a transformation and map each element to a value.
 
@@ -1423,11 +1526,13 @@ Returns elements while they satisfy the predicate.
 > Syntax
 
 ```ts
-takeWhile<T>(predicate: (elemenet: T, index: number) => boolean): IterableQuery<T>;
+takeWhile<T>(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 ```
 
 > Parameters
-* `predicate` - *(required)* function to test for each element
+* `predicate` - *(required)* function to test for each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 > Example
 
@@ -1484,8 +1589,12 @@ toGroups<M, N>(
 ```
 
 > Parameters
-* `keySelector` - *(required)* a transformer function to apply to each element to get its key
-* `valueSelector` - *(optional)* a transformer function to apply to each element
+* `keySelector` - *(required)* a transformer function to apply to each element to get its key, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+* `valueSelector` - *(optional)* a transformer function to apply to each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 Method `toGroups` creates a JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 of *key-value* pairs where each key is the result from `keySelector` and value is an array of elements
@@ -1524,8 +1633,12 @@ toMap<M, N>(
 ```
 
 > Parameters
-* `keySelector` - *(required)* a transformer function to apply to each element to get its key
-* `valueSelector` - *(optional)* a transformer function to apply to each element
+* `keySelector` - *(required)* a transformer function to apply to each element to get its key, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
+* `valueSelector` - *(optional)* a transformer function to apply to each element, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 Method `toMap` returns a JavaScript [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 of *key-value* pairs where each key is the result from `keySelector` and value is the element
@@ -1560,7 +1673,9 @@ toSet<S>(selector: (element: T, index: number) => S): Set<S>;
 ```
 
 > Parameters
-* `selector` - *(optional)* a transformer function to apply to each element to get its value
+* `selector` - *(optional)* a transformer function to apply to each element to get its value, accepts two arguments:
+  * `element` - the current element
+  * `index` - the index of the current element
 
 Method `toSet` returns a JavaScript [Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
 of the original elements in the sequence, or their transformation when a `selector` is provided.
@@ -1610,7 +1725,8 @@ union<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 
 > Parameters
 * `other` - *(required)* the sequence to join with
-* `selector` - *(optional)* a value transformer function to be used for comparisons
+* `selector` - *(optional)* a value transformer function to be used for comparisons, accepts one argument:
+  * `element` - the current element
 
 Example
 

@@ -3,6 +3,22 @@ import { query } from '../../lib/Query';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('Query (cast)', () => {
+  describe('When calling toArray', () => {
+    it('Should return the array', () => {
+      const source = [0, 4, 4, 0, 1];
+      const q = query(source);
+
+      expect(q.toArray()).to.deep.equal(source);
+    });
+
+    it('Should return the array of transformed items', () => {
+      const source = [1, 2, 3];
+      const q = query(source);
+
+      expect(q.toArray(e => e * 10)).to.deep.equal([10, 20, 30]);
+    });
+  });
+
   describe('When calling toMap', () => {
     it('Should throw error', () => {
       const source = [0, 4, 4, 0, 1];
