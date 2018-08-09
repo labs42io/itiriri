@@ -64,7 +64,7 @@ describe('iterators/takeWhile', () => {
   });
 
   describe('When take elements by object property', () => {
-    it('Should return 3 elements', () => {
+    it('Should return 2 elements', () => {
       const source = [
         { val: 1 },
         { val: 10 },
