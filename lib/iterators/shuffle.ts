@@ -2,7 +2,7 @@ import { toArray } from '../reducers/toArray';
 import { iterable } from '../utils/iterable';
 
 export function shuffle<TElement>(source: Iterable<TElement>): Iterable<TElement> {
-  return iterable(() => {
+  return iterable(function* () {
     const elements = toArray(source);
 
     // Fisher–Yates shuffle
@@ -12,6 +12,6 @@ export function shuffle<TElement>(source: Iterable<TElement>): Iterable<TElement
       [elements[i], elements[j]] = [elements[j], elements[i]];
     }
 
-    return elements;
+    yield* elements;
   });
 }

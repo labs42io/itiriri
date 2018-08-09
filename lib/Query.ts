@@ -56,16 +56,16 @@ class Query<T> implements IterableQuery<T>{
   // #region common methods
   entries(): IterableQuery<[number, T]> {
     return new Query(
-      map(this, (elem, idx) => <[number, T]>[idx, elem]),
+      map(this.source, (elem, idx) => <[number, T]>[idx, elem]),
     );
   }
 
   keys(): IterableQuery<number> {
-    return new Query(map(this, (elem, idx) => idx));
+    return new Query(map(this.source, (elem, idx) => idx));
   }
 
   values(): IterableQuery<T> {
-    return new Query(this);
+    return new Query(this.source);
   }
 
   forEach(action: (element: T, index: number) => void): void {
@@ -76,100 +76,100 @@ class Query<T> implements IterableQuery<T>{
 
   concat(other: T | Iterable<T>): IterableQuery<T> {
     return isIterable(other) ?
-      new Query(concat(this, other)) :
-      new Query(concat(this, [other]));
+      new Query(concat(this.source, other)) :
+      new Query(concat(this.source, [other]));
   }
 
   prepend(other: T | Iterable<T>): IterableQuery<T> {
     return isIterable(other) ?
-      new Query(concat(other, this)) :
-      new Query(concat([other], this));
+      new Query(concat(other, this.source)) :
+      new Query(concat([other], this.source));
   }
 
   fill(value: T, start?: number, end?: number): IterableQuery<T> {
-    return new Query(fill(this, value, start, end));
+    return new Query(fill(this.source, value, start, end));
   }
   // #endregion
 
   // #region IterableValue implementation
   nth(index: number): T {
-    return nth(this, index);
+    return nth(this.source, index);
   }
 
   indexOf(element: T, fromIndex: number = 0): number {
-    return indexOf(this, (elem, idx) => idx >= fromIndex && elem === element);
+    return indexOf(this.source, (elem, idx) => idx >= fromIndex && elem === element);
   }
 
   findIndex(predicate: (element: T, index: number) => boolean): number {
-    return indexOf(this, predicate);
+    return indexOf(this.source, predicate);
   }
 
   lastIndexOf(element: T, fromIndex: number = 0): number {
-    return lastIndexOf(this, (elem, idx) => idx >= fromIndex && elem === element);
+    return lastIndexOf(this.source, (elem, idx) => idx >= fromIndex && elem === element);
   }
 
   findLastIndex(predicate: (element: T, index: number) => boolean): number {
-    return lastIndexOf(this, predicate);
+    return lastIndexOf(this.source, predicate);
   }
 
   length(predicate: (element: T, index: number) => boolean = alwaysTrue()): number {
-    return length(filter(this, predicate));
+    return length(filter(this.source, predicate));
   }
 
   first(): T {
-    return first(this);
+    return first(this.source);
   }
 
   find(predicate: (element: T, index: number) => boolean): T {
-    return first(filter(this, predicate));
+    return first(filter(this.source, predicate));
   }
 
   last(): T {
-    return last(this);
+    return last(this.source);
   }
 
   findLast(predicate: (element: T, index: number) => boolean): T {
-    return last(filter(this, predicate));
+    return last(filter(this.source, predicate));
   }
 
   average(selector: (element: T, index: number) => number = element<number>()): number {
-    return average(map(this, selector));
+    return average(map(this.source, selector));
   }
 
   min(compareFn: (element1: T, element2: T) => number = comparer<T>()): T {
-    return min(this, compareFn);
+    return min(this.source, compareFn);
   }
 
   max(compareFn: (element1: T, element2: T) => number = comparer<T>()): T {
-    return max(this, compareFn);
+    return max(this.source, compareFn);
   }
 
   sum(selector: (element: T, index: number) => number = element<number>()): number {
-    return sum(map(this, selector));
+    return sum(map(this.source, selector));
   }
 
   reduce<TResult>(
     callback: (accumulator: TResult | T, current: T, index: number) => any,
     initialValue?: any,
   ): any {
-    return reduce(this, callback, initialValue);
+    return reduce(this.source, callback, initialValue);
   }
 
   reduceRight<TResult>(
     callback: (accumulator: TResult | T, current: T, index: number) => any,
     initialValue?: TResult,
   ): any {
-    return reduce(reverse(this), callback, initialValue);
+    return reduce(reverse(this.source), callback, initialValue);
   }
   // #endregion
 
   // #region IterablePredicate implementation
   every(predicate: (element: T, index: number) => boolean): boolean {
-    return indexOf(this, (e, i) => !predicate(e, i)) === -1;
+    return indexOf(this.source, (e, i) => !predicate(e, i)) === -1;
   }
 
   some(predicate: (element: T, index: number) => boolean): boolean {
-    return indexOf(this, predicate) !== -1;
+    return indexOf(this.source, predicate) !== -1;
   }
 
   includes(element: T, fromIndex: number = 0): boolean {
@@ -181,62 +181,67 @@ class Query<T> implements IterableQuery<T>{
   sort(
     compareFn: (element1: T, element2: T) => number = comparer<T>(),
   ): IterableQuery<T> {
-    return new Query((function* (source) { yield* source.toArray().sort(compareFn); })(this));
+    return new Query((function* (source) {
+      yield* toArray(source).sort(compareFn);
+    })(this.source));
   }
 
   shuffle(): IterableQuery<T> {
-    return new Query(shuffle(this));
+    return new Query(shuffle(this.source));
   }
 
   reverse(): IterableQuery<T> {
-    return new Query(reverse(this));
+    return new Query(reverse(this.source));
   }
   // #endregion
 
   // #region IterableFilter implementation
   filter(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(filter(this, predicate));
+    return new Query(filter(this.source, predicate));
   }
 
   take(count: number): IterableQuery<T> {
-    return new Query(take(this, count));
+    return new Query(take(this.source, count));
   }
 
   takeWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(takeWhile(this, predicate));
+    return new Query(takeWhile(this.source, predicate));
   }
 
   skip(count: number): IterableQuery<T> {
-    return new Query(skip(this, count));
+    return new Query(skip(this.source, count));
   }
 
   skipWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(skipWhile(this, predicate));
+    return new Query(skipWhile(this.source, predicate));
   }
 
   slice(start?: number, end?: number): IterableQuery<T> {
-    return new Query(slice(this, start, end));
+    return new Query(slice(this.source, start, end));
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {
-    return new Query(splice(this, start, deleteCount, items));
+    return new Query(splice(this.source, start, deleteCount, items));
   }
   // #endregion
 
   // #region IterableTransformation implementation
   map<S>(selector: (element: T, index: number) => S): IterableQuery<S> {
-    return new Query(map(this, selector));
+    return new Query(map(this.source, selector));
   }
 
   flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S> {
-    return new Query(flat<S>(this.map(selector)));
+    return new Query(flat<S>(map(this.source, selector)));
   }
 
   groupBy<K, S>(
     keySelector: (element: T, index: number) => K,
     valueSelector: (element: T, index: number) => S = x => <any>x,
   ): IterableQuery<[K, IterableQuery<S>]> {
-    const groups = iterable(() => toGroups(this, keySelector, valueSelector));
+    const source = this.source;
+    const groups = iterable(function* () {
+      yield* toGroups(source, keySelector, valueSelector);
+    });
     const result = map(groups, elem => <[K, IterableQuery<S>]>[elem[0], new Query(elem[1])]);
 
     return new Query(result);
@@ -246,19 +251,19 @@ class Query<T> implements IterableQuery<T>{
 
   // #region IterableSet implementation
   distinct<S>(selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(distinct(this, selector));
+    return new Query(distinct(this.source, selector));
   }
 
   exclude<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(exclude(this, other, selector));
+    return new Query(exclude(this.source, other, selector));
   }
 
   intersect<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(intersect(this, other, selector));
+    return new Query(intersect(this.source, other, selector));
   }
 
   union<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(distinct(concat(this, other), selector));
+    return new Query(distinct(concat(this.source, other), selector));
   }
   // #endregion
 
@@ -270,7 +275,7 @@ class Query<T> implements IterableQuery<T>{
     joinSelector: (left: T, right: TRight) => TResult,
   ): IterableQuery<TResult> {
     const iterator = join(
-      this,
+      this.source,
       other,
       leftKeySelector,
       rightKeySelector,
@@ -286,7 +291,7 @@ class Query<T> implements IterableQuery<T>{
     joinSelector: (left: T, right?: TRight) => TResult,
   ): IterableQuery<TResult> {
     const iterator = leftJoin(
-      this,
+      this.source,
       other,
       leftKeySelector,
       rightKeySelector,
@@ -303,7 +308,7 @@ class Query<T> implements IterableQuery<T>{
   ): IterableQuery<TResult> {
     const iterator = leftJoin(
       other,
-      this,
+      this.source,
       rightKeySelector,
       leftKeySelector,
       joinSelector,
@@ -319,7 +324,7 @@ class Query<T> implements IterableQuery<T>{
     joinSelector: (left: T, right: TRight[]) => TResult,
   ): IterableQuery<TResult> {
     const iterator = groupJoin(
-      this,
+      this.source,
       other,
       leftKeySelector,
       rightKeySelector,
@@ -330,30 +335,31 @@ class Query<T> implements IterableQuery<T>{
   // #endregion
 
   // #region IterableCast implementation
-  toArray<S = T>(selector: (element: T, index: number) => S = element<S>()): (T | S)[] {
-    return toArray(map(this, selector));
+  toArray<S = T>(selector?: (element: T, index: number) => S): (T | S)[] {
+    return selector ? toArray(map(this.source, selector)) :
+      toArray(this.source);
   }
 
   toMap<K, E = T>(
     keySelector: (element: T, index: number) => K = element<K>(),
     valueSelector: (element: T, index: number) => E = element<E>(),
   ): Map<K, E | T> {
-    return toMap(this, keySelector, valueSelector);
+    return toMap(this.source, keySelector, valueSelector);
   }
 
   toGroups<K, E = T>(
     keySelector: (element: T, index: number) => K = element<K>(),
     valueSelector: (element: T, index: number) => E = element<E>(),
   ): Map<K, (E | T)[]> {
-    return toGroups(this, keySelector, valueSelector);
+    return toGroups(this.source, keySelector, valueSelector);
   }
 
   toSet<S>(selector: (element: T, index: number) => S = element<S>()): Set<S> {
-    return toSet(map(this, selector));
+    return toSet(map(this.source, selector));
   }
 
   toString(): string {
-    return this.toArray().toString();
+    return toArray(this.source).toString();
   }
   // #endregion
 }

@@ -1,5 +1,5 @@
 import { query } from './lib/Query';
-import { IterableQuery } from './lib/types/IterableQuery';
+import { IterableQuery } from './lib';
 
 // This is a sample test file.
 
@@ -33,7 +33,7 @@ console.log(`Reverse: ${q.reverse().toArray().join(', ')}`);
 console.log(`Filter > 5: ${q.filter(x => x > 5).toArray().join(', ')}`);
 console.log(`Exclude [1,2,9]: ${q.exclude([1, 2, 9]).toArray().join(', ')}`);
 console.log(`Map: ${q.map(x => x % 2 === 0 ? 0 : 1).toArray().join(', ')}`);
-console.log(`MapAll: 
+console.log(`MapAll:
  ${q.flat(x => x % 2 === 0 ? [x] : [x, 10 * x]).toArray().join(', ')}`);
 
 console.log(`Take 3: ${q.take(3).toArray().join(', ')}`);
