@@ -128,7 +128,7 @@ are used to filter and map a result of 100 elements:
 |100000         |848 ops/sec *±0.93% (87 runs)*      | 43,137 ops/sec *±2.15% (87 runs)* |
 |200000         |46.38 ops/sec *±0.74% (59 runs)*    | 42,445 ops/sec *±2.48% (90 runs)* |
 
-![map-filter-slice](images/map-filter-slice.png)
+![map-filter-slice](https://raw.githubusercontent.com/labs42io/itiriri/dev/images/map-filter-slice.PNG)
 
 Using `array` methods, performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
 Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.  
