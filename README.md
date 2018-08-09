@@ -926,7 +926,7 @@ Returns the maximum element in a sequence.
 > Syntax
 
 ```ts
-max(): number;
+max(): T;
 max(compareFn: (a: T, b: T) => number): T;
 ```
 
