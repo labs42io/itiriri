@@ -27,13 +27,13 @@ The functions are optimized for ES6 iterators and can be chained to perform simp
 
 ## Installation
 
-### Using npm:
+### Using npm
 
 ```javascript
 $ npm install 'itiriri' --save
 ```
 
-### Importing:
+### Importing
 
 ```javascript
 import { query } from 'itiriri';
@@ -137,6 +137,28 @@ More benchmarks can be found in [/benchmark](https://github.com/labs42io/itiriri
 ```javascript
 $ npm install
 $ npm test
+```
+
+## Bundling
+
+If you want to use itiriri in the browser, there is a `gulp` task that creates a minified file:
+
+```javascript
+$ npm install
+$ gulp bundle
+// creates itiriri.min.js file in the root folder
+```
+
+Once you include the `itiriri.min.js` file on your page, you can use it as:
+
+```html
+<script src="itiriri.min.js"></script>
+<!-- ... -->
+<script>
+    // source can be an array or an Iterable
+    const source = [1, 2, 3];
+    console.log(itiriri.query(source).sum());
+</script>
 ```
 
 ## Complete list of methods

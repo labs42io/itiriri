@@ -1,17 +1,16 @@
-import { Gulpclass, MergedTask, SequenceTask, Task } from 'gulpclass';
-
-import * as gulp from 'gulp';
+import * as browserify from 'browserify';
 import * as del from 'del';
+import * as gulp from 'gulp';
+import * as mocha from 'gulp-mocha';
 import * as replace from 'gulp-replace';
 import * as shell from 'gulp-shell';
-import * as mocha from 'gulp-mocha';
-import * as ts from 'gulp-typescript';
 import * as sourcemaps from 'gulp-sourcemaps';
-const tslint = require('gulp-tslint');
-const browserify = require('browserify');
-const buffer = require('vinyl-buffer');
-const source = require('vinyl-source-stream');
-const uglify = require('gulp-uglify');
+import { default as tslint } from 'gulp-tslint';
+import * as ts from 'gulp-typescript';
+import { default as uglify } from 'gulp-uglify-es';
+import { Gulpclass, MergedTask, SequenceTask, Task } from 'gulpclass';
+import * as buffer from 'vinyl-buffer';
+import * as source from 'vinyl-source-stream';
 
 @Gulpclass()
 export class Gulpfile {
@@ -60,8 +59,6 @@ export class Gulpfile {
       .pipe(tslint.report({
         emitError: true,
         summarizeFailureOutput: true,
-        sort: true,
-        bell: true,
       }));
   }
 
@@ -153,16 +150,16 @@ export class Gulpfile {
     return ['test', 'tslint', 'package', 'npmPublish'];
   }
 
-  @Task('browserify', ['clean', 'compile'])
-  browserify() {
+  @Task()
+  bundle() {
     return browserify({
       standalone: 'itiriri',
-    }).add('./build/compiled/lib/index.js')
-      .bundle()
+      entries: './build/compiled/lib/index.js',
+    }).bundle()
       .on('error', e => console.error(e))
-      .pipe(source('bundle.min.js'))
+      .pipe(source('itiriri.min.js'))
       .pipe(buffer())
       .pipe(uglify())
-      .pipe(gulp.dest('./dist'));
+      .pipe(gulp.dest('.'));
   }
 }
