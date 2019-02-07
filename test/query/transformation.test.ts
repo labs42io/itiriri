@@ -36,7 +36,7 @@ describe('Query (transformation)', () => {
       const source = [1, 2, 3];
       const q = query(source).map(x => x * 10);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([10, 20, 30]);
     });
 
@@ -86,7 +86,7 @@ describe('Query (transformation)', () => {
 
     it('Should return array of 2 groups', () => {
       const source = [0, 4, 4, 1];
-      const q = query(source).groupBy((elem, idx) => idx % 2);
+      const q = query(source).groupBy((_, idx) => idx % 2);
 
       expect(q.toArray()).to.be.deep.equal([
         [0, { source: [0, 4] }],
@@ -96,9 +96,9 @@ describe('Query (transformation)', () => {
 
     it('Should be iterable multiple times', () => {
       const source = [0, 4, 4, 1];
-      const q = query(source).groupBy((elem, idx) => idx % 2);
+      const q = query(source).groupBy((_, idx) => idx % 2);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([
         [0, { source: [0, 4] }],
         [1, { source: [4, 1] }],
@@ -123,8 +123,8 @@ describe('Query (transformation)', () => {
 
     it('Should return array of 5 elements', () => {
       const source = [[1, 2, 3], [4, 5]];
-      const q = query(source).flat((elem, idx) => {
-        const res = [];
+      const q = query(source).flat((elem, _) => {
+        const res: number[] = [];
 
         elem.forEach((element) => {
           res.push(element);
@@ -140,7 +140,7 @@ describe('Query (transformation)', () => {
       const source = [[1, 2], [3, 4]];
       const q = query(source).flat(x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
     });
 

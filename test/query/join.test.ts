@@ -42,7 +42,7 @@ describe('Query (join)', () => {
       const source2 = [-1, 4, 5, -1];
       const q = query(source1).join(source2, x => x, x => x, x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([4, 5]);
     });
 
@@ -82,7 +82,7 @@ describe('Query (join)', () => {
       const source2 = [-1, 4, 5, -1];
       const q = query(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: undefined },
         { e1: 4, e2: 4 },
@@ -140,9 +140,8 @@ describe('Query (join)', () => {
         x => x.category,
         x => x.category,
         (right, left) =>
-          (left ? left.items : 'God knows') + ' ' +
-          (left ? left.category : 'who') + ' produce ' +
-          right.profit + '$ profit!',
+          `${left ? left.items : 'God knows'} ${left ? left.category : 'who'} ` +
+          `produce ${right.profit}$ profit!`,
       );
 
       expect(q.toArray()).to.be.deep.equal([
@@ -158,7 +157,7 @@ describe('Query (join)', () => {
       const source2 = [-1, 4, 5, -2];
       const q = query(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
         { e2: undefined, e1: -1 },
         { e2: 4, e1: 4 },
@@ -203,7 +202,7 @@ describe('Query (join)', () => {
       const source2 = [-1, 5, 5, 5, 1];
       const q = query(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: [] },
         { e1: 4, e2: [] },

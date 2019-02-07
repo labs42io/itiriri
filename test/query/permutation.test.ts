@@ -38,7 +38,7 @@ describe('Query (permutation)', () => {
       const source = [2, 1, 3];
       const q = query(source).sort();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3]);
     });
 
@@ -84,7 +84,7 @@ describe('Query (permutation)', () => {
       const source = [1, 2, 3];
       const q = query(source).reverse();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([3, 2, 1]);
     });
 
@@ -116,7 +116,7 @@ describe('Query (permutation)', () => {
       const source = [1, 2, 3];
       const q = query(source).shuffle();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray().sort()).to.be.deep.equal([1, 2, 3]);
     });
 

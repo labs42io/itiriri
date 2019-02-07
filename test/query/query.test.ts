@@ -23,7 +23,7 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).entries();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([[0, 1], [1, 2], [2, 3]]);
     });
 
@@ -54,7 +54,7 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).keys();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 1, 2]);
     });
 
@@ -87,7 +87,7 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).values();
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal(source);
     });
 
@@ -129,7 +129,7 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).concat(4);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
     });
 
@@ -171,7 +171,7 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).prepend(4);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([4, 1, 2, 3]);
     });
 
@@ -230,12 +230,12 @@ describe('Query (query)', () => {
       const source = [1, 2, 3];
       const q = query(source).fill(42);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([42, 42, 42]);
     });
 
     it('Should iterate once', () => {
-      const source = new SpyIterable([]);
+      const source = new SpyIterable<number>([]);
       query(source).fill(1).toArray();
 
       expect(source.iteratedOnce).to.be.true;

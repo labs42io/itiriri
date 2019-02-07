@@ -40,7 +40,7 @@ describe('Query (set)', () => {
       const source = [0, 4, 4, 0];
       const q = query(source).distinct(x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
 
@@ -94,7 +94,7 @@ describe('Query (set)', () => {
       const source2 = [0, 5];
       const q = query(source1).exclude(source2, x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([4, 4]);
     });
 
@@ -144,7 +144,7 @@ describe('Query (set)', () => {
       const source2 = [0, 5, 4];
       const q = query(source1).intersect(source2, x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
 
@@ -196,7 +196,7 @@ describe('Query (set)', () => {
       const source2 = [0, 5, 4];
       const q = query(source1).union(source2, x => x);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
     });
 

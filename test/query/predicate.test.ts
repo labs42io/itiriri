@@ -12,7 +12,7 @@ describe('Query (predicate)', () => {
     });
 
     it('Should return false on empty source', () => {
-      const source = [];
+      const source: number[] = [];
       const q = query(source);
 
       expect(q.includes(0)).to.be.false;
@@ -26,7 +26,7 @@ describe('Query (predicate)', () => {
     });
 
     it('Should iterate once', () => {
-      const source = new SpyIterable([]);
+      const source = new SpyIterable<number>([]);
       query(source).includes(1);
 
       expect(source.iteratedOnce).to.be.true;
@@ -67,12 +67,12 @@ describe('Query (predicate)', () => {
       ];
       const q = query(source);
 
-      expect(q.every((elem, idx) => idx < 10)).to.be.true;
+      expect(q.every((_, idx) => idx < 10)).to.be.true;
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).every(x => true);
+      query(source).every(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -112,12 +112,12 @@ describe('Query (predicate)', () => {
       ];
       const q = query(source);
 
-      expect(q.some((elem, idx) => idx < 10)).to.be.true;
+      expect(q.some((_, idx) => idx < 10)).to.be.true;
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).some(x => true);
+      query(source).some(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });

@@ -3,7 +3,7 @@ import { toArray } from '../../lib/reducers/toArray';
 import { skipWhile } from '../../lib/iterators/skipWhile';
 
 describe('iterators/skipWhile', () => {
-  describe(`When don't have searched elements`, () => {
+  describe('When don\'t have searched elements', () => {
     it('Should return all elements', () => {
       const source = [1, 2];
       const iterator = skipWhile(source, () => false);
@@ -57,7 +57,7 @@ describe('iterators/skipWhile', () => {
   describe('When take elements by index', () => {
     it('Should return 3 elements', () => {
       const source = [1, 2, 3, 4, 5, 5, 5];
-      const iterator = skipWhile(source, (e, idx) => idx <= 3);
+      const iterator = skipWhile(source, (_, idx) => idx <= 3);
 
       expect(toArray(iterator)).to.deep.equal([5, 5, 5]);
     });

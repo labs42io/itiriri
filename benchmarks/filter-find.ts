@@ -15,7 +15,7 @@ suite.add('itiriri', () => {
     .findIndex(x => x.toString().startsWith('0.42'));
 });
 
-suite.add('Array', (deferred: any) => {
+suite.add('Array', () => {
   input
     .filter(x => x < 0.5)
     .findIndex(x => x.toString().startsWith('0.42'));

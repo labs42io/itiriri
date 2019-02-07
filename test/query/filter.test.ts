@@ -7,7 +7,7 @@ describe('Query (filter)', () => {
   describe('When calling filter', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable(numberGenerator());
-      query(source).filter(x => true);
+      query(source).filter(_ => true);
 
       expect(source.iterated).to.be.false;
     });
@@ -21,7 +21,7 @@ describe('Query (filter)', () => {
 
     it('Should return array of 1 element', () => {
       const source = [0, -4, 4, 30, -10, 10];
-      const q = query(source).filter((elem, idx) => idx === 0);
+      const q = query(source).filter((_, idx) => idx === 0);
 
       expect(q.toArray()).to.be.deep.equal([0]);
     });
@@ -41,13 +41,13 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3];
       const q = query(source).filter(x => x > 1);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([2, 3]);
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).filter(x => true).toArray();
+      query(source).filter(_ => true).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -72,7 +72,7 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3];
       const q = query(source).skip(1);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([2, 3]);
     });
 
@@ -117,7 +117,7 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3, 4, 5];
       const q = query(source).slice(1, 3);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([2, 3]);
     });
 
@@ -155,7 +155,7 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3];
       const q = query(source).splice(1, 1, 42);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 42, 3]);
     });
 
@@ -200,13 +200,13 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3, 1];
       const q = query(source).takeWhile(x => x < 3);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([1, 2]);
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).takeWhile(x => true).toArray();
+      query(source).takeWhile(_ => true).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -245,13 +245,13 @@ describe('Query (filter)', () => {
       const source = [1, 2, 3, 1];
       const q = query(source).skipWhile(x => x < 3);
 
-      for (const e of q) { }
+      for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([3, 1]);
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).skipWhile(x => true).toArray();
+      query(source).skipWhile(_ => true).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });

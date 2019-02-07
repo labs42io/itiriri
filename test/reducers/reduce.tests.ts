@@ -27,7 +27,7 @@ describe('reducers/reduce', () => {
       const source = [5, 7, 1, 9];
 
       // 5{initial element} + (1 + 1) * 2 + (2 + 1) * 2 + (3 + 1) * 2 = 23
-      expect(reduce(source, (a, b, idx) => a + (idx + 1) * 2)).to.equal(23);
+      expect(reduce(source, (a, _, idx) => a + (idx + 1) * 2)).to.equal(23);
     });
   });
 
@@ -55,7 +55,7 @@ describe('reducers/reduce', () => {
       const source = [5, 7, 1, 9];
 
       // 1{initial element} + (0 + 1) * 2 + (1 + 1) * 2 + (2 + 1) * 2 + (3 + 1) * 2 = 21
-      expect(reduce(source, (a, b, idx) => a + (idx + 1) * 2, 1)).to.equal(21);
+      expect(reduce(source, (a, _, idx) => a + (idx + 1) * 2, 1)).to.equal(21);
     });
   });
 });

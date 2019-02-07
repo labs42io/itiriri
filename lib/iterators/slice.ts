@@ -10,23 +10,22 @@ export function slice<TElement>(
     return source;
   }
 
-  if (start !== undefined && start < 0) {
-    throw new Error('Invalid start range, use positive index.');
+  if (start !== undefined && end === undefined) {
+    return skip(source, check(start, 'start'));
   }
 
-  if (end !== undefined && end < 0) {
-    throw new Error('Invalid end range, use positive index.');
+  if (start === undefined && end !== undefined) {
+    return take(source, check(end, 'end'));
   }
 
-  // end !== undefined
-  if (start === undefined) {
-    return take(source, end);
+  // start !== undefined && end !== undefined
+  return skip(take(source, check(<number>end, 'end')), check(<number>start, 'start'));
+}
+
+function check(value: number, name: string) {
+  if (value < 0) {
+    throw new Error(`Invalid ${name} range, use positive index.`);
   }
 
-  // start !== undefined
-  if (end === undefined) {
-    return skip(source, start);
-  }
-
-  return skip(take(source, end), start);
+  return value;
 }

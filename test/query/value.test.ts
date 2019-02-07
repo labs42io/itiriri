@@ -54,7 +54,7 @@ describe('Query (value)', () => {
     });
 
     it('Should iterate once', () => {
-      const source = new SpyIterable([]);
+      const source = new SpyIterable<number>([]);
       query(source).indexOf(0);
 
       expect(source.iteratedOnce).to.be.true;
@@ -83,7 +83,7 @@ describe('Query (value)', () => {
       expect(q.lastIndexOf(0)).to.be.equal(4);
     });
 
-    it('Should retrun -1', () => {
+    it('Should return -1', () => {
       const source = [1, 1, 2, 3, 4, 1, 4];
       const q = query(source);
 
@@ -91,7 +91,7 @@ describe('Query (value)', () => {
     });
 
     it('Should iterate once', () => {
-      const source = new SpyIterable([]);
+      const source = new SpyIterable<number>([]);
       query(source).lastIndexOf(0);
 
       expect(source.iteratedOnce).to.be.true;
@@ -129,7 +129,7 @@ describe('Query (value)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).findIndex(x => true);
+      query(source).findIndex(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -166,7 +166,7 @@ describe('Query (value)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).findLastIndex(x => true);
+      query(source).findLastIndex(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -191,7 +191,7 @@ describe('Query (value)', () => {
       const source = [1, 3, 4, 33, 2, 4];
       const q = query(source);
 
-      expect(q.length((elem, idx) => idx > 2)).to.be.equal(3);
+      expect(q.length((_, idx) => idx > 2)).to.be.equal(3);
     });
 
     it('Should iterate once', () => {
@@ -258,12 +258,12 @@ describe('Query (value)', () => {
       const source = numberGenerator(3, 3);
       const q = query(source);
 
-      expect(q.find((elem, idx) => idx === 10)).to.be.equal(33);
+      expect(q.find((_, idx) => idx === 10)).to.be.equal(33);
     });
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).find(x => true);
+      query(source).find(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -316,7 +316,7 @@ describe('Query (value)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).findLast(x => true);
+      query(source).findLast(_ => true);
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -456,7 +456,7 @@ describe('Query (value)', () => {
     });
 
     it('Should throw exception', () => {
-      const source = [];
+      const source: number[] = [];
       const q = query(source);
 
       expect(() => q.reduce(() => 0)).to.throw(Error, 'Sequence contains no elements.');
@@ -470,7 +470,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.reduce((x, e, idx) => x + e.val, 0)).to.be.equal(20);
+      expect(q.reduce((x, e) => x + e.val, 0)).to.be.equal(20);
     });
 
     it('Should return abc', () => {
@@ -481,7 +481,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.reduce((x, e, idx) => x + e.tag, '')).to.be.equal('abc');
+      expect(q.reduce((x, e) => x + e.tag, '')).to.be.equal('abc');
     });
 
     it('Should iterate once', () => {
@@ -515,7 +515,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.reduceRight((x, e, idx) => x + e.val, 0)).to.be.equal(20);
+      expect(q.reduceRight((x, e) => x + e.val, 0)).to.be.equal(20);
     });
 
     it('Should return cba', () => {
@@ -526,7 +526,7 @@ describe('Query (value)', () => {
       ];
       const q = query(source);
 
-      expect(q.reduceRight((x, e, idx) => x + e.tag, '')).to.be.equal('cba');
+      expect(q.reduceRight((x, e) => x + e.tag, '')).to.be.equal('cba');
     });
 
     it('Should iterate once', () => {
@@ -538,17 +538,17 @@ describe('Query (value)', () => {
   });
 
   describe('When calling forEach', () => {
-    it('Should return 4 transfromed elements', () => {
+    it('Should return 4 transformed elements', () => {
       const source = numberGenerator();
-      const result = [];
-      query(source).take(4).forEach((elem, idx) => result.push(elem + 10));
+      const result: number[] = [];
+      query(source).take(4).forEach(elem => result.push(elem + 10));
 
       expect(result).to.be.deep.equal([10, 11, 12, 13]);
     });
 
     it('Should return 3 transformed elements', () => {
       const q = query(numberGenerator(10, 10));
-      const result = [];
+      const result: number[] = [];
       q.take(3).forEach((elem, idx) => result.push(elem + idx));
 
       expect(result).to.be.deep.equal([
@@ -558,7 +558,7 @@ describe('Query (value)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).forEach((x) => { });
+      query(source).forEach(() => { });
 
       expect(source.iteratedOnce).to.be.true;
     });

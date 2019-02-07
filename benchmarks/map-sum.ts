@@ -15,7 +15,7 @@ suite.add('itiriri', () => {
     .sum();
 });
 
-suite.add('Array', (deferred: any) => {
+suite.add('Array', () => {
   input
     .map(x => x * 10)
     .reduce((a, b) => a + b, 0);

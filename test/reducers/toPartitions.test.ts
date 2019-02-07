@@ -25,7 +25,7 @@ describe('reducers/toGroups', () => {
     it('Should return map of 4 elements', () => {
       const source = 'asdfaa';
 
-      expect(toArray(toGroups(source, x => x, x => x + 'b'))).to.be.deep.equal([
+      expect(toArray(toGroups(source, x => x, x => `${x}b`))).to.be.deep.equal([
         ['a', ['ab', 'ab', 'ab']],
         ['s', ['sb']],
         ['d', ['db']],

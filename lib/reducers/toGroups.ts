@@ -9,11 +9,14 @@ export function toGroups<TElement, TKey, TResult>(
 
   for (const element of source) {
     const key = keySelector(element, index);
-    if (!map.has(key)) {
-      map.set(key, []);
-    }
+    const value = valueSelector(element, index++);
+    const values = map.get(key);
 
-    map.get(key).push(valueSelector(element, index++));
+    if (values !== undefined) {
+      values.push(value);
+    } else {
+      map.set(key, [value]);
+    }
   }
 
   return map;

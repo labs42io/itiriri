@@ -16,7 +16,7 @@ suite.add('itiriri', () => {
     .sum(x => x.value);
 });
 
-suite.add('Array', (deferred: any) => {
+suite.add('Array', () => {
   input
     .map(x => ({ value: x * 100 }))
     .filter(x => x.value < 50)

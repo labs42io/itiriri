@@ -44,7 +44,7 @@ export interface IterableQuery<T> extends
   concat(other: T | Iterable<T>): IterableQuery<T>;
 
   /**
-   * Returns a sequence with given elements at the beggining.
+   * Returns a sequence with given elements at the beginning.
    * @param  {Iterable<T> | T} other
    * @returns Iterable<T>
    * @todo review name

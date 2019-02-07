@@ -106,7 +106,7 @@ describe('Query (cast)', () => {
 
     it('Should return map of 4 groups', () => {
       const source = [0, 1, 3, -1, -2];
-      const q = query(source).toGroups((elem, idx) => idx % 4);
+      const q = query(source).toGroups((_, idx) => idx % 4);
 
       expect(toArray(q)).to.deep.equal([
         [0, [0, -2]],

@@ -7,7 +7,7 @@ describe('iterators/filter', () => {
   describe('when called multiple times', () => {
     it('Should return new iterator on each call', () => {
       const source = [1, 2, 3];
-      const result = filter(source, x => true);
+      const result = filter(source, _ => true);
 
       expect(iterator(result)).not.equals(iterator(result));
     });
@@ -16,7 +16,7 @@ describe('iterators/filter', () => {
   describe('When source is empty', () => {
     it('Should return completed iterator', () => {
       const source = [];
-      const iterator = filter(source, x => true);
+      const iterator = filter(source, _ => true);
 
       expect(toArray(iterator)).to.deep.equal([]);
     });
@@ -25,7 +25,7 @@ describe('iterators/filter', () => {
   describe('When predicate is always true', () => {
     it('Should return all elements', () => {
       const source = [1, 2, 3];
-      const iterator = filter(source, x => true);
+      const iterator = filter(source, _ => true);
       const result = toArray(iterator);
 
       expect(result).to.deep.equal([1, 2, 3]);
@@ -35,7 +35,7 @@ describe('iterators/filter', () => {
   describe('When predicate is always false', () => {
     it('Should return completed iterator', () => {
       const source = [1, 2, 3];
-      const iterator = filter(source, x => false);
+      const iterator = filter(source, _ => false);
 
       expect(toArray(iterator)).to.deep.equal([]);
     });
@@ -44,7 +44,7 @@ describe('iterators/filter', () => {
   describe('When predicate matches odd indexes', () => {
     it('Should return elements', () => {
       const source = [1, 42, 3, 4242];
-      const iterator = filter(source, (x, i) => i % 2 === 1);
+      const iterator = filter(source, (_, i) => i % 2 === 1);
       const result = toArray(iterator);
 
       expect(result).to.deep.equal([42, 4242]);

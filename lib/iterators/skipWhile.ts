@@ -6,13 +6,13 @@ export function skipWhile<TElement>(
 ): Iterable<TElement> {
   return iterable(function* () {
     let index = 0;
-    let skiped = false;
+    let skipped = false;
 
     for (const element of source) {
-      if (!skiped && predicate(element, index++)) {
+      if (!skipped && predicate(element, index++)) {
         continue;
       }
-      skiped = true;
+      skipped = true;
       yield element;
     }
   });

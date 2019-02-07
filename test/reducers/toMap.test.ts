@@ -23,10 +23,10 @@ describe('reducers/toMap', () => {
     it('Should return set of 4 elements', () => {
       const source = 'asdf';
 
-      expect(toArray(toMap(source, x => x, x => x + 'a')))
+      expect(toArray(toMap(source, x => x, x => `${x}a`)))
         .to.be.deep.equal([
           ['a', 'aa'], ['s', 'sa'], ['d', 'da'], ['f', 'fa']],
-      );
+        );
     });
 
     it('Should return set of 5 elements', () => {
@@ -35,13 +35,13 @@ describe('reducers/toMap', () => {
       expect(toArray(toMap(source, x => 2 * x, x => x - 1)))
         .to.be.deep.equal([
           [10, 4], [8, 3], [6, 2], [4, 1], [2, 0]],
-      );
+        );
     });
 
     it('Should throw an error for duplicate keys', () => {
       const source = 'asdfa';
 
-      expect(() => toArray(toMap(source, x => x, x => x + 'a')))
+      expect(() => toArray(toMap(source, x => x, x => `${x}a`)))
         .to.throw(Error, 'Duplicate map entry key: a.');
     });
   });
