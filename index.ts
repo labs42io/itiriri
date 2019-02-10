@@ -1,10 +1,9 @@
-import Itiriri, * as itiriri from './lib';
-// import { IterableQuery } from './lib';
+import itiriri from './lib';
 
 // This is a sample test file.
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const q = Itiriri(arr);
+const q = itiriri(arr);
 
 console.log(`Length: ${q.length()}`);
 console.log(`Length > 5: ${q.length(x => x > 5)}`);
@@ -46,7 +45,7 @@ console.log(`ForEach: ${q.map(x => ({ x })).forEach(x => x.x *= 10)}`);
 console.log(`GroupBy: ${q.groupBy(x => x < 5 ? 0 : 1)
   .toArray()
   .map(x => `(${x[0]})[${x[1].toArray().join(', ')}]`).join(', ')}`);
-console.log(`Concat: ${q.concat(query([11, 12])).toArray().join(', ')}`);
+console.log(`Concat: ${q.concat(itiriri([11, 12])).toArray().join(', ')}`);
 console.log(`ToMap: ${q.toMap(x => x, x => x)}`);
 
 for (const e of q) {
