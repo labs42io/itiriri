@@ -1,4 +1,4 @@
-import { query } from '../lib/Query';
+import { query } from '../lib/Itiriri';
 import { take } from '../lib/iterators/take';
 
 function* fibonacci() {

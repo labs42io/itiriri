@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 
 describe('Query (predicate)', () => {
   describe('When calling includes', () => {

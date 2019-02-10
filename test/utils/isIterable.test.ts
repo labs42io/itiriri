@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { isIterable } from '../../lib/utils/isIterable';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 
 describe('utils/isIterable', () => {
   describe('When called on array', () => {

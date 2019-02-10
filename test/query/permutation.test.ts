@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SpyIterable } from '../helpers/SpyIterable';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('Query (permutation)', () => {

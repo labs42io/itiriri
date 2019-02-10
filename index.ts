@@ -1,10 +1,10 @@
-import { query } from './lib/Query';
-import { IterableQuery } from './lib';
+import Itiriri, * as itiriri from './lib';
+// import { IterableQuery } from './lib';
 
 // This is a sample test file.
 
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const q: IterableQuery<number> = query(arr);
+const q = Itiriri(arr);
 
 console.log(`Length: ${q.length()}`);
 console.log(`Length > 5: ${q.length(x => x > 5)}`);

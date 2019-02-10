@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
 import { SpyIterable } from '../helpers/SpyIterable';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 
 describe('Query (filter)', () => {
   describe('When calling filter', () => {

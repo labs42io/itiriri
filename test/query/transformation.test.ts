@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SpyIterable } from '../helpers/SpyIterable';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 
 describe('Query (transformation)', () => {
   describe('When calling map', () => {

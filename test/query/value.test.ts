@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
-import { query } from '../../lib/Query';
+import { query } from '../../lib/Itiriri';
 
 describe('Query (value)', () => {
   describe('When calling at with positive index', () => {

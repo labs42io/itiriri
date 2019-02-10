@@ -41,11 +41,11 @@ import { iterator } from './utils/iterator';
  * Creates a queryable iterable.
  * @param source can be an array or any other iterable.
  */
-export function query<T>(source: Iterable<T>): IterableQuery<T> {
-  return new Query(source);
+export default function <T>(source: Iterable<T>): IterableQuery<T> {
+  return new Itiriri(source);
 }
 
-class Query<T> implements IterableQuery<T>{
+class Itiriri<T> implements IterableQuery<T>{
   constructor(private readonly source: Iterable<T>) {
   }
 
@@ -55,17 +55,17 @@ class Query<T> implements IterableQuery<T>{
 
   // #region common methods
   entries(): IterableQuery<[number, T]> {
-    return new Query(
+    return new Itiriri(
       map(this.source, (elem, idx) => <[number, T]>[idx, elem]),
     );
   }
 
   keys(): IterableQuery<number> {
-    return new Query(map(this.source, (elem, idx) => idx));
+    return new Itiriri(map(this.source, (elem, idx) => idx));
   }
 
   values(): IterableQuery<T> {
-    return new Query(this.source);
+    return new Itiriri(this.source);
   }
 
   forEach(action: (element: T, index: number) => void): void {
@@ -76,18 +76,18 @@ class Query<T> implements IterableQuery<T>{
 
   concat(other: T | Iterable<T>): IterableQuery<T> {
     return isIterable(other) ?
-      new Query(concat(this.source, other)) :
-      new Query(concat(this.source, [other]));
+      new Itiriri(concat(this.source, other)) :
+      new Itiriri(concat(this.source, [other]));
   }
 
   prepend(other: T | Iterable<T>): IterableQuery<T> {
     return isIterable(other) ?
-      new Query(concat(other, this.source)) :
-      new Query(concat([other], this.source));
+      new Itiriri(concat(other, this.source)) :
+      new Itiriri(concat([other], this.source));
   }
 
   fill(value: T, start?: number, end?: number): IterableQuery<T> {
-    return new Query(fill(this.source, value, start, end));
+    return new Itiriri(fill(this.source, value, start, end));
   }
   // #endregion
 
@@ -181,57 +181,57 @@ class Query<T> implements IterableQuery<T>{
   sort(
     compareFn: (element1: T, element2: T) => number = comparer<T>(),
   ): IterableQuery<T> {
-    return new Query((function* (source) {
+    return new Itiriri((function* (source) {
       yield* toArray(source).sort(compareFn);
     })(this.source));
   }
 
   shuffle(): IterableQuery<T> {
-    return new Query(shuffle(this.source));
+    return new Itiriri(shuffle(this.source));
   }
 
   reverse(): IterableQuery<T> {
-    return new Query(reverse(this.source));
+    return new Itiriri(reverse(this.source));
   }
   // #endregion
 
   // #region IterableFilter implementation
   filter(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(filter(this.source, predicate));
+    return new Itiriri(filter(this.source, predicate));
   }
 
   take(count: number): IterableQuery<T> {
-    return new Query(take(this.source, count));
+    return new Itiriri(take(this.source, count));
   }
 
   takeWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(takeWhile(this.source, predicate));
+    return new Itiriri(takeWhile(this.source, predicate));
   }
 
   skip(count: number): IterableQuery<T> {
-    return new Query(skip(this.source, count));
+    return new Itiriri(skip(this.source, count));
   }
 
   skipWhile(predicate: (element: T, index: number) => boolean): IterableQuery<T> {
-    return new Query(skipWhile(this.source, predicate));
+    return new Itiriri(skipWhile(this.source, predicate));
   }
 
   slice(start?: number, end?: number): IterableQuery<T> {
-    return new Query(slice(this.source, start, end));
+    return new Itiriri(slice(this.source, start, end));
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T> {
-    return new Query(splice(this.source, start, deleteCount, items));
+    return new Itiriri(splice(this.source, start, deleteCount, items));
   }
   // #endregion
 
   // #region IterableTransformation implementation
   map<S>(selector: (element: T, index: number) => S): IterableQuery<S> {
-    return new Query(map(this.source, selector));
+    return new Itiriri(map(this.source, selector));
   }
 
   flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S> {
-    return new Query(flat<S>(map(this.source, selector)));
+    return new Itiriri(flat<S>(map(this.source, selector)));
   }
 
   groupBy<K, S>(
@@ -242,28 +242,28 @@ class Query<T> implements IterableQuery<T>{
     const groups = iterable(function* () {
       yield* toGroups(source, keySelector, valueSelector);
     });
-    const result = map(groups, elem => <[K, IterableQuery<S>]>[elem[0], new Query(elem[1])]);
+    const result = map(groups, elem => <[K, IterableQuery<S>]>[elem[0], new Itiriri(elem[1])]);
 
-    return new Query(result);
+    return new Itiriri(result);
   }
 
   // #endregion
 
   // #region IterableSet implementation
   distinct<S>(selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(distinct(this.source, selector));
+    return new Itiriri(distinct(this.source, selector));
   }
 
   exclude<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(exclude(this.source, other, selector));
+    return new Itiriri(exclude(this.source, other, selector));
   }
 
   intersect<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(intersect(this.source, other, selector));
+    return new Itiriri(intersect(this.source, other, selector));
   }
 
   union<S>(other: Iterable<T>, selector: (element: T) => S = element<S>()): IterableQuery<T> {
-    return new Query(distinct(concat(this.source, other), selector));
+    return new Itiriri(distinct(concat(this.source, other), selector));
   }
   // #endregion
 
@@ -281,7 +281,7 @@ class Query<T> implements IterableQuery<T>{
       rightKeySelector,
       joinSelector);
 
-    return new Query(iterator);
+    return new Itiriri(iterator);
   }
 
   leftJoin<TKey, TRight, TResult>(
@@ -297,7 +297,7 @@ class Query<T> implements IterableQuery<T>{
       rightKeySelector,
       joinSelector);
 
-    return new Query(iterator);
+    return new Itiriri(iterator);
   }
 
   rightJoin<TKey, TRight, TResult>(
@@ -314,7 +314,7 @@ class Query<T> implements IterableQuery<T>{
       joinSelector,
     );
 
-    return new Query(iterator);
+    return new Itiriri(iterator);
   }
 
   groupJoin<TKey, TRight, TResult>(
@@ -330,7 +330,7 @@ class Query<T> implements IterableQuery<T>{
       rightKeySelector,
       joinSelector);
 
-    return new Query(iterator);
+    return new Itiriri(iterator);
   }
   // #endregion
 
