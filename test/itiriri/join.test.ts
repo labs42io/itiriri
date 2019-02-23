@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import itiriri from '../../lib';
 import { SpyIterable } from '../helpers/SpyIterable';
 
-describe('Query (join)', () => {
+describe('Itiriri (join)', () => {
   describe('When calling join', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([]);

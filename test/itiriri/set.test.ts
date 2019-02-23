@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import itiriri from '../../lib';
 import { SpyIterable } from '../helpers/SpyIterable';
 
-describe('Query (set)', () => {
+describe('Itiriri (set)', () => {
   describe('When calling distinct', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([0, 1, 2, 2, 1]);

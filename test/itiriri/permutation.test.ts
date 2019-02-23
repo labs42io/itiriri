@@ -3,7 +3,7 @@ import { SpyIterable } from '../helpers/SpyIterable';
 import itiriri from '../../lib';
 import { toArray } from '../../lib/reducers/toArray';
 
-describe('Query (permutation)', () => {
+describe('Itiriri (permutation)', () => {
   describe('When calling sort', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([1, 4, 2]);

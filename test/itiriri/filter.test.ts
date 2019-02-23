@@ -3,7 +3,7 @@ import { numbers as numberGenerator } from '../helpers/generators';
 import { SpyIterable } from '../helpers/SpyIterable';
 import itiriri from '../../lib';
 
-describe('Query (filter)', () => {
+describe('Itiriri (filter)', () => {
   describe('When calling filter', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable(numberGenerator());

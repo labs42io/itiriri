@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import itiriri from '../../lib';
 
-describe('Query (predicate)', () => {
+describe('Itiriri (predicate)', () => {
   describe('When calling includes', () => {
     it('Should return true on array', () => {
       const source = [0, 4, 4, 30, 10, 10];

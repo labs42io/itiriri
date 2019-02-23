@@ -19,7 +19,7 @@ describe('utils/isIterable', () => {
       expect(isIterable('asdf')).to.be.true;
     });
   });
-  describe('When called on Query', () => {
+  describe('When called on Itiriri', () => {
     it('Should return true', () => {
       expect(isIterable(itiriri([]))).to.be.true;
     });

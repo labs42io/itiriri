@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
 import itiriri from '../../lib';
 
-describe('Query (value)', () => {
+describe('Itiriri (value)', () => {
   describe('When calling at with positive index', () => {
     it('Should return first element', () => {
       const source = numberGenerator();

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { SpyIterable } from '../helpers/SpyIterable';
 import itiriri from '../../lib';
 
-describe('Query (transformation)', () => {
+describe('Itiriri (transformation)', () => {
   describe('When calling map', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([]);

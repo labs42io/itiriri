@@ -4,9 +4,9 @@ import { SpyIterable } from './helpers/SpyIterable';
 import { numbers as numberGenerator } from './helpers/generators';
 import { toArray } from '../lib/reducers/toArray';
 
-describe('Query', () => {
+describe('Itiriri', () => {
   describe('When calling constructor', () => {
-    it('Should return a Query', () => {
+    it('Should return an Itiriri', () => {
       const source = [];
       const q = itiriri(source);
 

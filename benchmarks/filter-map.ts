@@ -1,5 +1,5 @@
 import { Suite, Event } from 'benchmark';
-import { query } from '../lib';
+import { default as itiriri} from '../lib';
 
 const sizes = [1000000];
 const inputs: { name: string, value: number }[][] = [];
@@ -21,7 +21,7 @@ sizes.forEach((size, idx) => {
   const arr = inputs[idx];
 
   suite.add(`itiriri ${size}`, () => {
-    query(arr)
+    itiriri(arr)
       .filter(x => x.value > 40)
       .filter(x => x.value < 60)
       .map(x => x.name.toUpperCase())

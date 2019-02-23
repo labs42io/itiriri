@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import itiriri from '../../lib';
 import { toArray } from '../../lib/reducers/toArray';
 
-describe('Query (cast)', () => {
+describe('Itiriri (cast)', () => {
   describe('When calling toArray', () => {
     it('Should return the array', () => {
       const source = [0, 4, 4, 0, 1];
