@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
-import itiriri from '../../lib';
+import { default as itiriri } from '../../lib';
 
 describe('Itiriri (value)', () => {
   describe('When calling at with positive index', () => {

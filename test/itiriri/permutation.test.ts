@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { SpyIterable } from '../helpers/SpyIterable';
-import itiriri from '../../lib';
+import { default as itiriri } from '../../lib';
 import { toArray } from '../../lib/reducers/toArray';
 
 describe('Itiriri (permutation)', () => {

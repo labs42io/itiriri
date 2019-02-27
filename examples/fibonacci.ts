@@ -1,4 +1,4 @@
-import itiriri from '../lib';
+import { default as itiriri } from '../lib';
 import { take } from '../lib/iterators/take';
 
 function* fibonacci() {

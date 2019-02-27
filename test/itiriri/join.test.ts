@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import itiriri from '../../lib';
+import { default as itiriri } from '../../lib';
 import { SpyIterable } from '../helpers/SpyIterable';
 
 describe('Itiriri (join)', () => {

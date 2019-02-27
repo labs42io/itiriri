@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { numbers as numberGenerator } from '../helpers/generators';
 import { SpyIterable } from '../helpers/SpyIterable';
-import itiriri from '../../lib';
+import { default as itiriri } from '../../lib';
 
 describe('Itiriri (itiriri)', () => {
   describe('When calling entries', () => {
