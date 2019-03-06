@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import { query } from '../../lib/Query';
+import { default as itiriri } from '../../lib';
 import { SpyIterable } from '../helpers/SpyIterable';
 
-describe('Query (join)', () => {
+describe('Itiriri (join)', () => {
   describe('When calling join', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([]);
       const source2 = new SpyIterable([]);
-      query(source1).join(source2, x => x, x => x, x => x);
+      itiriri(source1).join(source2, x => x, x => x, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -16,7 +16,7 @@ describe('Query (join)', () => {
     it('Should return array of 2 elements', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -1];
-      const q = query(source1).join(source2, x => x, x => x, x => x);
+      const q = itiriri(source1).join(source2, x => x, x => x, x => x);
 
       expect(q.toArray()).to.deep.equal([4, 5]);
     });
@@ -32,7 +32,7 @@ describe('Query (join)', () => {
         { val: 2, tag: 'a' },
         { val: 2222, tag: 'c' },
       ];
-      const q = query(source1).join(source2, x => x.tag, x => x.tag, (e1, e2) => e1.val + e2.val);
+      const q = itiriri(source1).join(source2, x => x.tag, x => x.tag, (e1, e2) => e1.val + e2.val);
 
       expect(q.toArray()).to.deep.equal([3, 113, 3333]);
     });
@@ -40,7 +40,7 @@ describe('Query (join)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -1];
-      const q = query(source1).join(source2, x => x, x => x, x => x);
+      const q = itiriri(source1).join(source2, x => x, x => x, x => x);
 
       for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([4, 5]);
@@ -48,7 +48,7 @@ describe('Query (join)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).join([], x => x, x => x, (a, b) => a + b).toArray();
+      itiriri(source).join([], x => x, x => x, (a, b) => a + b).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -58,7 +58,7 @@ describe('Query (join)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([]);
       const source2 = new SpyIterable([]);
-      query(source1).leftJoin(source2, x => x, x => x, x => x);
+      itiriri(source1).leftJoin(source2, x => x, x => x, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -67,7 +67,7 @@ describe('Query (join)', () => {
     it('Should return array of 4 elements', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -1];
-      const q = query(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: undefined },
@@ -80,7 +80,7 @@ describe('Query (join)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -1];
-      const q = query(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).leftJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
@@ -93,7 +93,7 @@ describe('Query (join)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).leftJoin([], x => x, x => x, (a, b) => a + b).toArray();
+      itiriri(source).leftJoin([], x => x, x => x, (a, b) => a + b).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -103,7 +103,7 @@ describe('Query (join)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([]);
       const source2 = new SpyIterable([]);
-      query(source1).rightJoin(source2, x => x, x => x, x => x);
+      itiriri(source1).rightJoin(source2, x => x, x => x, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -112,7 +112,7 @@ describe('Query (join)', () => {
     it('Should return array of 4 elements', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -2];
-      const q = query(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       expect(q.toArray()).to.deep.equal([
         { e2: undefined, e1: -1 },
@@ -135,7 +135,7 @@ describe('Query (join)', () => {
         { category: 'Guns', profit: 3000 },
         { category: 'Rockets', profit: -100000 },
       ];
-      const q = query(source1).rightJoin(
+      const q = itiriri(source1).rightJoin(
         source2,
         x => x.category,
         x => x.category,
@@ -155,7 +155,7 @@ describe('Query (join)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 4, 5, -2];
-      const q = query(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).rightJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
@@ -168,7 +168,7 @@ describe('Query (join)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).rightJoin([], x => x, x => x, (a, b) => a + b).toArray();
+      itiriri(source).rightJoin([], x => x, x => x, (a, b) => a + b).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -178,7 +178,7 @@ describe('Query (join)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([]);
       const source2 = new SpyIterable([]);
-      query(source1).groupJoin(source2, x => x, x => x, x => x);
+      itiriri(source1).groupJoin(source2, x => x, x => x, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -187,7 +187,7 @@ describe('Query (join)', () => {
     it('Should return array of 1 elements', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 5, 5, 5, 1];
-      const q = query(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       expect(q.toArray()).to.deep.equal([
         { e1: 0, e2: [] },
@@ -200,7 +200,7 @@ describe('Query (join)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 5, 1];
       const source2 = [-1, 5, 5, 5, 1];
-      const q = query(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
+      const q = itiriri(source1).groupJoin(source2, x => x, x => x, (e1, e2) => ({ e1, e2 }));
 
       for (const _ of q) { }
       expect(q.toArray()).to.deep.equal([
@@ -213,7 +213,7 @@ describe('Query (join)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).groupJoin([], x => x, x => x, (a, b) => a + b.length).toArray();
+      itiriri(source).groupJoin([], x => x, x => x, (a, b) => a + b.length).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });

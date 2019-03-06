@@ -1,5 +1,5 @@
 import { Suite, Event } from 'benchmark';
-import { query } from '../lib';
+import { default as itiriri } from '../lib';
 
 const input: number[] = [];
 
@@ -10,7 +10,7 @@ for (let i = 0; i < 100000; i++) {
 const suite = new Suite();
 
 suite.add('itiriri', () => {
-  query(input)
+  itiriri(input)
     .map(x => ({ value: x * 100 }))
     .filter(x => x.value < 50)
     .sum(x => x.value);

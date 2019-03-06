@@ -1,19 +1,19 @@
 import { expect } from 'chai';
-import { query } from '../../lib/Query';
+import { default as itiriri } from '../../lib';
 import { SpyIterable } from '../helpers/SpyIterable';
 
-describe('Query (set)', () => {
+describe('Itiriri (set)', () => {
   describe('When calling distinct', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([0, 1, 2, 2, 1]);
-      query(source).distinct(x => x);
+      itiriri(source).distinct(x => x);
 
       expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 2 elements', () => {
       const source = [0, 4, 4, 0];
-      const q = query(source).distinct(x => x);
+      const q = itiriri(source).distinct(x => x);
 
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
@@ -27,7 +27,7 @@ describe('Query (set)', () => {
         { val: 5, tag: 'b' },
         { val: 6, tag: 'c' },
       ];
-      const q = query(source).distinct(x => x.tag);
+      const q = itiriri(source).distinct(x => x.tag);
 
       expect(q.toArray()).to.be.deep.equal([
         { val: 1, tag: 'a' },
@@ -38,7 +38,7 @@ describe('Query (set)', () => {
 
     it('Should be iterable multiple times', () => {
       const source = [0, 4, 4, 0];
-      const q = query(source).distinct(x => x);
+      const q = itiriri(source).distinct(x => x);
 
       for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
@@ -46,7 +46,7 @@ describe('Query (set)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).distinct().toArray();
+      itiriri(source).distinct().toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -56,7 +56,7 @@ describe('Query (set)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([0, 1, 2, 2, 1]);
       const source2 = new SpyIterable([0, 1]);
-      query(source1).exclude(source2, x => x);
+      itiriri(source1).exclude(source2, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -65,7 +65,7 @@ describe('Query (set)', () => {
     it('Should return array of 2 elements', () => {
       const source1 = [0, 4, 4, 0];
       const source2 = [0, 5];
-      const q = query(source1).exclude(source2, x => x);
+      const q = itiriri(source1).exclude(source2, x => x);
 
       expect(q.toArray()).to.be.deep.equal([4, 4]);
     });
@@ -80,7 +80,7 @@ describe('Query (set)', () => {
         { val: 6, tag: 'c' },
       ];
       const source2 = [{ val: 10, tag: 'a' }];
-      const q = query(source1).exclude(source2, x => x.tag);
+      const q = itiriri(source1).exclude(source2, x => x.tag);
 
       expect(q.toArray()).to.be.deep.equal([
         { val: 2, tag: 'b' },
@@ -92,7 +92,7 @@ describe('Query (set)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 4, 0];
       const source2 = [0, 5];
-      const q = query(source1).exclude(source2, x => x);
+      const q = itiriri(source1).exclude(source2, x => x);
 
       for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([4, 4]);
@@ -100,7 +100,7 @@ describe('Query (set)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).exclude([]).toArray();
+      itiriri(source).exclude([]).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -110,7 +110,7 @@ describe('Query (set)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([0, 1, 2, 2, 1]);
       const source2 = new SpyIterable([0, 1]);
-      query(source1).intersect(source2, x => x);
+      itiriri(source1).intersect(source2, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -119,7 +119,7 @@ describe('Query (set)', () => {
     it('Should return array of 2 elements', () => {
       const source1 = [0, 4, 4, 0, 1];
       const source2 = [0, 5, 4];
-      const q = query(source1).intersect(source2, x => x);
+      const q = itiriri(source1).intersect(source2, x => x);
 
       expect(q.toArray()).to.be.deep.equal([0, 4]);
     });
@@ -134,7 +134,7 @@ describe('Query (set)', () => {
         { val: 6, tag: 'c' },
       ];
       const source2 = [{ val: 10, tag: 'a' }];
-      const q = query(source1).intersect(source2, x => x.tag);
+      const q = itiriri(source1).intersect(source2, x => x.tag);
 
       expect(q.toArray()).to.be.deep.equal([{ val: 1, tag: 'a' }]);
     });
@@ -142,7 +142,7 @@ describe('Query (set)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 4, 0, 1];
       const source2 = [0, 5, 4];
-      const q = query(source1).intersect(source2, x => x);
+      const q = itiriri(source1).intersect(source2, x => x);
 
       for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4]);
@@ -150,7 +150,7 @@ describe('Query (set)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).intersect([]).toArray();
+      itiriri(source).intersect([]).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
@@ -160,7 +160,7 @@ describe('Query (set)', () => {
     it('Should be a deferred method', () => {
       const source1 = new SpyIterable([0, 1, 2, 2, 1]);
       const source2 = new SpyIterable([0, 1]);
-      query(source1).union(source2, x => x);
+      itiriri(source1).union(source2, x => x);
 
       expect(source1.iterated).to.be.false;
       expect(source2.iterated).to.be.false;
@@ -169,7 +169,7 @@ describe('Query (set)', () => {
     it('Should return array of 4 elements', () => {
       const source1 = [0, 4, 4, 0, 1];
       const source2 = [0, 5, 4];
-      const q = query(source1).union(source2, x => x);
+      const q = itiriri(source1).union(source2, x => x);
 
       expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
     });
@@ -182,7 +182,7 @@ describe('Query (set)', () => {
         { val: 1111, tag: 'c' },
       ];
       const source2 = [{ val: 10, tag: 'a' }];
-      const q = query(source1).union(source2, x => x.tag);
+      const q = itiriri(source1).union(source2, x => x.tag);
 
       expect(q.toArray()).to.be.deep.equal([
         { val: 1, tag: 'a' },
@@ -194,7 +194,7 @@ describe('Query (set)', () => {
     it('Should be iterable multiple times', () => {
       const source1 = [0, 4, 4, 0, 1];
       const source2 = [0, 5, 4];
-      const q = query(source1).union(source2, x => x);
+      const q = itiriri(source1).union(source2, x => x);
 
       for (const _ of q) { }
       expect(q.toArray()).to.be.deep.equal([0, 4, 1, 5]);
@@ -202,7 +202,7 @@ describe('Query (set)', () => {
 
     it('Should iterate once', () => {
       const source = new SpyIterable([]);
-      query(source).union([]).toArray();
+      itiriri(source).union([]).toArray();
 
       expect(source.iteratedOnce).to.be.true;
     });
