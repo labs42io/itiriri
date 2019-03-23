@@ -1,5 +1,5 @@
 import { Suite, Event } from 'benchmark';
-import { query } from '../lib';
+import { default as itiriri} from '../lib';
 
 const input: number[] = [];
 
@@ -10,12 +10,12 @@ for (let i = 0; i < 100000; i++) {
 const suite = new Suite('Find index of an element within filtered result.');
 
 suite.add('itiriri', () => {
-  query(input)
+  itiriri(input)
     .filter(x => x < 0.5)
     .findIndex(x => x.toString().startsWith('0.42'));
 });
 
-suite.add('Array', (deferred: any) => {
+suite.add('Array', () => {
   input
     .filter(x => x < 0.5)
     .findIndex(x => x.toString().startsWith('0.42'));

@@ -1,49 +1,64 @@
 import { expect } from 'chai';
 import { SpyIterable } from '../helpers/SpyIterable';
-import { query } from '../../lib/Query';
+import { default as itiriri } from '../../lib';
 
-describe('Query (transformation)', () => {
+describe('Itiriri (transformation)', () => {
   describe('When calling map', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([]);
-      query(source).map(x => x);
+      itiriri(source).map(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 3 elements', () => {
       const source = [0, -4, 4];
-      const q = query(source).map(x => x <= 0);
+      const q = itiriri(source).map(x => x <= 0);
 
       expect(q.toArray()).to.be.deep.equal([true, true, false]);
     });
 
     it('Should return array of 4 element', () => {
       const source = [0, -4, 4, 30];
-      const q = query(source).map((elem, idx) => elem + idx);
+      const q = itiriri(source).map((elem, idx) => elem + idx);
 
       expect(q.toArray()).to.be.deep.equal([0, -3, 6, 33]);
     });
 
     it('Should return array of 1 object', () => {
       const source = [];
-      const q = query(source).filter(x => x);
+      const q = itiriri(source).filter(x => x);
 
       expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = itiriri(source).map(x => x * 10);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([10, 20, 30]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).map(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 
   describe('When calling groupBy', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([]);
-      query(source).groupBy(x => x);
+      itiriri(source).groupBy(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 2 groups', () => {
       const source = [0, -4, 4, -1];
-      const q = query(source).groupBy(x => x > 0);
+      const q = itiriri(source).groupBy(x => x > 0);
 
       expect(q.toArray()).to.be.deep.equal([
         [false, { source: [0, -4, -1] }],
@@ -60,7 +75,7 @@ describe('Query (transformation)', () => {
         { val: 5, tag: 'e' },
         { val: 6, tag: 'f' },
       ];
-      const q = query(source).groupBy(x => x.val % 3);
+      const q = itiriri(source).groupBy(x => x.val % 3);
 
       expect(q.toArray()).to.be.deep.equal([
         [1, { source: [{ val: 1, tag: 'a' }, { val: 4, tag: 'd' }] }],
@@ -71,27 +86,45 @@ describe('Query (transformation)', () => {
 
     it('Should return array of 2 groups', () => {
       const source = [0, 4, 4, 1];
-      const q = query(source).groupBy((elem, idx) => idx % 2);
+      const q = itiriri(source).groupBy((_, idx) => idx % 2);
 
       expect(q.toArray()).to.be.deep.equal([
         [0, { source: [0, 4] }],
         [1, { source: [4, 1] }],
       ]);
     });
+
+    it('Should be iterable multiple times', () => {
+      const source = [0, 4, 4, 1];
+      const q = itiriri(source).groupBy((_, idx) => idx % 2);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([
+        [0, { source: [0, 4] }],
+        [1, { source: [4, 1] }],
+      ]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).groupBy(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
   });
 
   describe('When calling flat', () => {
     it('Should be a deferred method', () => {
       const source = new SpyIterable([]);
-      query(source).flat(x => x);
+      itiriri(source).flat(x => x);
 
-      expect(source.wasIterated).to.be.false;
+      expect(source.iterated).to.be.false;
     });
 
     it('Should return array of 5 elements', () => {
       const source = [[1, 2, 3], [4, 5]];
-      const q = query(source).flat((elem, idx) => {
-        const res = [];
+      const q = itiriri(source).flat((elem, _) => {
+        const res: number[] = [];
 
         elem.forEach((element) => {
           res.push(element);
@@ -101,6 +134,21 @@ describe('Query (transformation)', () => {
       });
 
       expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [[1, 2], [3, 4]];
+      const q = itiriri(source).flat(x => x);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).flat(x => x).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
     });
   });
 });

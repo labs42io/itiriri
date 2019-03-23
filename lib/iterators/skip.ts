@@ -6,12 +6,15 @@ export function skip<TElement>(
   count: number,
 ): Iterable<TElement> {
   return count >= 0 ?
-    filter(source, (elem, idx) => idx >= count) :
+    filter(source, (_, idx) => idx >= count) :
     iterable(() => skipLast(source, -count));
 
 }
 
-function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
+function* skipLast<TElement>(
+  source: Iterable<TElement>,
+  count: number): IterableIterator<TElement> {
+
   const buffer: TElement[] = [];
   let index = 0;
 
@@ -19,7 +22,7 @@ function* skipLast<TElement>(source: Iterable<TElement>, count: number) {
     buffer.push(element);
 
     if (index++ - count >= 0) {
-      yield buffer.shift();
+      yield <TElement>buffer.shift();
     }
   }
 }

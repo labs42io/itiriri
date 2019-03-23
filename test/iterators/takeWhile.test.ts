@@ -3,7 +3,7 @@ import { toArray } from '../../lib/reducers/toArray';
 import { takeWhile } from '../../lib/iterators/takeWhile';
 
 describe('iterators/takeWhile', () => {
-  describe(`When don't have searched elements`, () => {
+  describe('When don\'t have searched elements', () => {
     it('Should return empty source', () => {
       const source = [1, 2];
       const iterator = takeWhile(source, () => false);
@@ -19,7 +19,7 @@ describe('iterators/takeWhile', () => {
 
       expect(toArray(iterator)).to.deep.equal([0, 2, 4]);
     });
-    it('Should return first positive elemts', () => {
+    it('Should return first positive elements', () => {
       const source = [1, 2, 3, -2, 4, 5];
       const iterator = takeWhile(source, e => e > 0);
 
@@ -57,7 +57,7 @@ describe('iterators/takeWhile', () => {
   describe('When take elements by index', () => {
     it('Should return 3 elements', () => {
       const source = [1, 2, 3, 4, 5, 5, 5];
-      const iterator = takeWhile(source, (e, idx) => idx < 3);
+      const iterator = takeWhile(source, (_, idx) => idx < 3);
 
       expect(toArray(iterator)).to.deep.equal([1, 2, 3]);
     });

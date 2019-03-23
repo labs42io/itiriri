@@ -40,19 +40,19 @@ describe('reducers/indexOf', () => {
     it('Should return first index', () => {
       const source = [1, 4, 3, 2];
 
-      expect(indexOf(source, (elem, idx) => idx === 0)).to.be.equal(0);
+      expect(indexOf(source, (_, idx) => idx === 0)).to.be.equal(0);
     });
 
     it('Should return last index', () => {
       const source = [1, 4, 3, 2, 5];
 
-      expect(indexOf(source, (elem, idx) => { return idx * 2 === 4; })).to.be.equal(2);
+      expect(indexOf(source, (_, idx) => { return idx * 2 === 4; })).to.be.equal(2);
     });
 
     it('Should return the middle index', () => {
       const source = [1, 40, 3, 200, 1001];
 
-      expect(indexOf(source, (elem, idx) => idx === 2)).to.be.equal(2);
+      expect(indexOf(source, (_, idx) => idx === 2)).to.be.equal(2);
     });
   });
 });

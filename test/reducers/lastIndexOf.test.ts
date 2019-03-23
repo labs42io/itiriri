@@ -33,25 +33,25 @@ describe('reducers/lastIndexOf', () => {
     it('Should return first index', () => {
       const source = [1, 4, 3, 2];
 
-      expect(lastIndexOf(source, (elem, idx) => idx === 0)).to.be.equal(0);
+      expect(lastIndexOf(source, (_, idx) => idx === 0)).to.be.equal(0);
     });
 
     it('Should return last index', () => {
       const source = [1, 4, 3, 2, 5];
 
-      expect(lastIndexOf(source, (elem, idx) => { return idx * 2 === 4; })).to.be.equal(2);
+      expect(lastIndexOf(source, (_, idx) => { return idx * 2 === 4; })).to.be.equal(2);
     });
 
     it('Should return last index for multiple matches', () => {
       const source = [1, 4, 3, 2, 5];
 
-      expect(lastIndexOf(source, (elem, idx) => { return idx % 2 === 0; })).to.be.equal(4);
+      expect(lastIndexOf(source, (_, idx) => { return idx % 2 === 0; })).to.be.equal(4);
     });
 
     it('Should return the middle index', () => {
       const source = [1, 40, 3, 200, 1001];
 
-      expect(lastIndexOf(source, (elem, idx) => idx === 2)).to.be.equal(2);
+      expect(lastIndexOf(source, (_, idx) => idx === 2)).to.be.equal(2);
     });
   });
 });

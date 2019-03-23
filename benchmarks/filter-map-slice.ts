@@ -1,5 +1,5 @@
 import { Suite, Event } from 'benchmark';
-import { query } from '../lib';
+import { default as itiriri } from '../lib';
 
 const sizes = [1000, 5000, 10000, 50000, 100000, 200000];
 const inputs: number[][] = [];
@@ -19,7 +19,7 @@ sizes.forEach((size, idx) => {
   const takeCount = 100;
 
   suite.add(`itiriri ${size}`, () => {
-    query(arr)
+    itiriri(arr)
       .filter(x => x < 0.5)
       .map(x => x * 100)
       .take(takeCount)

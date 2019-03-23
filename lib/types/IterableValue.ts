@@ -9,7 +9,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {number} index element's index
    * @returns T
    */
-  nth(index: number): T;
+  nth(index: number): T | undefined;
 
   /**
    * Returns the first index at which a given element can be found.
@@ -79,7 +79,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * For an empty sequence returns undefined.
    * @returns T
    */
-  first(): T;
+  first(): T | undefined;
 
   /**
    * Finds the first element that satisfies the specified predicate.
@@ -87,14 +87,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
-  find(predicate: (element: T, index: number) => boolean): T;
+  find(predicate: (element: T, index: number) => boolean): T | undefined;
 
   /**
    * Returns the last element.
    * For an empty sequence returns undefined.
    * @returns T
    */
-  last(): T;
+  last(): T | undefined;
 
   /**
    * Finds the last element that satisfies the specified predicate.
@@ -102,14 +102,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {(element:T,index:number)=>boolean} predicate element predicate
    * @returns T
    */
-  findLast(predicate: (element: T, index: number) => boolean): T;
+  findLast(predicate: (element: T, index: number) => boolean): T | undefined;
 
   /**
    * Returns the average value.
    * If sequence is empty, returns undefined.
    * @returns number
    */
-  average(): number;
+  average(): number | undefined;
 
   /**
    * Returns the average value over a sequence of transformed values.
@@ -117,14 +117,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
-  average(selector: (element: T, index: number) => number): number;
+  average(selector: (element: T, index: number) => number): number | undefined;
 
   /**
    * Returns the minimum value.
    * If sequence is empty, returns undefined.
    * @returns T
    */
-  min(): T;
+  min(): T | undefined;
 
   /**
    * Returns the minimum value from a sequence using a comparer function.
@@ -133,14 +133,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * for element1<element2, 1 for element1>element2, 0 for equal values
    * @returns T
    */
-  min(compareFn: (element1: T, element2: T) => number): T;
+  min(compareFn: (element1: T, element2: T) => number): T | undefined;
 
   /**
    * Returns the maximum value.
    * If sequence is empty, returns undefined.
    * @returns T
    */
-  max(): T;
+  max(): T | undefined;
 
   /**
    * Returns the maximum value from a sequence using a compare function.
@@ -149,14 +149,14 @@ export interface IterableValue<T> extends Iterable<T> {
    * for element1<element2, 1 for element1>element2, 0 for equal values
    * @returns T
    */
-  max(compareFn: (element1: T, element2: T) => number): T;
+  max(compareFn: (element1: T, element2: T) => number): T | undefined;
 
   /**
    * Returns the sum of all elements.
    * If sequence is empty, returns undefined.
    * @returns number
    */
-  sum(): number;
+  sum(): number | undefined;
 
   /**
    * Returns the sum of elements from a sequence of transformed values.
@@ -164,7 +164,7 @@ export interface IterableValue<T> extends Iterable<T> {
    * @param  {(element:T,index:number)=>number} selector element transformation
    * @returns number
    */
-  sum(selector: (element: T, index: number) => number): number;
+  sum(selector: (element: T, index: number) => number): number | undefined;
 
   /**
    * Applies a function against an accumulator and each element to reduce it to a single value

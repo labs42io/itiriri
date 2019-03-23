@@ -1,4 +1,4 @@
-export function average(source: Iterable<number>): number {
+export function average(source: Iterable<number>): number | undefined {
   let [s, n] = [0, 0];
 
   for (const element of source) {

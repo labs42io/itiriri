@@ -15,12 +15,12 @@ export function join<TLeft, TRight, TKey, TResult>(
     for (const element of source) {
       const leftKey = leftKeySelector(element, index++);
 
-      if (rightMap.has(leftKey)) {
-        for (const rightMatch of rightMap.get(leftKey)) {
+      const rightValues = rightMap.get(leftKey);
+      if (rightValues) {
+        for (const rightMatch of rightValues) {
           yield joinSelector(element, rightMatch);
         }
       }
-
     }
   });
 }

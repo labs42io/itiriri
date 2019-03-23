@@ -16,63 +16,63 @@ function* numbers() {
   }
 }
 
-const s = query(numbers()).map(n => 1 / (n * n)).take(1000).sum();
+const s = itiriri(numbers()).map(n => 1 / (n * n)).take(1000).sum();
 console.log(Math.sqrt(6 * s));
 // 3.1406380562059946
 ```
 
-**itiriri** provides similar functions as the natives for arrays:
+**itiriri** provides similar functions as JavaScript arrays:
 *filter*, *slice*, *map*, *reduce*, *every*, *some* etc. and more.
-The functions are optimized for ES6 iterators and can be chained to write simple but powerful queries over iterables.
+The functions are optimized for ES6 iterators and can be chained to perform simple but powerful manipulations over iterables.
 
 ## Installation
 
-Using npm:
+### Using npm
 
 ```javascript
 $ npm install 'itiriri' --save
 ```
 
-Importing:
+### Importing
 
 ```javascript
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 ```
 
 ### Support
 
 The **itiriri** library can be used with any ES6 compatible runtime.
 
-## Iterators
+## Usage
 
-An iterator is a structured pattern for pulling information from a source in one-at-a-time fashion ([Y-D-N-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/es6%20%26%20beyond/ch3.md)).
-
-Starting with ES6, built-in types like *arrays*, *Map*, *Set* are iterables and can all be used with **itiriri**. A generator is also an iterable.
+**itiriri** can be used with a build-it type like *array*, *Map*, *Set*, a *generator function* or a custom *iterable*.
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-function* values() {
-  yield 2;
-  yield 0;
-  yield 4;
-  yield 8;
+const values = [2, 0, 4, 8];
+
+const s = itiriri(values).map(n => n / 2).reverse();
+console.log(s.toString()); // prints: 4,2,0,1
+
+// prints: 4 2 0 1
+for (const n of s) {
+  console.log(n)
 }
 
-const s = query(values()).map(n => n / 2).reverse();
-console.log(s.toString()); // 4,2,0,1
+console.log(s.sum()); // prints: 7
 ```
 
 ## Deferred execution
 
 JavaScript's array methods like *filter*, *slice* and others that return an array create a shallow copy for the result and are executed once called.
 
-**itiriri** functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type.
+**itiriri** functions that return iterables are not executed unless chained with a function that reduces a value or transforms to a built-in type. The iterable source is iterated only once.
 
 Let's see what happens in the below example.
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
 function* fibonacci() {
   let [a, b] = [0, 1];
@@ -84,7 +84,7 @@ function* fibonacci() {
 }
 
 // Finding first 3 Fibonacci numbers that contain 42
-const result = query(fibonacci())
+const result = itiriri(fibonacci())
   .filter(x => x.toString().indexOf('42') !== -1)
   .take(3);
 
@@ -97,7 +97,7 @@ for (const e of result) {
 
 Step by step:
 
-1. `result` is assigned to a query. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.  
+1. `result` is assigned to a itiriri. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.  
 
 1. `filter` method creates an iterator to pipe only numbers passing the predicate. `filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
 
@@ -127,16 +127,38 @@ are used to filter and map a result of 100 elements:
 
 ![map-filter-slice](https://raw.githubusercontent.com/labs42io/itiriri/dev/images/map-filter-slice.PNG)
 
-Using `array` methods, performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
+Using `array` methods performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
 Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.  
 
-There are examples in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
+More benchmarks can be found in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
 
 ## Running Tests
 
 ```javascript
 $ npm install
 $ npm test
+```
+
+## Bundling
+
+If you want to use itiriri in the browser, there is a `gulp` task that creates a minified file:
+
+```javascript
+$ npm install
+$ gulp bundle
+// creates itiriri.min.js file in the root folder
+```
+
+Once you include the `itiriri.min.js` file on your page, you can use it as:
+
+```html
+<script src="itiriri.min.js"></script>
+<!-- ... -->
+<script>
+    // source can be an array or an Iterable
+    const source = [1, 2, 3];
+    console.log(itiriri(source).sum());
+</script>
 ```
 
 ## Complete list of methods
@@ -209,39 +231,40 @@ average(selector: (element: T, index: number) => number): number;
 * `selector` - *(optional)* a value transformer that accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
-  * returns a number
+  * returns a number that is used for average value calculation
 
 For a sequence with no elements returns `undefined`.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([41, 42, 43]).average()  // returns 42
-query([{value: 1}, {value: 2}]).average(elem => elem.value) // returns 1.5
-query([]).average() // returns undefined
+itiriri([41, 42, 43]).average()  // returns 42
+itiriri([{value: 1}, {value: 2}]).average(elem => elem.value) // returns 1.5
+itiriri([]).average() // returns undefined
 ```
 
 ### `concat`
 
-Concatenates the sequence with another one.
+Concatenates a sequence with another one.
 
 > Syntax
 
 ```ts
 concat(other: Iterable<T>): IterableQuery<T>;
+concat(other: T): IterableQuery<T>;
 ```
 
 > Parameters
-* `other` - *(required)* sequence to concatenate
+* `other` - *(required)* a sequence or a value to be concatenated
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).concat([4, 5]).toArray()  // returns [1, 2, 3, 4, 5]
+itiriri([1, 2, 3]).concat([4, 5]).toArray()  // returns [1, 2, 3, 4, 5]
 ```
 
 `concat` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -265,10 +288,10 @@ distinct<S>(selector: (element: T) => S): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 42, 3, 4, 1]).distinct().toArray();  // returns [1, 42, 3, 4]
-query([{value: 1}, {value: 2}, {value: 1}])
+itiriri([1, 42, 3, 4, 1]).distinct().toArray();  // returns [1, 42, 3, 4]
+itiriri([{value: 1}, {value: 2}, {value: 1}])
   .distinct(elem => elem.value)
   .toArray(); // returns [{value: 1}, {value: 2}]
 ```
@@ -288,9 +311,9 @@ entries(): IterableQuery<[number, T]>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['Alice', 'Bob', 'David']).entries().toArray();
+itiriri(['Alice', 'Bob', 'David']).entries().toArray();
 // returns [[0, 'Alice'], [1, 'Bob'], [2, 'David']]
 ```
 
@@ -315,10 +338,10 @@ every(predicate: (element: T, index: number) => boolean): boolean;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([2, 4, 9]).every(elem => elem > 0); // returns true
-query([7, 23, 3]).every(elem => elem % 3 === 0); // returns false
+itiriri([2, 4, 9]).every(elem => elem > 0); // returns true
+itiriri([7, 23, 3]).every(elem => elem % 3 === 0); // returns false
 ```
 
 ### `exclude`
@@ -341,10 +364,10 @@ exclude<S>(others: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([2, 0, 1, 8, 2]).exclude([0, 1]).toArray(); // returns [2, 8, 2]
-query([{id: 1}, {id: 2}])
+itiriri([2, 0, 1, 8, 2]).exclude([0, 1]).toArray(); // returns [2, 8, 2]
+itiriri([{id: 1}, {id: 2}])
   .exclude([{id: 2}, elem => elem.id])
   .toArray(); // returns [{id: 1}]
 ```
@@ -372,11 +395,11 @@ fill(value: T, start: number, end: number): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).fill([7]).toArray(); // returns [7, 7, 7, 7, 7]
-query([1, 2, 3, 4, 5]).fill([7, 3]).toArray(); // returns [1, 2, 3, 7, 7]
-query([1, 2, 3, 4, 5]).fill([7, 1, 3]).toArray(); // returns [1, 7, 7, 4, 5]
+itiriri([1, 2, 3, 4, 5]).fill([7]).toArray(); // returns [7, 7, 7, 7, 7]
+itiriri([1, 2, 3, 4, 5]).fill([7, 3]).toArray(); // returns [1, 2, 3, 7, 7]
+itiriri([1, 2, 3, 4, 5]).fill([7, 1, 3]).toArray(); // returns [1, 7, 7, 4, 5]
 ```
 
 `fill` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -395,14 +418,15 @@ filter(predicate: (element: T, index: number) => boolean): IterableQuery<T>;
 * `predicate` - *(required)* function to test for each element that accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).filter(elem => elem < 3).toArray(); // returns [1, 2]
-query([1, 2, 3]).filter(elem > 10).toArray(); // returns []
+itiriri([1, 2, 3, 4, 5]).filter(elem => elem < 3).toArray(); // returns [1, 2]
+itiriri([1, 2, 3]).filter(elem > 10).toArray(); // returns []
 ```
 
 `filter` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -421,16 +445,17 @@ find(predicate: (element: T, index: number) => boolean): T;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `undefined`.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).find(elem => elem % 2 === 0); // returns 2
-query([1, 2, 3]).find(elem > 10); // returns undefined
+itiriri([1, 2, 3, 4, 5]).find(elem => elem % 2 === 0); // returns 2
+itiriri([1, 2, 3]).find(elem > 10); // returns undefined
 ```
 
 ### `findIndex`
@@ -447,16 +472,17 @@ findIndex(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `-1`.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([7, 12, 15]).findIndex(elem => elem > 10 && elem < 15); // returns 1
-query([1, 2, 3]).findIndex(elem > 10); // returns -1
+itiriri([7, 12, 15]).findIndex(elem => elem > 10 && elem < 15); // returns 1
+itiriri([1, 2, 3]).findIndex(elem > 10); // returns -1
 ```
 
 ### `findLast`
@@ -473,16 +499,17 @@ findLast(predicate: (element: T, index: number) => boolean): T;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
 If no element satisfies the predicate, returns `undefined`.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([11, 7, 21]).findLast(elem => elem > 10); // returns 21
-query([1, 2, 3]).findLast(elem > 10); // returns undefined
+itiriri([11, 7, 21]).findLast(elem => elem > 10); // returns 21
+itiriri([1, 2, 3]).findLast(elem > 10); // returns undefined
 ```
 
 ### `findLastIndex`
@@ -499,16 +526,17 @@ findLastIndex(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` if element satisfies the predicate, `false` otherwise
 
-If not present, returns -1.
+If not present, returns `-1`.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([11, 7, 21]).findLastIndex(elem => elem > 10); // returns 2
-query([1, 2, 3]).findLastIndex(elem > 10); // returns -1
+itiriri([11, 7, 21]).findLastIndex(elem => elem > 10); // returns 2
+itiriri([1, 2, 3]).findLastIndex(elem > 10); // returns -1
 ```
 
 ### `first`
@@ -526,10 +554,10 @@ For an empty sequence returns `undefined`.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c']).first(); // returns 'a'
-query([]).first(); // returns undefined
+itiriri(['a', 'b', 'c']).first(); // returns 'a'
+itiriri([]).first(); // returns undefined
 ```
 
 ### `flat`
@@ -551,9 +579,9 @@ flat<S>(selector: (element: T, index: number) => Iterable<S>): IterableQuery<S>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([{value: [1, 2], {values: [7, 9]}]).flat(elem => elem.value).toArray();
+itiriri([{value: [1, 2], {values: [7, 9]}]).flat(elem => elem.value).toArray();
 // returns [1, 2, 7, 9]
 ```
 
@@ -570,16 +598,16 @@ forEach(action: (element: T, index: number) => void): void;
 ```
 
 > Parameters
-* `action` - *(required)* function to apply on each element, accepts two arguments
+* `action` - *(required)* function to apply on each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).forEach(elem => console.log(elem));
+itiriri([1, 2, 3]).forEach(elem => console.log(elem));
 // 1
 // 2
 // 3
@@ -601,11 +629,11 @@ groupBy<K, E>(
 ```
 
 > Parameters
-* `keySelector` - *(required)* function that provides group's key, accepts two arguments
+* `keySelector` - *(required)* function that provides element's group key, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns the group key of current element
-* `valueSelector` - *(optional)* function to transform values, accepts two arguments
+* `valueSelector` - *(optional)* function to transform values, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns a transformation of current element
@@ -613,7 +641,7 @@ groupBy<K, E>(
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
 const students = [
   {name: 'Alice', gender: 'female'},
@@ -621,7 +649,7 @@ const students = [
   {name: 'David', gender: 'male'},
 ];
 
-query(students).groupBy(elem => elem.gender, elem => elem.name).toArray();
+itiriri(students).groupBy(elem => elem.gender, elem => elem.name).toArray();
 // [['female', ['Alice']], ['male', ['Bob', 'David']]]
 ```
 
@@ -645,7 +673,7 @@ groupJoin<TKey, TRight, TResult>(
 
 > Parameters
 * `other` - *(required)* sequence to join
-* `leftKeySelector` - *(required)* function that provides the key of each element from source sequence, accepts two arguments:
+* `leftKeySelector` - *(required)* function that provides the key of each element from the source sequence, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
   * returns element's key
@@ -665,7 +693,7 @@ the `joinSelector` function will be called with an empty array.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
 const books = [
   {title: 'Clean code', categoryId: 1 },
@@ -678,7 +706,7 @@ const categories = [
   {id: 2, name: 'Agile'},
 ];
 
-query(categories).groupJoin(
+itiriri(categories).groupJoin(
   books,
   category => category.id,
   book => book.categoryId,
@@ -686,7 +714,7 @@ query(categories).groupJoin(
 ).toArray();
 // [
 //   {category: 'CS', books: ['Clean code', 'Code complete']},
-//   {category: 'Agile'}, books: ['Scrum']
+//   {category: 'Agile', books: ['Scrum']}
 // ]
 ```
 
@@ -712,10 +740,10 @@ includes(element: T, fromIndex: number): boolean;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).includes(2); // returns true
-query([1, 2, 3]).includes(0); // returns false
+itiriri([1, 2, 3]).includes(2); // returns true
+itiriri([1, 2, 3]).includes(0); // returns false
 ```
 
 ### `indexOf`
@@ -733,16 +761,16 @@ indexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns -1.  
+When an element is not found, returns `-1`.  
 `indexOf` uses triple equals `===` to compare elements.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c']).indexOf('c'); // returns 2
-query(['a', 'b', 'c']).indexOf('x'); // returns -1
+itiriri(['a', 'b', 'c']).indexOf('c'); // returns 2
+itiriri(['a', 'b', 'c']).indexOf('x'); // returns -1
 ```
 
 ### `intersect`
@@ -760,14 +788,15 @@ intersect<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 * `other` - *(required)* the sequence to intersect with
 * `selector` - *(optional)* a value transformer function to be used for comparisons, accepts one argument:
   * `element` - the current element
+  * returns a value used for comparisons
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]]).intersect([2, 3, 4]).toArray(); // returns [2, 3]
-query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
+itiriri([1, 2, 3]]).intersect([2, 3, 4]).toArray(); // returns [2, 3]
+itiriri([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
   .intersect([{id: 3, name: 'David'}, {id: 1, name: 'Alice'}], elem => elem.id)
   .toArray(); // returns [{id: 1, name: 'Alice'}]
 ```
@@ -809,14 +838,14 @@ The `join` method works as an sql inner join.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3])
+itiriri([1, 2, 3])
   .join([2, 3, 4], n => n, n => n, (a, b) => `${a}-${b}`)
   .toArray();
 // returns ['2-2', '3-3']
 
-query([{countryId: 1, code: '+1'}, {countryId: 2, code: '+44'}]])
+itiriri([{countryId: 1, code: '+1'}, {countryId: 2, code: '+44'}]])
   .join(
     [{ id: 1, country: 'US' }, {id: 3, country: 'MD'}],
     left => left.countryId,
@@ -841,9 +870,9 @@ keys(): IterableQuery<number>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c']).keys().toArray(); // returns [0, 1, 2]
+itiriri(['a', 'b', 'c']).keys().toArray(); // returns [0, 1, 2]
 ```
 
 `keys` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -863,10 +892,10 @@ For an empty sequence returns `undefined`.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c']).last(); // returns 'c'
-query([]).last(); // returns undefined
+itiriri(['a', 'b', 'c']).last(); // returns 'c'
+itiriri([]).last(); // returns undefined
 ```
 
 ### `lastIndexOf`
@@ -884,16 +913,16 @@ lastIndexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns -1.  
+When an element is not found, returns `-1`.  
 `lastIndexOf` uses triple equals `===` to compare elements.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'c', 'c']).lastIndexOf('c'); // returns 2
-query(['a', 'b', 'c']).lastIndexOf('x'); // returns -1
+itiriri(['a', 'c', 'c']).lastIndexOf('c'); // returns 2
+itiriri(['a', 'b', 'c']).lastIndexOf('x'); // returns -1
 ```
 
 ### `leftJoin`
@@ -933,14 +962,14 @@ the `joinSelector` function is called with an `undefined` right value.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3])
+itiriri([1, 2, 3])
   .leftJoin([2, 3, 4, 2], n => n, n => n, (a, b) => `${a}-${b || '#'}`)
   .toArray();
 // returns ['1-#', '2-2', '2-2', '3-3']
 
-query([{book: 'History', owner: 3}, {book: 'Math', owner: 2}, {book: 'Art'}]])
+itiriri([{book: 'History', owner: 3}, {book: 'Math', owner: 2}, {book: 'Art'}]])
   .leftJoin(
     [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}],
     left => left.owner,
@@ -970,14 +999,15 @@ length(predicate: (element: T, index: number) => boolean): number;
 * `predicate` - *(optional)* a function to count only the elements that match the predicate, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).length();  // returns 5
-query([1, 2, 3, 4, 5]).length(elem => elem > 2);  // returns 3
+itiriri([1, 2, 3, 4, 5]).length();  // returns 5
+itiriri([1, 2, 3, 4, 5]).length(elem => elem > 2);  // returns 3
 ```
 
 ### `map`
@@ -994,13 +1024,14 @@ map<S>(selector: (element: T, index: number) => S): IterableQuery<S>;
 * `selector` - *(required)* a value transformer function to apply to each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns a new value
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).map(elem => elem * 10).toArray(); // returns [10, 20, 30]
+itiriri([1, 2, 3]).map(elem => elem * 10).toArray(); // returns [10, 20, 30]
 ```
 
 `map` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1027,11 +1058,11 @@ If sequence is empty, returns `undefined`.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).max(); // returns 3
-query([]).max(); // returns undefined
-query([7, 3, 11, 5]).max((a, b) => (1 / a) - (1 / b)); // returns 3
+itiriri([1, 2, 3]).max(); // returns 3
+itiriri([]).max(); // returns undefined
+itiriri([7, 3, 11, 5]).max((a, b) => (1 / a) - (1 / b)); // returns 3
 ```
 
 ### `min`
@@ -1056,11 +1087,11 @@ If sequence is empty, returns `undefined`.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).min(); // returns 1
-query([]).min(); // returns undefined
-query([7, 3, 11, 5]).min((a, b) => (1 / a) - (1 / b)); // returns 11
+itiriri([1, 2, 3]).min(); // returns 1
+itiriri([]).min(); // returns undefined
+itiriri([7, 3, 11, 5]).min((a, b) => (1 / a) - (1 / b)); // returns 11
 ```
 
 ### `nth`
@@ -1082,11 +1113,11 @@ If index is out of the range, returns `undefined` .
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c', 'd']).nth(2)  // returns 'c'
-query(['a', 'b', 'c', 'd']).nth(-1) // returns 'd'
-query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
+itiriri(['a', 'b', 'c', 'd']).nth(2)  // returns 'c'
+itiriri(['a', 'b', 'c', 'd']).nth(-1) // returns 'd'
+itiriri(['a', 'b', 'c', 'd']).nth(10) // returns undefined
 ```
 
 ### `prepend`
@@ -1097,17 +1128,18 @@ query(['a', 'b', 'c', 'd']).nth(10) // returns undefined
 
 ```ts
 prepend(other: Iterable<T>): IterableQuery<T>;
+prepend(other: T): IterableQuery<T>;
 ```
 
 > Parameters
-* `other` - *(required)* the sequence to be added at the beginning
+* `other` - *(required)* the sequence or element to be added at the beginning
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).prepend([9, 10]).toArray(); // returns [1, 2, 3, 9, 10]
+itiriri([1, 2, 3]).prepend([9, 10]).toArray(); // returns [1, 2, 3, 9, 10]
 ```
 
 `prepend` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1141,10 +1173,10 @@ Calling `reduce` on an empty sequence without an initial value throws an error.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([ 1, 2, 42, 0 ]).reduce((acc, elem) => Math.max(acc, elem)); // returns 42
-query([ 1, 2, 3 ]).reduce((acc, elem) => acc + elem, 10); // returns 16
+itiriri([ 1, 2, 42, 0 ]).reduce((acc, elem) => Math.max(acc, elem)); // returns 42
+itiriri([ 1, 2, 3 ]).reduce((acc, elem) => acc + elem, 10); // returns 16
 ```
 
 ### `reduceRight`
@@ -1176,10 +1208,10 @@ Calling `reduceRight` on an empty sequence without an initial value throws an er
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([ 1, 2, 42, 0 ]).reduceRight((acc, elem) => Math.max(acc, elem)); // returns 42
-query([ 1, 2, 3]).reduceRight((acc, elem) => acc.concat(elem), []); // returns [3, 2, 1]
+itiriri([ 1, 2, 42, 0 ]).reduceRight((acc, elem) => Math.max(acc, elem)); // returns 42
+itiriri([ 1, 2, 3]).reduceRight((acc, elem) => acc.concat(elem), []); // returns [3, 2, 1]
 ```
 
 ### `reverse`
@@ -1195,9 +1227,9 @@ reverse(): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).reverse().toArray(); // returns [3, 2, 1]
+itiriri([1, 2, 3]).reverse().toArray(); // returns [3, 2, 1]
 ```
 
 `reverse` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1239,14 +1271,14 @@ the `rightJoin` function is called with an `undefined` left value.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3])
+itiriri([1, 2, 3])
   .rightJoin([2, 3, 4, 2], n => n, n => n, (a, b) => `${a || '#'}-${b}`)
   .toArray();
 // returns ['2-2', '3-3', '#-4', '2-2']
 
-query([{book: 'History', owner: 3}, {book: 'Math', owner: 2}]])
+itiriri([{book: 'History', owner: 3}, {book: 'Math', owner: 2}]])
   .rightJoin(
     [{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'}, {id: 3, name: 'Eve'}],
     right => right.id,
@@ -1277,9 +1309,9 @@ algorithm for generating the random permutation. `Math.rand()` is used to genera
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).shuffle().toArray();
+itiriri([1, 2, 3, 4, 5]).shuffle().toArray();
 // returns a random permutation of the same elements
 // like: [2, 5, 3, 1, 4]
 ```
@@ -1305,11 +1337,11 @@ Accepts also a negative count, in which case skips the elements from the end of 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).skip(2).toArray(); // [3, 4, 5]
-query([1, 2, 3, 4, 5]).skip(10).toArray(); // []
-query([1, 2, 3, 4, 5]).skip(-2).toArray(); // [1, 2, 3]
+itiriri([1, 2, 3, 4, 5]).skip(2).toArray(); // [3, 4, 5]
+itiriri([1, 2, 3, 4, 5]).skip(10).toArray(); // []
+itiriri([1, 2, 3, 4, 5]).skip(-2).toArray(); // [1, 2, 3]
 ```
 
 `skip` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1332,12 +1364,12 @@ skipWhile<T>(predicate: (element: T, index: number) => boolean): IterableQuery<T
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).skipWhile(() => true); // returns []
-query([1, 2, 3]).skipWhile(() => false); // returns [1, 2, 3]
-query([1, 2, 3]).skipWhile(e => e < 3); // returns [3]
-query([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [1, 2, 3]
+itiriri([1, 2, 3]).skipWhile(() => true); // returns []
+itiriri([1, 2, 3]).skipWhile(() => false); // returns [1, 2, 3]
+itiriri([1, 2, 3]).skipWhile(e => e < 3); // returns [3]
+itiriri([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [1, 2, 3]
 ```
 
 `skipWhile` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1362,9 +1394,9 @@ The `end` index is not included in the result.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3]
+itiriri([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3]
 ```
 
 `slice` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1383,14 +1415,15 @@ some(predicate: (element: T, index: number) => boolean): boolean;
 * `predicate` - *(required)* function to test for each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns `true` or `false`
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 42, 5]).some(elem => elem > 40); // returns true
-query([1, 2, 3, 42, 5]).some(elem => elem < 0); // returns false
+itiriri([1, 2, 3, 42, 5]).some(elem => elem > 40); // returns true
+itiriri([1, 2, 3, 42, 5]).some(elem => elem < 0); // returns false
 ```
 
 ### `sort`
@@ -1410,15 +1443,15 @@ sort(compareFn: (a: T, b: T) => number): IterableQuery<T>;
   * `1` when `a` is greater `b`
   * `0` when `a` equals to `b`
 
-This method fallbacks to native JavaScript array sort.
+This method fallbacks to native JavaScript array sort method.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([7, 9, 0, 4, 12]).sort().toArray(); // returns [0, 4, 7, 9, 12]
-query([
+itiriri([7, 9, 0, 4, 12]).sort().toArray(); // returns [0, 4, 7, 9, 12]
+itiriri([
   {score: 1, value: 'a'},
   {score: 0, value: 'b'},
   {score: 2, value: 'c'}])
@@ -1449,13 +1482,13 @@ splice(start: number, deleteCount: number, ...items: T[]): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['angel', 'clown', 'mandarin', 'sturgeon'])
+itiriri(['angel', 'clown', 'mandarin', 'sturgeon'])
   .splice(2, 0, 'drum').toArray();
 // returns ['angel', 'clown', 'drum', 'mandarin', 'sturgeon']
 
-query(['angel', 'clown', 'drum', 'mandarin', 'sturgeon'])
+itiriri(['angel', 'clown', 'drum', 'mandarin', 'sturgeon'])
   .splice(3, 1).toArray();
 // returns ['angel', 'clown', 'drum', 'sturgeon']
 ```
@@ -1477,16 +1510,17 @@ sum(selector: (element: T, index: number) => number): number;
 * `selector` - *(optional)* a value transformer function to apply to each element, accepts two arguments:
   * `element` - the current element
   * `index` - the index of the current element
+  * returns a value to be used for sum calculation
 
 Optionally, a function can be provided to apply a transformation and map each element to a value.
 
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).sum(); // returns 6
-query([{value: 1}, {value: 2}]).sum(elem => elem.value); // returns 3
+itiriri([1, 2, 3]).sum(); // returns 6
+itiriri([{value: 1}, {value: 2}]).sum(elem => elem.value); // returns 3
 ```
 
 ### `take`
@@ -1507,11 +1541,11 @@ If a negative count is specified, returns elements from the end of the sequence.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).take(2); // returns [1, 2]
-query([1, 2, 3]).take(-2); // returns [2, 3]
-query([1, 2, 3]).take(10); // returns [1, 2, 3]
+itiriri([1, 2, 3]).take(2); // returns [1, 2]
+itiriri([1, 2, 3]).take(-2); // returns [2, 3]
+itiriri([1, 2, 3]).take(10); // returns [1, 2, 3]
 ```
 
 `take` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1534,12 +1568,12 @@ takeWhile<T>(predicate: (element: T, index: number) => boolean): IterableQuery<T
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).takeWhile(() => true); // returns [1, 2, 3]
-query([1, 2, 3]).takeWhile(() => false); // returns []
-query([1, 2, 3]).takeWhile(e => e < 3); // returns [1, 2]
-query([1, 2, 3]).takeWhile(e => e % 2 === 0); // returns []
+itiriri([1, 2, 3]).takeWhile(() => true); // returns [1, 2, 3]
+itiriri([1, 2, 3]).takeWhile(() => false); // returns []
+itiriri([1, 2, 3]).takeWhile(e => e < 3); // returns [1, 2]
+itiriri([1, 2, 3]).takeWhile(e => e % 2 === 0); // returns []
 ```
 
 `takeWhile` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1564,10 +1598,10 @@ returned by applying the function on each element.
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).toArray(); // returns [1, 2, 3]
-query([{value: 1}, {value: 2}]).toArray(elem => elem.value); // returns [1, 2]
+itiriri([1, 2, 3]).toArray(); // returns [1, 2, 3]
+itiriri([{value: 1}, {value: 2}]).toArray(elem => elem.value); // returns [1, 2]
 ```
 
 ### `toGroups`
@@ -1600,12 +1634,12 @@ of *key-value* pairs where each key is the result from `keySelector` and value i
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 7, 14, 4, 9]).toGroups(elem => elem % 2 === 0);
+itiriri([1, 7, 14, 4, 9]).toGroups(elem => elem % 2 === 0);
 // returns Map {0 => [14, 4], 1 => [1, 7, 9]}
 
-query([
+itiriri([
     {name: 'Alice', gender: 'female'},
     {name: 'Bob', gender: 'male'},
     {name: 'David', gender: 'male'}
@@ -1646,15 +1680,15 @@ If the sequence contains two elements with the same key, method `toMap` throws a
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0));
+itiriri(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0));
 // returns Map {97 => 'a', 98 => 'b', 99 => 'c'}
 
-query(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0), elem => elem.toUpperCase());
+itiriri(['a', 'b', 'c']).toMap(elem => elem.charCodeAt(0), elem => elem.toUpperCase());
 // returns Map {97 => 'A', 98 => 'B', 99 => 'C'}
 
-query([1, 1]).toMap(elem => elem);
+itiriri([1, 1]).toMap(elem => elem);
 // throws an Error
 ```
 
@@ -1680,10 +1714,10 @@ of the original elements in the sequence, or their transformation when a `select
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3, 1, 3]).toSet(); // returns Set {1, 2, 3}
-query([{value: 1}, {value: 2}, {value: 1}])
+itiriri([1, 2, 3, 1, 3]).toSet(); // returns Set {1, 2, 3}
+itiriri([{value: 1}, {value: 2}, {value: 1}])
   .toSet(elem => elem.value); // returns Set {1, 2}
 ```
 
@@ -1702,11 +1736,11 @@ Method `toString` calls `.toString()` function on each element and joins the res
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]).toString(); // returns 1,2,3
-query([1, null, 3]).toString(); // returns 1,,3
-query([{value: 1}, {value: 2}]).toString(); // returns [object Object],[object Object]
+itiriri([1, 2, 3]).toString(); // returns 1,2,3
+itiriri([1, null, 3]).toString(); // returns 1,,3
+itiriri([{value: 1}, {value: 2}]).toString(); // returns [object Object],[object Object]
 ```
 
 ### `union`
@@ -1728,11 +1762,11 @@ union<S>(other: Iterable<T>, selector: (element: T) => S): IterableQuery<T>;
 Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]]).union([2, 3, 4]).toArray(); // returns [1, 2, 3, 4]
+itiriri([1, 2, 3]]).union([2, 3, 4]).toArray(); // returns [1, 2, 3, 4]
 
-query([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
+itiriri([{id: 1, name: 'Alice'}, {id: 2, name: 'Bob'})
   .union([{id: 3, name: 'David'}, {id: 1, name: 'Alice'}], elem => elem.id)
   .toArray();
 // returns [
@@ -1756,9 +1790,9 @@ values(): IterableQuery<T>;
 > Example
 
 ```ts
-import { query } from 'itiriri';
+import itiriri from 'itiriri';
 
-query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
+itiriri([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 ```
 
 `values` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1766,14 +1800,3 @@ query([1, 2, 3]]).values().toArray(); // returns [1, 2, 3]
 ## License
 
 [MIT](LICENSE)
-
-## Keywords
-
-[iterator](https://www.npmjs.com/search?q=keywords:iterator)
-[iterable](https://www.npmjs.com/search?q=keywords:iterable)
-[filter](https://www.npmjs.com/search?q=keywords:filter)
-[map](https://www.npmjs.com/search?q=keywords:map)
-[query](https://www.npmjs.com/search?q=keywords:query)
-[collections](https://www.npmjs.com/search?q=keywords:collections)
-[deferred](https://www.npmjs.com/search?q=keywords:deferred)
-[lazy](https://www.npmjs.com/search?q=keywords:lazy)

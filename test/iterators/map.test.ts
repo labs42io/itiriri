@@ -6,28 +6,28 @@ describe('iterators/map', () => {
   describe('When applying identity transformation', () => {
     it('Should return the same elements', () => {
       const source = [1, 2, 4, 8, 16];
-      const iterator = map(source, (elem, idx) => elem);
+      const iterator = map(source, elem => elem);
 
       expect(toArray(iterator)).to.be.deep.equal([1, 2, 4, 8, 16]);
     });
     it('Should return the same elements', () => {
       const source = [1.1, 2.2, 4.4, 8.8, 16.16];
-      const iterator = map(source, (elem, idx) => elem);
+      const iterator = map(source, elem => elem);
 
       expect(toArray(iterator)).to.be.deep.equal([1.1, 2.2, 4.4, 8.8, 16.16]);
     });
   });
 
   describe('When applying linear transformation', () => {
-    it('Should return the elemens modified', () => {
+    it('Should return the elements modified', () => {
       const source = [1, 2, 4, 8];
-      const iterator = map(source, (elem, idx) => elem * 2 + 2);
+      const iterator = map(source, elem => elem * 2 + 2);
 
       expect(toArray(iterator)).to.be.deep.equal([4, 6, 10, 18]);
     });
-    it('Should return the elemens modified', () => {
+    it('Should return the elements modified', () => {
       const source = ['a', 'b', 'c', 'd'];
-      const iterator = map(source, (elem, idx) => elem + 'a');
+      const iterator = map(source, elem => `${elem}a`);
 
       expect(toArray(iterator)).to.be.deep.equal(['aa', 'ba', 'ca', 'da']);
     });
@@ -45,7 +45,7 @@ describe('iterators/map', () => {
   describe('When applying index transformation', () => {
     it('Should return the array indexes', () => {
       const source = [10, 1, 1, 2, 3];
-      const iterator = map(source, (elem, idx) => idx);
+      const iterator = map(source, (_, idx) => idx);
 
       expect(toArray(iterator)).to.be.deep.equal([0, 1, 2, 3, 4]);
     });

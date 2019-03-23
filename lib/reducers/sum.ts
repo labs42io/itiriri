@@ -1,4 +1,4 @@
-export function sum(source: Iterable<number>): number {
+export function sum(source: Iterable<number>): number | undefined {
   let [result, hasElements] = [0, false];
 
   for (const element of source) {

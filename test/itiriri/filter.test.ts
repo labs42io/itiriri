@@ -1,0 +1,259 @@
+import { expect } from 'chai';
+import { numbers as numberGenerator } from '../helpers/generators';
+import { SpyIterable } from '../helpers/SpyIterable';
+import { default as itiriri } from '../../lib';
+
+describe('Itiriri (filter)', () => {
+  describe('When calling filter', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).filter(_ => true);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should return array of 3 elements', () => {
+      const source = [0, -4, 4, 30, -10, 10];
+      const q = itiriri(source).filter(x => x <= 0);
+
+      expect(q.toArray()).to.be.deep.equal([0, -4, -10]);
+    });
+
+    it('Should return array of 1 element', () => {
+      const source = [0, -4, 4, 30, -10, 10];
+      const q = itiriri(source).filter((_, idx) => idx === 0);
+
+      expect(q.toArray()).to.be.deep.equal([0]);
+    });
+
+    it('Should return array of 1 object', () => {
+      const source = [
+        { val: 10, tag: 'a' },
+        { val: 20, tag: 'b' },
+        { val: -10, tag: 'c' },
+      ];
+      const q = itiriri(source).filter(x => x.tag === 'a');
+
+      expect(q.toArray()).to.be.deep.equal([{ val: 10, tag: 'a' }]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = itiriri(source).filter(x => x > 1);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([2, 3]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).filter(_ => true).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+
+  describe('When calling skip', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).skip(1000);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should return 5 elements', () => {
+      const source = numberGenerator();
+      const q = itiriri(source).skip(2).take(5);
+
+      expect(q.toArray()).to.be.deep.equal([2, 3, 4, 5, 6]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = itiriri(source).skip(1);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([2, 3]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).skip(0).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+
+  describe('When calling slice', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).slice(100, 2000);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should return 3 elements', () => {
+      const source = numberGenerator(1, 2);
+      const q = itiriri(source).slice(4, 6);
+
+      expect(q.toArray()).to.be.deep.equal([9, 11]);
+    });
+
+    it('Should return empty source', () => {
+      const source = numberGenerator(10, 2);
+      const q = itiriri(source).slice(7, 6);
+
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should return no elements', () => {
+      const source = numberGenerator(10, 2);
+      const q = itiriri(source).slice(0, 0);
+
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = itiriri(source).slice(1, 3);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([2, 3]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).slice().toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+
+  describe('When calling splice', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).splice(100, 200, 0, 1, 2, 3, 4);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should return 5 elemens', () => {
+      const source = [1, 2, 3, 4, 5, 6, 7];
+      const q = itiriri(source).splice(1, 5, -1, -2, -3);
+
+      expect(q.toArray()).to.be.deep.equal([1, -1, -2, -3, 7]);
+    });
+
+    it('Should return 3 elemens', () => {
+      const source = [1, 2, 3, 4, 5, 6, 7];
+      const q = itiriri(source).splice(0, 7, -1, -2, -3);
+
+      expect(q.toArray()).to.be.deep.equal([-1, -2, -3]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3];
+      const q = itiriri(source).splice(1, 1, 42);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 42, 3]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).splice(0, 0).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+
+  describe('When calling takeWhile', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).takeWhile(() => true);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should return all elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = itiriri(source).takeWhile(() => true);
+
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('Should return no elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = itiriri(source).takeWhile(() => false);
+
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should return first elements that satisfy condition', () => {
+      const source = [2, 4, 6, 7, 8, 3, 10];
+      const q = itiriri(source).takeWhile(e => e % 2 === 0);
+
+      expect(q.toArray()).to.be.deep.equal([2, 4, 6]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3, 1];
+      const q = itiriri(source).takeWhile(x => x < 3);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([1, 2]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).takeWhile(_ => true).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+
+  describe('When calling skipWhile', () => {
+    it('Should be a deferred method', () => {
+      const source = new SpyIterable(numberGenerator());
+      itiriri(source).skipWhile(() => true);
+
+      expect(source.iterated).to.be.false;
+    });
+
+    it('Should skip all elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = itiriri(source).skipWhile(() => true);
+
+      expect(q.toArray()).to.be.deep.equal([]);
+    });
+
+    it('Should return all elements', () => {
+      const source = [1, 2, 3, 4, 5];
+      const q = itiriri(source).skipWhile(() => false);
+
+      expect(q.toArray()).to.be.deep.equal([1, 2, 3, 4, 5]);
+    });
+
+    it('Should skip first elements that satisfy condition', () => {
+      const source = [2, 4, 6, 7, 8, 3, 10];
+      const q = itiriri(source).skipWhile(e => e % 2 === 0);
+
+      expect(q.toArray()).to.be.deep.equal([7, 8, 3, 10]);
+    });
+
+    it('Should be iterable multiple times', () => {
+      const source = [1, 2, 3, 1];
+      const q = itiriri(source).skipWhile(x => x < 3);
+
+      for (const _ of q) { }
+      expect(q.toArray()).to.be.deep.equal([3, 1]);
+    });
+
+    it('Should iterate once', () => {
+      const source = new SpyIterable([]);
+      itiriri(source).skipWhile(_ => true).toArray();
+
+      expect(source.iteratedOnce).to.be.true;
+    });
+  });
+});
