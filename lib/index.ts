@@ -45,6 +45,8 @@ export default function itiriri<T>(source: Iterable<T>): IterableQuery<T> {
   return new Itiriri(source);
 }
 
+export { IterableQuery };
+
 class Itiriri<T> implements IterableQuery<T>{
   constructor(private readonly source: Iterable<T>) {
   }
