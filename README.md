@@ -1396,7 +1396,7 @@ The `end` index is not included in the result.
 ```ts
 import itiriri from 'itiriri';
 
-itiriri([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3]
+itiriri([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3, 4]
 ```
 
 `slice` *is a deferred method and is executed only when the result sequence is iterated.*
