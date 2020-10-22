@@ -1369,7 +1369,7 @@ import itiriri from 'itiriri';
 itiriri([1, 2, 3]).skipWhile(() => true); // returns []
 itiriri([1, 2, 3]).skipWhile(() => false); // returns [1, 2, 3]
 itiriri([1, 2, 3]).skipWhile(e => e < 3); // returns [3]
-itiriri([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [1, 2, 3]
+itiriri([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [2]
 ```
 
 `skipWhile` *is a deferred method and is executed only when the result sequence is iterated.*
