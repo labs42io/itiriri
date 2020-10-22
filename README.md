@@ -97,7 +97,7 @@ for (const e of result) {
 
 Step by step:
 
-1. `result` is assigned to a itiriri. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.  
+1. `result` is assigned to a itiriri. At this point `numbers` array is not iterated, the execution is deferred until the result is being iterated.
 
 1. `filter` method creates an iterator to pipe only numbers passing the predicate. `filter` does not buffer elements and only pipes them one-by-one to `take` as it is iterated.
 
@@ -105,7 +105,7 @@ Step by step:
 
 1. `for...of` instruction starts iteration and requests elements one at a time.
 
-Due to deferred execution, most of the functions that don't need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterables (like *Fibonacci* in the above example). These functions are also optimized to pass elements through and do not buffer them resulting in a more optimized memory usage.  
+Due to deferred execution, most of the functions that don't need entire sequence of elements to build an iterator (like *filter*, *map*, *concat* etc.) can be used with infinite iterables (like *Fibonacci* in the above example). These functions are also optimized to pass elements through and do not buffer them resulting in a more optimized memory usage.
 
 Functions like *sort*, *reverse*, *shuffle* etc. that require entire sequence of elements in order to build an iterator expect to receive a finite iterable.
 
@@ -127,8 +127,8 @@ are used to filter and map a result of 100 elements:
 
 ![map-filter-slice](https://raw.githubusercontent.com/labs42io/itiriri/dev/images/map-filter-slice.PNG)
 
-Using `array` methods performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.  
-Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.  
+Using `array` methods performance drops significantly for large inputs due to creation of intermediary states for `filter` and `map`.
+Using `itiriri` iteration always stops after 100 elements are found, therefore the size of the input doesn't affect the performance.
 
 More benchmarks can be found in [/benchmark](https://github.com/labs42io/itiriri/tree/master/benchmarks).
 
@@ -163,58 +163,70 @@ Once you include the `itiriri.min.js` file on your page, you can use it as:
 
 ## Complete list of methods
 
-* [average](#average)
-* [concat](#concat)
-* [distinct](#distinct)
-* [entries](#entries)
-* [every](#every)
-* [exclude](#exclude)
-* [fill](#fill)
-* [filter](#filter)
-* [find](#find)
-* [findIndex](#findindex)
-* [findLast](#findlast)
-* [findLastIndex](#findlastindex)
-* [first](#first)
-* [flat](#flat)
-* [forEach](#foreach)
-* [groupBy](#groupby)
-* [groupJoin](#groupjoin)
-* [includes](#includes)
-* [indexOf](#indexof)
-* [intersect](#intersect)
-* [join](#join)
-* [keys](#keys)
-* [last](#last)
-* [lastIndexOf](#lastindexof)
-* [leftJoin](#leftjoin)
-* [length](#length)
-* [map](#map)
-* [max](#max)
-* [min](#min)
-* [nth](#nth)
-* [prepend](#prepend)
-* [reduce](#reduce)
-* [reduceRight](#reduceright)
-* [reverse](#reverse)
-* [rightJoin](#rightjoin)
-* [shuffle](#shuffle)
-* [skip](#skip)
-* [skipWhile](#skipwhile)
-* [slice](#slice)
-* [some](#some)
-* [sort](#sort)
-* [splice](#splice)
-* [sum](#sum)
-* [take](#take)
-* [takeWhile](#takewhile)
-* [toArray](#toarray)
-* [toGroups](#togroups)
-* [toMap](#tomap)
-* [toSet](#toset)
-* [toString](#tostring)
-* [union](#union)
-* [values](#values)
+- [itiriri](#itiriri)
+  - [Installation](#installation)
+    - [Using npm](#using-npm)
+    - [Importing](#importing)
+    - [Support](#support)
+  - [Usage](#usage)
+  - [Deferred execution](#deferred-execution)
+  - [Benchmarks](#benchmarks)
+  - [Running Tests](#running-tests)
+  - [Bundling](#bundling)
+  - [Complete list of methods](#complete-list-of-methods)
+    - [`average`](#average)
+    - [`concat`](#concat)
+    - [`distinct`](#distinct)
+    - [`entries`](#entries)
+    - [`every`](#every)
+    - [`exclude`](#exclude)
+    - [`fill`](#fill)
+    - [`filter`](#filter)
+    - [`find`](#find)
+    - [`findIndex`](#findindex)
+    - [`findLast`](#findlast)
+    - [`findLastIndex`](#findlastindex)
+    - [`first`](#first)
+    - [`flat`](#flat)
+    - [`forEach`](#foreach)
+    - [`groupBy`](#groupby)
+    - [`groupJoin`](#groupjoin)
+    - [`includes`](#includes)
+    - [`indexOf`](#indexof)
+    - [`intersect`](#intersect)
+    - [`join`](#join)
+    - [`keys`](#keys)
+    - [`last`](#last)
+    - [`lastIndexOf`](#lastindexof)
+    - [`leftJoin`](#leftjoin)
+    - [`length`](#length)
+    - [`map`](#map)
+    - [`max`](#max)
+    - [`min`](#min)
+    - [`nth`](#nth)
+    - [`prepend`](#prepend)
+    - [`reduce`](#reduce)
+    - [`reduceRight`](#reduceright)
+    - [`reverse`](#reverse)
+    - [`rightJoin`](#rightjoin)
+    - [`shuffle`](#shuffle)
+    - [`skip`](#skip)
+    - [`skipWhile`](#skipwhile)
+    - [`slice`](#slice)
+    - [`some`](#some)
+    - [`sort`](#sort)
+    - [`splice`](#splice)
+    - [`sum`](#sum)
+    - [`take`](#take)
+    - [`takeWhile`](#takewhile)
+    - [`toArray`](#toarray)
+    - [`toGroups`](#togroups)
+    - [`toMap`](#tomap)
+    - [`toSet`](#toset)
+    - [`toString`](#tostring)
+    - [`union`](#union)
+    - [`values`](#values)
+  - [License](#license)
 
 ### `average`
 
@@ -686,7 +698,7 @@ groupJoin<TKey, TRight, TResult>(
   * `right` - array of elements from the joined source that have the same key as left element's key
 
 The `joinSelector` function is called on each element from the source sequence and the array of matched
-elements from the joined sequence.  
+elements from the joined sequence.
 When an element from the source sequence doesn't match with any of the elements from the joined sequence,
 the `joinSelector` function will be called with an empty array.
 
@@ -761,7 +773,7 @@ indexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns `-1`.  
+When an element is not found, returns `-1`.
 `indexOf` uses triple equals `===` to compare elements.
 
 > Example
@@ -913,7 +925,7 @@ lastIndexOf(element: T, fromIndex: number): number;
 * `element` - *(required)* the element to search for
 * `fromIndex` - *(optional)* starting index, defaults to `0`
 
-When an element is not found, returns `-1`.  
+When an element is not found, returns `-1`.
 `lastIndexOf` uses triple equals `===` to compare elements.
 
 > Example
@@ -957,7 +969,7 @@ leftJoin<TKey, TRight, TResult>(
 
 The `leftJoin` method works as an sql left join.
 When an element from the left sequence doesn't match with any of the elements from the right sequence,
-the `joinSelector` function is called with an `undefined` right value.  
+the `joinSelector` function is called with an `undefined` right value.
 
 > Example
 
@@ -1053,7 +1065,7 @@ max(compareFn: (a: T, b: T) => number): T;
   * `1` when `a` is greater `b`
   * `0` when `a` equals to `b`
 
-If sequence is empty, returns `undefined`.  
+If sequence is empty, returns `undefined`.
 
 > Example
 
@@ -1082,7 +1094,7 @@ min(compareFn: (a: T, b: T) => number): T;
   * `1` when `a` is greater `b`
   * `0` when `a` equals to `b`
 
-If sequence is empty, returns `undefined`.  
+If sequence is empty, returns `undefined`.
 
 > Example
 
@@ -1107,7 +1119,7 @@ nth(index: number): T;
 > Parameters
 * `index` - *(required)* zero based index at which to get the element
 
-For a negative index returns the element from the end of the sequence.  
+For a negative index returns the element from the end of the sequence.
 If index is out of the range, returns `undefined` .
 
 > Example
@@ -1331,7 +1343,7 @@ skip(count: number): IterableQuery<T>;
 > Parameters
 * `count` - *(required)* number of elements to skip
 
-When *count* is greater than actual number of elements, results in an empty sequence.  
+When *count* is greater than actual number of elements, results in an empty sequence.
 Accepts also a negative count, in which case skips the elements from the end of the sequence.
 
 > Example
@@ -1369,7 +1381,7 @@ import itiriri from 'itiriri';
 itiriri([1, 2, 3]).skipWhile(() => true); // returns []
 itiriri([1, 2, 3]).skipWhile(() => false); // returns [1, 2, 3]
 itiriri([1, 2, 3]).skipWhile(e => e < 3); // returns [3]
-itiriri([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [1, 2, 3]
+itiriri([1, 2, 3]).skipWhile(e => e % 2 === 0); // returns [2]
 ```
 
 `skipWhile` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1396,7 +1408,7 @@ The `end` index is not included in the result.
 ```ts
 import itiriri from 'itiriri';
 
-itiriri([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3]
+itiriri([1, 2, 3, 4, 5]).slice(1, 3).toArray(); // returns [2, 3, 4]
 ```
 
 `slice` *is a deferred method and is executed only when the result sequence is iterated.*
@@ -1613,7 +1625,7 @@ Creates a map of element groups by a given key.
 ```ts
 toGroups<M>(
   keySelector: (element: T, index: number) => M): Map<M, T[]>;
-  
+
 toGroups<M, N>(
   keySelector: (element: T, index: number) => M,
   valueSelector: (element: T, index: number) => N): Map<M, N[]>;
